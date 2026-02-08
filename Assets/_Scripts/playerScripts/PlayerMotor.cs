@@ -10,7 +10,7 @@ public class PlayerMotor : MonoBehaviour
     private bool _lerpCrouch;
     private bool _isSprinting;
     
-    public float speed = 5.0f;
+    public float speed = 8.0f;
     public float gravity = -9.8f;
     public float jumpHeight = 3.0f;
     
@@ -78,6 +78,6 @@ public class PlayerMotor : MonoBehaviour
     public void Sprint()
     {
         _isSprinting = !_isSprinting;
-        speed = _isSprinting ? 8f : 5f;
+        speed = _isSprinting ? 16f : 8f;
     }
 }
