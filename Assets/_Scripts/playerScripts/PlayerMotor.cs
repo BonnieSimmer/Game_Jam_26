@@ -1,83 +1,65 @@
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController), typeof(InputManager))]
 public class PlayerMotor : MonoBehaviour
 {
     private CharacterController _controller;
+    private InputManager _input;
     private Vector3 _playerVelocity;
     private bool _isGrounded;
-    private bool _isCrouching;
+    private bool _isCrouching, _lerpCrouch, _isSprinting;
     private float _crouchTimer;
-    private bool _lerpCrouch;
-    private bool _isSprinting;
-    
-    public float speed = 8.0f;
-    public float gravity = -9.8f;
-    public float jumpHeight = 3.0f;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public float speed = 8f, gravity = -9.8f, jumpHeight = 3f;
+
     void Start()
     {
         _controller = GetComponent<CharacterController>();
+        _input = GetComponent<InputManager>();
+        
+        _input.OnJump += Jump;
+        _input.OnCrouch += Crouch;
+        _input.OnSprint += Sprint;
     }
 
-    // Update is called once per frame
     void Update()
     {
         _isGrounded = _controller.isGrounded;
-        if (_lerpCrouch)
-        {
-            _crouchTimer += Time.deltaTime;
-            float p = _crouchTimer / 1;
-            p *= p;
-            if (_isCrouching)
-            {
-                _controller.height = Mathf.Lerp(_controller.height, 1, p);
-            }
-            else
-            {
-                _controller.height = Mathf.Lerp(_controller.height, 2, p);
-            }
-            
-            if (p > 1)
-            {
-                _lerpCrouch = false;
-                _crouchTimer = 0;
-            }
-        }
-    }
-    
-    // Receive the inputs from the InputManager.cs and apply them to the player
-    public void ProcessMove(Vector2 input)
-    {
-        Vector3 moveDirection = Vector3.zero;
-        moveDirection.x = input.x;
-        moveDirection.z = input.y;
-        _controller.Move(speed * Time.deltaTime * transform.TransformDirection(moveDirection));
-       
-        _playerVelocity.y += gravity * Time.deltaTime;
         if (_isGrounded && _playerVelocity.y < 0) _playerVelocity.y = -2f;
+
+        HandleCrouchLerp();
+        
+        // Process movement
+        Vector3 moveInput = _input.GetMovement();
+        Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
+        _controller.Move(speed * Time.deltaTime * move);
+
+        // Apply gravity
+        _playerVelocity.y += gravity * Time.deltaTime;
         _controller.Move(_playerVelocity * Time.deltaTime);
     }
-    
+
+    private void HandleCrouchLerp()
+    {
+        if (!_lerpCrouch) return;
+        _crouchTimer += Time.deltaTime;
+        float p = _crouchTimer / 1f;
+        _controller.height = Mathf.Lerp(_controller.height, _isCrouching ? 1f : 2f, p * p);
+        if (p > 1) _lerpCrouch = false;
+    }
+
     public void Jump()
     {
-        if (_isGrounded)
-        {
-            _playerVelocity.y = Mathf.Sqrt(jumpHeight * -3f * gravity);
-            if (_isCrouching) Crouch();
-        }
+        if (_isGrounded) _playerVelocity.y = Mathf.Sqrt(jumpHeight * -3f * gravity);
     }
 
     public void Crouch()
     {
-        _isCrouching = !_isCrouching;
-        _crouchTimer = 0;
-        _lerpCrouch = true;
+        _isCrouching = !_isCrouching; _crouchTimer = 0; _lerpCrouch = true;
     }
 
     public void Sprint()
     {
-        _isSprinting = !_isSprinting;
-        speed = _isSprinting ? 16f : 8f;
+        _isSprinting = !_isSprinting; speed = _isSprinting ? 16f : 8f;
     }
 }

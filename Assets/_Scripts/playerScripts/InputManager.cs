@@ -1,59 +1,43 @@
 using UnityEngine;
+using System;
 
 public class InputManager : MonoBehaviour
 {
     private PlayerInput _input;
-    private PlayerMotor _motor;
-    private PlayerLook _look;
-    
-    private Vector2 _moveInput;
-    private Vector2 _lookInput;
-    
-    public PlayerInput.OnFootActions OnFootActions;
+    public PlayerInput.OnFootActions OnFoot { get; private set; }
+    public PlayerInput.SettingsActions Settings { get; private set; }
 
+    public event Action OnJump;
+    public event Action OnCrouch;
+    public event Action OnSprint;
+    public event Action OnInteract;
+    public event Action OnPause;
 
     private void Awake()
     {
         _input = new PlayerInput();
-        OnFootActions = _input.OnFoot;
-        _motor = GetComponent<PlayerMotor>();
-        _look = GetComponent<PlayerLook>();
-        
-        ToggleCursor(false);
+        OnFoot = _input.OnFoot;
+        Settings = _input.Settings;
 
-        // Event Subscription
-        OnFootActions.Jump.performed += ctx => _motor.Jump();
-        OnFootActions.Movement.performed += ctx => _moveInput = ctx.ReadValue<Vector2>();
-        OnFootActions.Movement.canceled += ctx => _moveInput = Vector2.zero;
-        OnFootActions.Look.performed += ctx => _lookInput = ctx.ReadValue<Vector2>();
-        OnFootActions.Crouch.performed += ctx => _motor.Crouch();
-        OnFootActions.Sprint.performed += ctx => _motor.Sprint();
-        _input.Settings.Pause.performed += ctx => ToggleCursor(true);
-    }
-    
-    
-    private void Update() 
-    {
-        _motor.ProcessMove(_moveInput);
-        _look.ProcessLook(_lookInput);
-        _lookInput = Vector2.zero; 
+        OnFoot.Jump.performed += _ => OnJump?.Invoke();
+        OnFoot.Crouch.performed += _ => OnCrouch?.Invoke();
+        OnFoot.Sprint.performed += _ => OnSprint?.Invoke();
+        OnFoot.Interact.performed += _ => OnInteract?.Invoke();
+        Settings.Pause.performed += _ => OnPause?.Invoke();
     }
 
-    private void OnEnable() => OnFootActions.Enable();
-    
-    private void OnDisable() => OnFootActions.Disable();
-    
-    public void ToggleCursor(bool isPaused)
+    private void OnEnable()
     {
-        Cursor.lockState = isPaused ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = isPaused;
+        OnFoot.Enable();
+        Settings.Enable();
     }
-    
-    private void OnApplicationFocus(bool hasFocus)
+
+    private void OnDisable()
     {
-        if (hasFocus)
-        {
-            ToggleCursor(false); 
-        }
+        OnFoot.Disable();
+        Settings.Disable();
     }
+
+    public Vector2 GetMovement() => OnFoot.Movement.ReadValue<Vector2>();
+    public Vector2 GetLook() => OnFoot.Look.ReadValue<Vector2>();
 }

@@ -2,28 +2,26 @@ using UnityEngine;
 
 public class PlayerLook : MonoBehaviour
 {
+    private InputManager _input;
     private float _xRotation = 0f;
-    private float _lookWaitTimer = 0.1f; // Wait 0.1 seconds for the mouse to settle
     
-    public new Camera camera;
-    public float xSensitivity = 0.5f;
-    public float ySensitivity = 0.5f;
+    public Camera playerCamera;
+    public float xSensitivity = 30f, ySensitivity = 30f;
 
-    public void ProcessLook(Vector2 input)
+    void Start() => _input = GetComponent<InputManager>();
+
+    void LateUpdate()
     {
-        if (_lookWaitTimer > 0)
-        {
-            _lookWaitTimer -= Time.deltaTime;
-            return;
-        }
+        if (Time.timeScale == 0 || !playerCamera) return;
 
-        float mouseX = input.x * xSensitivity;
-        float mouseY = input.y * ySensitivity;
+        Vector2 lookInput = _input.GetLook();
+        float mouseX = lookInput.x * xSensitivity * Time.deltaTime;
+        float mouseY = lookInput.y * ySensitivity * Time.deltaTime;
 
         _xRotation -= mouseY;
         _xRotation = Mathf.Clamp(_xRotation, -80f, 80f);
 
-        camera.transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
+        playerCamera.transform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
         transform.Rotate(Vector3.up * mouseX);
     }
 }
