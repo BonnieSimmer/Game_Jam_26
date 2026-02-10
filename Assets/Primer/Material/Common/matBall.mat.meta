@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6f598dd64767cae4280405d033dc8c1d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 189252
+  packageName: Fantasy Mirror Primer
+  packageVersion: 1.2.0
+  assetPath: Assets/Primer/Material/Common/matBall.mat
+  uploadId: 705991

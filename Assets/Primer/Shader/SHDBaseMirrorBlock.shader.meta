@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 435828baf194acb4581cd0472bb2e492
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 189252
+  packageName: Fantasy Mirror Primer
+  packageVersion: 1.2.0
+  assetPath: Assets/Primer/Shader/SHDBaseMirrorBlock.shader
+  uploadId: 705991

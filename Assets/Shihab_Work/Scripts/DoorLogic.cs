@@ -3,8 +3,9 @@ using UnityEngine;
 public class DoorLogic : InteractableLogic
 {
     [Header("Door Settings")]
+    
     private bool isDoorOpen = false; // Flag to check if the door is currently open
-    private bool isLocked = false;
+    public bool isLocked;
     public int doorID; // Unique identifier for the door, used to link with the neighbor door
 
     [Header("Door Ownership")]

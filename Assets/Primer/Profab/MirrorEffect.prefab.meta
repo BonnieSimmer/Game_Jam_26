@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 98b5ff3af91ccd54c8807184a51f0684
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 189252
+  packageName: Fantasy Mirror Primer
+  packageVersion: 1.2.0
+  assetPath: Assets/Primer/Profab/MirrorEffect.prefab
+  uploadId: 705991

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b2d477e42ad58494c8f9e551aefe0911
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 189252
+  packageName: Fantasy Mirror Primer
+  packageVersion: 1.2.0
+  assetPath: Assets/Primer/Script/BaseMirrorCamera.cs
+  uploadId: 705991

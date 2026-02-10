@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 593f96812bf272845ae6c2ec44b14056
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 189252
+  packageName: Fantasy Mirror Primer
+  packageVersion: 1.2.0
+  assetPath: Assets/Primer/Script/BaseMirrorBlock.cs
+  uploadId: 705991

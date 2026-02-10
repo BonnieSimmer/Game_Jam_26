@@ -1,0 +1,107 @@
+﻿title: oldManNPC
+position: 81,-352
+---
+
+<<declare $relationship = 0>>
+<<declare $oldMan_stage = 0>>
+<<declare $lightAdded = 0>>
+<<declare $currentDay = 0>>
+
+
+<<declare $wrongSalute = false>>
+<<if $oldMan_stage==0>>
+Old Khaled: ....... .......
+
+    -> "slam alykom (peace be upon you)"
+    <<jump stage0_bestResponse>>
+
+    ->"...."
+    <<jump stage0_neutralResponse>>
+
+    ->"*wave and smile*"
+    <<jump stage0_goodResponse>>
+
+    ->"What is with the stony face old man"
+    <<jump stage0_badResponse>>
+
+    ->"Your beard looks like broom head"
+    <<jump stage0_worstResponse>>
+
+    <<if $wrongSalute == false>>
+        ->"Hiii"
+        <<jump stage0_outOfContext>>
+    <<endif>>
+<<elseif $oldMan_stage == 1 && $currentDay<1 >>
+    Old Khaled: ...... ....
+
+
+<<endif>>
+
+Old Khaled: ....*cough*..*cough*..age is catching up to me, I guess. Nothing lasts forever.
+Old Khaled: Even the strongest of us eventually have to face the end. I just hope I can make the most of the time I have left.
+
+===
+
+
+//***************************** STAGE 0 Responses *************************
+title: stage0_bestResponse
+position: 499,153
+---
+Old Khaled: .... ....wa alykom el-slam ...*faint smile*
+    <<set $relationship += 10>>
+    <<set $lightAdded = 10>>
+    <<set $oldMan_stage =1>>
+===
+
+title: stage0_goodResponse
+position: 267,151
+---
+Old Khaled: ... *faint smile and small wave*
+    <<set $relationship += 5>>
+    <<set $lightAdded = 1>>
+    <<set $oldMan_stage =1>>
+===
+
+title: stage0_neutralResponse
+position: 50,148
+---
+Old Khaled: ... ..young man it is not very polite to keep staring at someone
+    <<set $relationship -= 5>>
+    <<set $lightAdded = -1>>
+    <<set $oldMan_stage =1>>
+===
+
+title: stage0_badResponse
+position: -192,148
+---
+Old Khaled: ...*frowns*..you should pick your words when speaking to your elders
+    <<set $relationship += -10>>
+    <<set $lightAdded = -10>>
+    <<set $oldMan_stage =1>>
+===
+
+title: stage0_worstResponse
+position: -428,153
+---
+Old Khaled: ...*frowns*..*frowns more*
+    <<set $relationship -= 20>>
+    <<set $lightAdded = -15>>
+    <<set $oldMan_stage =1>>
+===
+
+title: stage0_outOfContext
+position:
+position: -81,-719
+---
+Old Khaled: ...*looks at you strangely*
+Old Khaled: that is not how we speak here, go
+        <<set $relationship = 0>>
+        <<set $lightAdded = 0>>
+        <<set $oldMan_stage = 0>>
+        <<set $wrongSalute = true>>
+        <<jump oldManNPC>>
+
+
+===
+//***************************** END STAGE 0 *************************
+
