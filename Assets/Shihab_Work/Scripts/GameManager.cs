@@ -120,6 +120,7 @@ public class GameManager : MonoBehaviour
 
         dayNumber++;
         Debug.Log("Day " + dayNumber);
+
         dayCycle.StartNewDay(); // Start a new day after sleeping
         timer = 0f;
         while(timer < duration)
