@@ -1,0 +1,10 @@
+﻿fileFormatVersion: 2
+guid: f634feeadc8b4b7580d6da18d6f5f6e1
+timeCreated: 1697885634
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275835
+  packageName: OneTapUI - Customizable Settings Menu
+  packageVersion: 2.0.0
+  assetPath: Assets/One Tap UI/Scripts/UI/Enums/BackgroundType.cs
+  uploadId: 724560

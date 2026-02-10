@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c146c047f9974096b4e6fba485c62826, type: 3}
+  m_Name: Graphics Data
+  m_EditorClassIdentifier: 
+  bloom:
+  - 0
+  - 0.5
+  - 1
+  - 1.5
+  - 2
+  motionBlur:
+  - 0
+  - 0.5
+  - 1
+  - 1.5
+  - 2
+  antiAliasing:
+  - 0
+  - 0.5
+  - 1
+  - 1.5
+  - 2
+  shadowResolution: 0000000001000000010000000200000003000000
+  shadowCascades: 0200000002000000020000000400000005000000
+  shadowDistances:
+  - 50
+  - 75
+  - 100
+  - 150
+  - 200
+  shadowmaskModes: 0000000001000000010000000100000001000000
+  shadowProjections: 0000000001000000010000000100000001000000
+  shadowCascadeSplits2:
+  - 1
+  - 0.75
+  - 0.5
+  - 0.25
+  - 0.1
+  shadowQuality: 0000000001000000020000000200000002000000
+  textureFiltering: 0000000000000000010000000200000002000000
+  globalTextureMipmapLimits: 0400000003000000020000000100000000000000
+  streamingMipmapsActiveList: 0001010101
+  streamingMipmapsMaxLevelReductions: 0000000001000000020000000300000004000000
+  streamingMipmapsMaxFileIORequests: 020000000400000006000000080000000a000000
+  streamingMipmapsRenderersPerFrame: 0100000002000000040000000600000008000000
+  streamingMipmapsMemoryBudgets: 4000000080000000000100000002000000040000
+  particleRaycastBudget: 0400000008000000100000002000000040000000
+  softParticlesOptions: 0001010101
+  softVegetationOptions: 0001010101
+  realtimeReflectionProbes: 0001010101
+  pixelLightCounts: 0000000001000000020000000400000008000000

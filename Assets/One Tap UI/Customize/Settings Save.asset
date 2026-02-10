@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8699650bff78456f8b1d550fca9d5e62, type: 3}
+  m_Name: Settings Save
+  m_EditorClassIdentifier: 
+  settings:
+    list:
+    - name: Resolution
+      value: 0
+    - name: Full Screen Mode
+      value: 1
+    - name: Refresh Rate
+      value: 360
+    - name: vSync
+      value: 0
+    - name: Exposure
+      value: 1
+    - name: Gamma
+      value: 1
+    - name: Bloom
+      value: 4
+    - name: Motion Blur
+      value: 4
+    - name: Anti Aliasing
+      value: 4
+    - name: Shadow Quality
+      value: 4
+    - name: Texture Quality
+      value: 4
+    - name: Lightning Quality
+      value: 4
+    - name: Effect Quality
+      value: 4
+    - name: Reflection Quality
+      value: 1
+    - name: Master Volume
+      value: 1
+    - name: Effect Volume
+      value: 1
+    - name: Music Volume
+      value: 1
+    - name: Microphones
+      value: 0
+    - name: Presets
+      value: 4
+  bindings:
+    list:
+    - name: Move Forwards
+      key: 119
+      previousKey: 0
+    - name: Move Backwards
+      key: 115
+      previousKey: 0
+    - name: Move Left
+      key: 97
+      previousKey: 0
+    - name: Move Right
+      key: 100
+      previousKey: 0
+    - name: Aim
+      key: 323
+      previousKey: 0
+    - name: Shoot
+      key: 324
+      previousKey: 0

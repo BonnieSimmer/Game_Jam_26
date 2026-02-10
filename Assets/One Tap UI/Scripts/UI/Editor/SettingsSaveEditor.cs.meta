@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 05cf915a38f030741ae992646fd48452
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275835
+  packageName: OneTapUI - Customizable Settings Menu
+  packageVersion: 2.0.0
+  assetPath: Assets/One Tap UI/Scripts/UI/Editor/SettingsSaveEditor.cs
+  uploadId: 724560

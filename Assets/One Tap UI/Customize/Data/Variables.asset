@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caf00f60c1ef4e65a5cc2cae72f0daf4, type: 3}
+  m_Name: Variables
+  m_EditorClassIdentifier: 
+  urpProfile: {fileID: 11400000, guid: ffff0a11b8d454a4394a6500d9118d59, type: 2}
+  hdrpProfile: {fileID: 11400000, guid: 2c912fa7f88f1a34cb46fc1483de712d, type: 2}
+  otherCustomizables: {fileID: 11400000, guid: 51763ead0537be34f9608cca8d0d2de4, type: 2}
+  themeMaker: {fileID: 11400000, guid: 6d7204cc3e26a8449864e27f84cd8d8d, type: 2}
+  displayData: {fileID: 11400000, guid: b2492c841560e6e46be3f194e7a99138, type: 2}
+  graphicsData: {fileID: 11400000, guid: 31c7bc98321460340b1f413e01f341ac, type: 2}
+  audioData: {fileID: 11400000, guid: 41dc20bd37a4b9640b03d9cb1d4fa5d8, type: 2}
+  settingsSave: {fileID: 11400000, guid: 0a69320411780fe439fb6ffec21c0b43, type: 2}
+  menuSpecificSettings: {fileID: 11400000, guid: c37d9725b4557b94580ce22cf498fd5a, type: 2}
+  outlineTheme: {fileID: -4733365628477956816, guid: 2d88f6c2332e2b3458b7e568abdbd645, type: 3}
+  containerTheme: {fileID: -4733365628477956816, guid: 3f418c5d4ee219948bad6fee7668a896, type: 3}
+  horizontalBase: {fileID: 9197481963319205126, guid: e05bb2be44e351e4f891b21e9ea004af, type: 3}
+  verticalBase: {fileID: 9197481963319205126, guid: fb4d84a1cb39aa64aa9a3ec5bbff492c, type: 3}
+  bottom: {fileID: 9197481963319205126, guid: 89ea20fc308c5c241b06bd731f68111c, type: 3}
+  tabButton: {fileID: 9197481963319205126, guid: 0866518979b715e41a1236dbc12fbbe3, type: 3}
+  variableList: {fileID: 9197481963319205126, guid: 39d29987d96a1984a9dfdff04841387e, type: 3}
+  variableDropdown: {fileID: 9197481963319205126, guid: 8ad0de55a7325f54d95932f3a3ce577e, type: 3}
+  variableBinding: {fileID: 9197481963319205126, guid: 55896c2e9bd6f5d49879f968308f2cdd, type: 3}
+  variableSlider: {fileID: 9197481963319205126, guid: aebb4da7788d3a14584238b180a5f128, type: 3}
+  variableSliderInt: {fileID: 9197481963319205126, guid: cdc2f47fded3b1e41a75058282360521, type: 3}
+  variableContainer: {fileID: 9197481963319205126, guid: 41328c3be816d044280324ba1823a032, type: 3}
+  resumeMenuElement: {fileID: 9197481963319205126, guid: 0c12ff19327247344a83d6594b03bd93, type: 3}
+  menuTypes:
+  - None
+  - Resume
+  - Settings
+  - Quit

@@ -1,0 +1,878 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57571a1be9cdc8e4cad727332a955c0c, type: 3}
+  m_Name: Menu Specific Settings
+  m_EditorClassIdentifier: 
+  menuNames:
+  - None
+  - Resume
+  - Settings
+  - Quit
+  tabs:
+  - isExpanded: 1
+    name: Display
+    variables:
+    - isExpanded: 0
+      name: Resolution
+      options:
+      - 1920x1080
+      - 1920x1200
+      - 1280x720
+      - 1280x800
+      - 920x720
+      optionType: 1
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: b2492c841560e6e46be3f194e7a99138, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.DisplayData, Assembly-CSharp
+            m_MethodName: GetResolutionOptions
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: b2492c841560e6e46be3f194e7a99138, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.DisplayData, Assembly-CSharp
+            m_MethodName: SetResolution
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 1
+      name: Full Screen Mode
+      options:
+      - Windowed Full Screen
+      - Full Screen
+      - Windowed
+      - Max Fullscreen
+      optionType: 0
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: b2492c841560e6e46be3f194e7a99138, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.DisplayData, Assembly-CSharp
+            m_MethodName: SetFullScreenMode
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Refresh Rate
+      options: []
+      optionType: 3
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: b2492c841560e6e46be3f194e7a99138, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.DisplayData, Assembly-CSharp
+            m_MethodName: SetRefreshRate
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 360
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: vSync
+      options:
+      - Disabled
+      - Enabled
+      optionType: 0
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: b2492c841560e6e46be3f194e7a99138, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.DisplayData, Assembly-CSharp
+            m_MethodName: SetVSync
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+  - isExpanded: 0
+    name: Graphics
+    variables:
+    - isExpanded: 0
+      name: Exposure
+      options:
+      - Very Low
+      - Low
+      - Medium
+      - High
+      - Very High
+      optionType: 3
+      passVariableType: 1
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0.5
+        max: 1.5
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 31c7bc98321460340b1f413e01f341ac, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.GraphicsData, Assembly-CSharp
+            m_MethodName: SetExposure
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Gamma
+      options:
+      - Very Low
+      - Low
+      - Medium
+      - High
+      - Very High
+      optionType: 3
+      passVariableType: 1
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0.5
+        max: 1.5
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 31c7bc98321460340b1f413e01f341ac, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.GraphicsData, Assembly-CSharp
+            m_MethodName: SetGamma
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Presets
+      options:
+      - Very Low
+      - Low
+      - Medium
+      - High
+      - Epic
+      - Custom
+      optionType: 4
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset:
+      - Bloom
+      - Motion Blur
+      - Anti Aliasing
+      - Shadow Quality
+      - Texture Quality
+      - Lightning Quality
+      - Effect Quality
+      - Reflection Quality
+      reset: 
+    - isExpanded: 0
+      name: Bloom
+      options:
+      - Disabled
+      - Low
+      - Medium
+      - High
+      - Epic
+      optionType: 0
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 31c7bc98321460340b1f413e01f341ac, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.GraphicsData, Assembly-CSharp
+            m_MethodName: SetBloom
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Motion Blur
+      options:
+      - Disabled
+      - Low
+      - Medium
+      - High
+      - Epic
+      optionType: 0
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 31c7bc98321460340b1f413e01f341ac, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.GraphicsData, Assembly-CSharp
+            m_MethodName: SetMotionBlur
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Anti Aliasing
+      options:
+      - Disabled
+      - Low
+      - Medium
+      - High
+      - Epic
+      optionType: 0
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 31c7bc98321460340b1f413e01f341ac, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.GraphicsData, Assembly-CSharp
+            m_MethodName: SetAntiAliasing
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Shadow Quality
+      options:
+      - Very Low
+      - Low
+      - Medium
+      - High
+      - Epic
+      optionType: 0
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 31c7bc98321460340b1f413e01f341ac, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.GraphicsData, Assembly-CSharp
+            m_MethodName: SetShadowQuality
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Texture Quality
+      options:
+      - Very Low
+      - Low
+      - Medium
+      - High
+      - Epic
+      optionType: 0
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 31c7bc98321460340b1f413e01f341ac, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.GraphicsData, Assembly-CSharp
+            m_MethodName: SetTextureQuality
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Lightning Quality
+      options:
+      - Very Low
+      - Low
+      - Medium
+      - High
+      - Epic
+      optionType: 0
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 31c7bc98321460340b1f413e01f341ac, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.GraphicsData, Assembly-CSharp
+            m_MethodName: SetLightingQuality
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Effect Quality
+      options:
+      - Very Low
+      - Low
+      - Medium
+      - High
+      - Epic
+      optionType: 0
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 31c7bc98321460340b1f413e01f341ac, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.GraphicsData, Assembly-CSharp
+            m_MethodName: SetEffectQuality
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Reflection Quality
+      options:
+      - Disabled
+      - Enabled
+      optionType: 0
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 31c7bc98321460340b1f413e01f341ac, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.UI.Data.GraphicsData, Assembly-CSharp
+            m_MethodName: SetRealtimeReflection
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+  - isExpanded: 0
+    name: Sounds
+    variables:
+    - isExpanded: 0
+      name: Master Volume
+      options: []
+      optionType: 3
+      passVariableType: 1
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0
+        max: 5
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 41dc20bd37a4b9640b03d9cb1d4fa5d8, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.Audio_Controller.Data.AudioData,
+              Assembly-CSharp
+            m_MethodName: SetMasterVolume
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Music Volume
+      options: []
+      optionType: 3
+      passVariableType: 1
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0
+        max: 5
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 41dc20bd37a4b9640b03d9cb1d4fa5d8, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.Audio_Controller.Data.AudioData,
+              Assembly-CSharp
+            m_MethodName: SetMusicVolume
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 0
+      name: Effect Volume
+      options: []
+      optionType: 3
+      passVariableType: 1
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0
+        max: 5
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 11400000, guid: 41dc20bd37a4b9640b03d9cb1d4fa5d8, type: 2}
+            m_TargetAssemblyTypeName: One_Tap_UI.Audio_Controller.Data.AudioData,
+              Assembly-CSharp
+            m_MethodName: SetEffectVolume
+            m_Mode: 0
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+  - isExpanded: 1
+    name: Bindings
+    variables:
+    - isExpanded: 1
+      name: Move Forwards
+      options: []
+      optionType: 2
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 1
+      name: Move Backwards
+      options: []
+      optionType: 2
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 1
+      name: Move Left
+      options: []
+      optionType: 2
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 1
+      name: Move Right
+      options: []
+      optionType: 2
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 1
+      name: Aim
+      options: []
+      optionType: 2
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+    - isExpanded: 1
+      name: Shoot
+      options: []
+      optionType: 2
+      passVariableType: 0
+      getOptionIndex:
+        m_PersistentCalls:
+          m_Calls: []
+      getOptionList:
+        m_PersistentCalls:
+          m_Calls: []
+      onAssignInt:
+        m_PersistentCalls:
+          m_Calls: []
+      range:
+        min: 0
+        max: 0
+      onAssignFloat:
+        m_PersistentCalls:
+          m_Calls: []
+      variablesEffectedByPreset: []
+      variableNamesEffectedByPreset: []
+      reset: 
+  getOptionIndex:
+    m_PersistentCalls:
+      m_Calls: []

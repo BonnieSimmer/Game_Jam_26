@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement name="MonoContainer" style="width: 100%; flex-direction: row-reverse; align-items: center; justify-content: flex-end; height: 20%;">
+        <ui:Label display-tooltip-when-elided="true" name="Existance" text="X" style="margin-left: 0; margin-right: 3px; margin-top: 0; margin-bottom: 0; background-color: rgb(82, 82, 82); padding-left: 2px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0;" />
+        <ui:VisualElement name="Stretch" style="height: 20px; align-items: stretch; justify-content: center; width: 100%; margin-right: 0; padding-right: 6px;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="Container" style="justify-content: space-between; align-items: flex-start; flex-direction: column; height: 120px;">
+        <ui:VisualElement name="Tops" style="width: 100%; height: 65px; justify-content: space-between;">
+            <ui:Button text="Get &lt;color=#EE6B32&gt;Audio Source&lt;color=#FFFFFF&gt;s" display-tooltip-when-elided="true" name="Get" enable-rich-text="true" style="font-size: 28%; background-color: rgb(82, 82, 82); -unity-background-image-tint-color: rgb(255, 255, 255); align-items: auto;" />
+            <ui:VisualElement name="AudioDataContainer" style="width: 100%; flex-direction: row-reverse; align-items: center; justify-content: flex-end; height: 100%;">
+                <ui:Label display-tooltip-when-elided="true" name="Count" text="0" style="margin-left: 0; margin-right: 3px; margin-top: 0; margin-bottom: 0; background-color: rgb(82, 82, 82); padding-left: 2px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0;" />
+                <ui:VisualElement name="Stretch" style="height: 20px; align-items: stretch; justify-content: center; width: 100%; margin-right: 0; padding-right: 6px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="Bottoms" style="flex-direction: column;">
+            <ui:Label text="- &lt;i&gt;Empty tags will only be effected from the master volume&lt;/i&gt;" display-tooltip-when-elided="true" enable-rich-text="true" style="white-space: normal;" />
+            <ui:Label text="- &lt;i&gt;If you want to add a new audio source ingame, you got to call the &quot;Add&quot; functions.&lt;/i&gt; " display-tooltip-when-elided="true" style="white-space: normal;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
