@@ -15,8 +15,8 @@ public class GameManager : MonoBehaviour
     //[Header("Tiredness indicator")]
     private float pulseSpeed = 0.5f; // Speed of the pulsing effect
     private float minVignetteIntensity = 0.5f; // Minimum intensity of the vignette effect
-    private float maxVignetteIntensity = 0.9f; // Maximum intensity of the vignette effect
-    private float vignetteDefaultIntensity = 0.34f; // Default intensity of the vignette effect when not in tired mode
+    private float maxVignetteIntensity = 0.78f; // Maximum intensity of the vignette effect
+    private float vignetteDefaultIntensity = 0.16f; // Default intensity of the vignette effect when not in tired mode
 
     [Header("Sleeping Transition")]
     [SerializeField] private GameObject fadeIn;
@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     private float defaultSprintSpeed = 5.335f;
     private float tiredSprintSpeed = 1f;
 
-    
+    public static bool isSleeping = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -75,11 +75,13 @@ public class GameManager : MonoBehaviour
     private void SetTiredMode()
     {
         float wave = (Mathf.Sin(Time.time * pulseSpeed) + 1f) / 2f; // Normalize to range [0, 1]
-        vignetteEffect.intensity.value = Mathf.Lerp(minVignetteIntensity, maxVignetteIntensity, wave);
+        float targetPulse = Mathf.Lerp(minVignetteIntensity, maxVignetteIntensity, wave);
+        vignetteEffect.intensity.value = Mathf.Lerp(vignetteEffect.intensity.value, targetPulse, 2f*Time.deltaTime); // Gradually increase vignette intensity for tired mode
+        
         playerLogic.MoveSpeed = tiredPlayerSpeed;
         playerLogic.SprintSpeed = tiredSprintSpeed;
         // Implement tired mode logic here, such as reducing player speed, changing UI, etc.
-        Debug.Log("Tired mode activated! Day is almost over.");
+        
     }
     public void GoingToSleep()
     {
@@ -92,19 +94,20 @@ public class GameManager : MonoBehaviour
         float timer = 0f;
         float duration = 2f; // Duration of the sleep transition
         float startIntensity = vignetteEffect.intensity.value;
-        
-        
-        fadeIn.SetActive(true);
+        isSleeping = true;
+
         fadeOut.SetActive(false);
 
         while (timer<duration)
         {
             
             timer += Time.deltaTime;
-            vignetteEffect.intensity.value = Mathf.Lerp(vignetteEffect.intensity.value, 1f, Time.deltaTime);// Intensify vignette effect for sleep transition
+            float t = timer / duration;
+            vignetteEffect.intensity.value = Mathf.Lerp(startIntensity, 1f, t);// Intensify vignette effect for sleep transition
             yield return null; // Wait for the next frame
         }
         vignetteEffect.intensity.value = 1f; // Ensure vignette is fully intensified after the transition
+        fadeIn.SetActive(true);
 
         // Implement sleep logic here, such as fading the screen, waiting for a few seconds, etc.
         yield return new WaitForSeconds(2f); // Simulate sleep duration
@@ -116,15 +119,18 @@ public class GameManager : MonoBehaviour
         playerLogic.SprintSpeed = defaultSprintSpeed;
 
         dayNumber++;
+        Debug.Log("Day " + dayNumber);
         dayCycle.StartNewDay(); // Start a new day after sleeping
         timer = 0f;
         while(timer < duration)
         {
             timer += Time.deltaTime;
-            vignetteEffect.intensity.value = Mathf.Lerp(1f, vignetteDefaultIntensity, Time.deltaTime); // Gradually reduce vignette intensity after waking up
+            float t = timer / duration;
+            vignetteEffect.intensity.value = Mathf.Lerp(1f, vignetteDefaultIntensity, t); // Gradually reduce vignette intensity after waking up
             yield return null; // Wait for the next frame
         }
         vignetteEffect.intensity.value = vignetteDefaultIntensity; // Reset vignette intensity after waking up
+        isSleeping = false;
     }
 
 }

@@ -30,9 +30,11 @@ public class BedLogic : InteractableLogic
     public override void Interact()
     {
         base.Interact();
+        
         if (dayCycle.GetDayStatus() ||dayCycle.GetDayProgress()>=gameManager.bedTimeThreshold)
         {
-            gameManager.GoingToSleep();
+            if(!GameManager.isSleeping)
+                gameManager.GoingToSleep();
         }
     }
 
