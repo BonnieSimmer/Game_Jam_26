@@ -1,0 +1,5 @@
+﻿.unity-scroll-view__vertical-scroller {
+    height: 98%;
+    margin-top: .5%;
+    margin-right: 5px;
+}

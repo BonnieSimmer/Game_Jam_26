@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 466d52e60bb9484a9ed879b3089c6ebd, type: 3}
+  m_Name: Theme Maker
+  m_EditorClassIdentifier: 
+  colors:
+  - name: bg-color
+    baseColor: {r: 18, g: 18, b: 18, a: 1}
+    tintColor: {r: 1, g: 1, b: 1, a: 1}
+    id: 0
+  - name: bg-color-hover
+    baseColor: {r: 80, g: 80, b: 80, a: 1}
+    tintColor: {r: 1, g: 1, b: 1, a: 1}
+    id: 0
+  - name: bg-color-active
+    baseColor: {r: 30, g: 30, b: 30, a: 1}
+    tintColor: {r: 1, g: 1, b: 1, a: 1}
+    id: 0
+  - name: bg-semi-transparent
+    baseColor: {r: 25, g: 25, b: 25, a: 0.75}
+    tintColor: {r: 1, g: 1, b: 1, a: 1}
+    id: 0
+  - name: bg-semi-transparent-hover
+    baseColor: {r: 18, g: 18, b: 18, a: 0.75}
+    tintColor: {r: 1, g: 1, b: 1, a: 1}
+    id: 0
+  - name: accent-color
+    baseColor: {r: 255, g: 255, b: 255, a: 1}
+    tintColor: {r: 1, g: 1, b: 1, a: 1}
+    id: 1
+  - name: secondary-accent-color
+    baseColor: {r: 200, g: 200, b: 200, a: 1}
+    tintColor: {r: 1, g: 1, b: 1, a: 1}
+    id: 1
+  - name: text-color
+    baseColor: {r: 255, g: 255, b: 255, a: 1}
+    tintColor: {r: 1, g: 1, b: 1, a: 1}
+    id: 2
+  path: D:/Main Menu/Assets/One Tap UI/UI/UI Toolkit/StyleSheets/Theme.uss

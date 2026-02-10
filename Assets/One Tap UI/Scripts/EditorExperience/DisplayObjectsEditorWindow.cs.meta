@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 348718d6c2b151d47b134641c82e0f25
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275835
+  packageName: OneTapUI - Customizable Settings Menu
+  packageVersion: 2.0.0
+  assetPath: Assets/One Tap UI/Scripts/EditorExperience/DisplayObjectsEditorWindow.cs
+  uploadId: 724560

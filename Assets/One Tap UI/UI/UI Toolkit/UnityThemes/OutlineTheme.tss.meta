@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 2d88f6c2332e2b3458b7e568abdbd645
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 12388, guid: 0000000000000000e000000000000000, type: 0}
+  disableValidation: 0
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275835
+  packageName: OneTapUI - Customizable Settings Menu
+  packageVersion: 2.0.0
+  assetPath: Assets/One Tap UI/UI/UI Toolkit/UnityThemes/OutlineTheme.tss
+  uploadId: 724560

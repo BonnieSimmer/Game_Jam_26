@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 6aad5b396ce1ab046bb39ba1d2ba1092
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275835
+  packageName: OneTapUI - Customizable Settings Menu
+  packageVersion: 2.0.0
+  assetPath: Assets/One Tap UI/Scripts/UI/MenuSpesific/SettingsMenu.cs
+  uploadId: 724560

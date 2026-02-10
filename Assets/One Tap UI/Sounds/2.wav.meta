@@ -1,0 +1,29 @@
+fileFormatVersion: 2
+guid: 23317b54c4cfbe147babebbaecd11765
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 6
+  defaultSettings:
+    loadType: 0
+    sampleRateSetting: 0
+    sampleRateOverride: 44100
+    compressionFormat: 1
+    quality: 1
+    conversionMode: 0
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 1
+  preloadAudioData: 1
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275835
+  packageName: OneTapUI - Customizable Settings Menu
+  packageVersion: 2.0.0
+  assetPath: Assets/One Tap UI/Sounds/2.wav
+  uploadId: 724560

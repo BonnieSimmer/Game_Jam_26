@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 41dc20bd37a4b9640b03d9cb1d4fa5d8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275835
+  packageName: OneTapUI - Customizable Settings Menu
+  packageVersion: 2.0.0
+  assetPath: Assets/One Tap UI/Customize/Tabs/Audio Data.asset
+  uploadId: 724560

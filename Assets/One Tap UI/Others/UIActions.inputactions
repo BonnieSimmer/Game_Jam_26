@@ -1,0 +1,82 @@
+{
+    "name": "UIActions",
+    "maps": [
+        {
+            "name": "Default",
+            "id": "31bb516e-8229-4ab7-a594-27dce61148ba",
+            "actions": [
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "e06c6921-d50a-4f1f-9736-dbc573658de5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ffa10eee-4993-4587-accb-20d04a135edd",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "387c40c3-a385-4cfc-9def-33f18332ce2b",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "ceaedd81-77a4-4469-8158-e3fc96885211",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "454a5b61-fddf-4c50-a38b-7cb5bb78931a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4e1300a0-1574-4f44-aead-fe8f8d86eabb",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f42e395c-4248-4289-8b47-fc1fcd6d033c",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

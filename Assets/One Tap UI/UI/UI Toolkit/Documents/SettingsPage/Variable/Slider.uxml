@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance"
+         engine="UnityEngine.UIElements" editor="UnityEditor.UIElements"
+         noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/One%20Tap%20UI/UI/UI%20Toolkit/StyleSheets/Theme.uss?fileID=7433441132597879392&amp;guid=b9a98c74e86540ac9e794dfc5a785ed8&amp;type=3#Theme" />
+    <ui:Slider picking-mode="Ignore" label="Slider" value="0" high-value="1" class="base-field variable" style="font-size: 80px; color: rgb(0, 0, 0); margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; height: 100px; padding-left: 15px; padding-right: 15px; padding-top: 15px; padding-bottom: 15px;">
+        <ui:TextField picking-mode="Ignore" value="0" text="2" max-length="5" password="false" class="rounded-corner variable-font" style="width: 133px; height: auto; justify-content: center; align-items: stretch; flex-direction: row; flex-wrap: nowrap; flex-shrink: 0; flex-basis: auto; -unity-text-align: upper-center; -unity-font: initial;" />
+    </ui:Slider>
+</ui:UXML>

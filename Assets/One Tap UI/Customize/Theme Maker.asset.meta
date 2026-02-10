@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6d7204cc3e26a8449864e27f84cd8d8d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275835
+  packageName: OneTapUI - Customizable Settings Menu
+  packageVersion: 2.0.0
+  assetPath: Assets/One Tap UI/Customize/Theme Maker.asset
+  uploadId: 724560

@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance"
+         engine="UnityEngine.UIElements" editor="UnityEditor.UIElements"
+         noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/One%20Tap%20UI/UI/UI%20Toolkit/StyleSheets/Theme.uss?fileID=7433441132597879392&amp;guid=b9a98c74e86540ac9e794dfc5a785ed8&amp;type=3#Theme" />
+    <ui:ListView focusable="true" name="Variables" virtualization-method="DynamicHeight" selection-type="None" horizontal-scrolling="false" reorder-mode="Simple" style="left: auto; top: auto; width: 100%; justify-content: flex-start; align-items: stretch; flex-basis: 0; position: absolute; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; height: 100%; max-height: none; min-height: 100%; min-width: 100%; flex-shrink: 0;" />
+</ui:UXML>

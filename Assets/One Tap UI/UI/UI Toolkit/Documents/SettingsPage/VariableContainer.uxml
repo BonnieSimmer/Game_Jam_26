@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/One%20Tap%20UI/UI/UI%20Toolkit/StyleSheets/Theme.uss?fileID=7433441132597879392&amp;guid=b9a98c74e86540ac9e794dfc5a785ed8&amp;type=3#Theme" />
+    <ui:VisualElement name="Variable" style="align-items: stretch; flex-basis: auto; flex-direction: column; justify-content: flex-start; height: auto;" />
+</ui:UXML>

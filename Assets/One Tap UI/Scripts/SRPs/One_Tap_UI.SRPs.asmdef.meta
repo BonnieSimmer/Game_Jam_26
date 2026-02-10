@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 70c4643d181c6814cb87eb854093aed1
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275835
+  packageName: OneTapUI - Customizable Settings Menu
+  packageVersion: 2.0.0
+  assetPath: Assets/One Tap UI/Scripts/SRPs/One_Tap_UI.SRPs.asmdef
+  uploadId: 724560

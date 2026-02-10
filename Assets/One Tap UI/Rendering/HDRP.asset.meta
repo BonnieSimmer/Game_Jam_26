@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2c912fa7f88f1a34cb46fc1483de712d
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275835
+  packageName: OneTapUI - Customizable Settings Menu
+  packageVersion: 2.0.0
+  assetPath: Assets/One Tap UI/Rendering/HDRP.asset
+  uploadId: 724560

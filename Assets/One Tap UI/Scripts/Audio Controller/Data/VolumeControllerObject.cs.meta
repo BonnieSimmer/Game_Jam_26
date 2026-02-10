@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 80681bf55db41b348b19c82d66a6c91e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275835
+  packageName: OneTapUI - Customizable Settings Menu
+  packageVersion: 2.0.0
+  assetPath: Assets/One Tap UI/Scripts/Audio Controller/Data/VolumeControllerObject.cs
+  uploadId: 724560
