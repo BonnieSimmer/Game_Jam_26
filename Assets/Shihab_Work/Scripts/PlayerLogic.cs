@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections.Generic;
+using TMPro;
 
 public class PlayerLogic : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class PlayerLogic : MonoBehaviour
 
     public RectTransform pressE_UI;
     public RectTransform interactableIndicator;
+    public TextMeshProUGUI interactableIndicatorText;
 
     public bool canHoldItem_inLeftHand = true;
     public bool canHoldItem_inRightHand = true;
@@ -16,7 +18,9 @@ public class PlayerLogic : MonoBehaviour
     private GameObject closestObject;
     private bool isInRange = false;
     public float distanceFactor = 0.6f;
-    private Dictionary<string, bool> inventory;
+    
+    public Dictionary<string, bool> inventory;
+    
     [SerializeField] private float interactableIndicatorRange = 3f;
     [SerializeField] private float interactableRange = 1.5f;
     [SerializeField] private LayerMask interactableLayer = 6;
@@ -40,6 +44,7 @@ public class PlayerLogic : MonoBehaviour
             // Implement interaction logic here, such as opening a door or picking up an item
             Debug.Log("Interacted with: " + closestObject.name);
             closestObject.GetComponent<InteractableLogic>().Interact();
+            interactableIndicatorText.text = closestObject.GetComponent<InteractableLogic>().interactionMessage; // Update the indicator text based on the interactable's message
         }
         
     }
@@ -121,17 +126,18 @@ public class PlayerLogic : MonoBehaviour
         }
     }
 
-    public void HandleInventory(string itemName, bool isInHand)
+    public void HandleInventory(string itemName, bool add)
     {
-        if (canHoldItem_inLeftHand)
+        if (add)
         {
-            inventory[itemName] = isInHand;
-            canHoldItem_inLeftHand = !isInHand; // If the item is in hand, the player cannot hold another item in the left hand
+            if(inventory.ContainsKey(itemName)) inventory[itemName] = true;
+            else inventory.Add(itemName, true);
+            
         }
-        else if (canHoldItem_inRightHand)
+        else
         {
-            inventory[itemName] = isInHand;
-            canHoldItem_inRightHand = !isInHand; // If the item is in hand, the player cannot hold another item in the right hand
+            if(inventory.ContainsKey(itemName)) inventory.Remove(itemName);
+            
         }
 
     }
