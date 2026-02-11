@@ -63,8 +63,7 @@ public class JumpScareManager : MonoBehaviour
         }
         else
         {
-            // Fallback if no fader
-            if (proximitySensor != null) proximitySensor.EnableSensor();
+            if (proximitySensor) proximitySensor.EnableSensor();
             onFinished?.Invoke();
             _isScaring = false;
         }

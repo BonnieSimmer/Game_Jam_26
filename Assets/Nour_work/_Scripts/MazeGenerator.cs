@@ -9,8 +9,7 @@ public class MazeGenerator : MonoBehaviour
     private CharacterController _playerController;
     private List<GameObject> _activeEnemies = new List<GameObject>();
 
-    [Header("Maze Settings")]
-    public int size = 21; 
+    private int _size = 21; 
     
     [Header("Visuals")]
     public float spacing = 3.0f;
@@ -32,7 +31,7 @@ public class MazeGenerator : MonoBehaviour
 
     void Start()
     {
-        if (size % 2 == 0) size++;
+        if (_size % 2 == 0) _size++;
         
         if (playerInstance) _playerController = playerInstance.GetComponent<CharacterController>();
         
@@ -42,18 +41,18 @@ public class MazeGenerator : MonoBehaviour
 
     void GenerateMaze()
     {
-        _maze = new int[size, size];
+        _maze = new int[_size,_size];
         
-        for (int x = 0; x < size; x++)
-        for (int y = 0; y < size; y++)
+        for (int x = 0; x <_size; x++)
+        for (int y = 0; y <_size; y++)
             _maze[x, y] = 1;
         
-        _center = new Vector2Int(size / 2, size / 2);
+        _center = new Vector2Int(_size / 2,_size / 2);
         _corners = new List<Vector2Int> {
             new (1, 1),
-            new (1, size - 2),
-            new (size - 2, 1),
-            new (size - 2, size - 2)
+            new (1,_size - 2),
+            new (_size - 2, 1),
+            new (_size - 2,_size - 2)
         };
 
         Stack<Vector2Int> stack = new Stack<Vector2Int>();
@@ -82,7 +81,7 @@ public class MazeGenerator : MonoBehaviour
         foreach (Vector2Int corner in _corners) {
             _maze[corner.x, corner.y] = 0;
             if (corner.x == 1) _maze[2, corner.y] = 0;
-            else _maze[size - 3, corner.y] = 0;
+            else _maze[_size - 3, corner.y] = 0;
         }
     }
     
@@ -94,7 +93,7 @@ public class MazeGenerator : MonoBehaviour
         foreach (Vector2Int dir in directions)
         {
             Vector2Int next = p + dir;
-            if (next.x > 0 && next.x < size - 1 && next.y > 0 && next.y < size - 1 && !visited.Contains(next))
+            if (next.x > 0 && next.x <_size - 1 && next.y > 0 && next.y <_size - 1 && !visited.Contains(next))
             {
                 neighbors.Add(next);
             }
@@ -117,7 +116,7 @@ public class MazeGenerator : MonoBehaviour
         StaticBatchingUtility.Combine(this.gameObject);
     }
     
-    public void ResetGamePositions()
+public void ResetGamePositions()
     { 
         foreach (GameObject enemy in _activeEnemies)
         {
@@ -128,31 +127,45 @@ public class MazeGenerator : MonoBehaviour
         float spawnY = (minHeight + maxHeight) / 2f;
         int playerCornerIndex = Random.Range(0, 4);
 
+        List<Vector3> validEnemySpawnPoints = new List<Vector3>();
+
         for (int i = 0; i < _corners.Count; i++)
         {
-            Vector3 spawnPos = new Vector3(_corners[i].x * spacing, spawnY, _corners[i].y * spacing);
+            Vector3 cornerPos = new Vector3(_corners[i].x * spacing, spawnY + 3.0f, _corners[i].y * spacing);
 
             if (i == playerCornerIndex)
             {
-                _startPosition = spawnPos;
+                _startPosition = cornerPos;
                 TeleportPlayer(_startPosition);
             }
             else
             {
-                for (int j = 0; j < enemiesPerCorner; j++)
-                {
-                    Vector3 randomOffset = new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f));
-                    GameObject enemy = Instantiate(enemyPrefab, spawnPos + randomOffset, Quaternion.identity);
-                    
-                    _activeEnemies.Add(enemy);
+                validEnemySpawnPoints.Add(cornerPos);
+            }
+        }
 
-                    if (enemy.TryGetComponent<BehaviorGraphAgent>(out var agent))
-                    {
-                        if (playerInstance)
-                        {
-                            agent.SetVariableValue("Target", playerInstance);
-                        }
-                    }
+        int enemiesToSpawn = enemiesPerCorner;
+        
+        if (NightmareManager.Instance)
+        {
+            enemiesToSpawn = NightmareManager.Instance.enemyCount;
+        }
+
+        for (int i = 0; i < enemiesToSpawn; i++)
+        {
+            Vector3 spawnBase = validEnemySpawnPoints[Random.Range(0, validEnemySpawnPoints.Count)];
+            
+            Vector3 randomOffset = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
+
+            GameObject enemy = Instantiate(enemyPrefab, spawnBase + randomOffset, Quaternion.identity);
+            _activeEnemies.Add(enemy);
+
+            // Setup AI Target
+            if (enemy.TryGetComponent<BehaviorGraphAgent>(out var agent))
+            {
+                if (playerInstance)
+                {
+                    agent.SetVariableValue("Target", playerInstance);
                 }
             }
         }
@@ -172,9 +185,9 @@ public class MazeGenerator : MonoBehaviour
 
     void SpawnGridGeometry()
     {
-        for (int x = 0; x < size; x++)
+        for (int x = 0; x <_size; x++)
         {
-            for (int y = 0; y < size; y++)
+            for (int y = 0; y <_size; y++)
             {
                 if (_maze[x, y] == 0)
                 {
@@ -205,12 +218,12 @@ public class MazeGenerator : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            float rx = Random.Range(-size, size * 2) * spacing;
-            float rz = Random.Range(-size, size * 2) * spacing;
+            float rx = Random.Range(-_size,_size * 2) * spacing;
+            float rz = Random.Range(-_size,_size * 2) * spacing;
             
             int gridX = Mathf.RoundToInt(rx / spacing);
             int gridZ = Mathf.RoundToInt(rz / spacing);
-            bool isInsideGrid = gridX >= 0 && gridX < size && gridZ >= 0 && gridZ < size;
+            bool isInsideGrid = gridX >= 0 && gridX <_size && gridZ >= 0 && gridZ <_size;
             
             if (!isInsideGrid || _maze[gridX, gridZ] == 1)
             {
@@ -230,9 +243,9 @@ public class MazeGenerator : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             Vector3 randomPos = new Vector3(
-                Random.Range(-size, size * spacing), 
+                Random.Range(-_size,_size * spacing), 
                 Random.Range(5, 25), 
-                Random.Range(-size, size * spacing)
+                Random.Range(-_size,_size * spacing)
             );
             GameObject bit = Instantiate(floorPrefab, randomPos, Random.rotation);
             bit.transform.localScale = Vector3.one * Random.Range(0.2f, 1.2f);
