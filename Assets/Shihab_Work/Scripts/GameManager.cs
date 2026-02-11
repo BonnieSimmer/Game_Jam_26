@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 using StarterAssets;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +22,11 @@ public class GameManager : MonoBehaviour
     [Header("Sleeping Transition")]
     [SerializeField] private GameObject fadeIn;
     [SerializeField] private GameObject fadeOut;
+    [SerializeField] private CanvasGroup fadeOutCanvasGroup;
+    [Header("Testing")]
+    public bool isPlayTesting = true;
+
+    string mainSceneName = "IndoorsScene";
 
     private DayCycle dayCycle;
     public Vignette vignetteEffect;
@@ -32,23 +38,45 @@ public class GameManager : MonoBehaviour
     private float tiredSprintSpeed = 1f;
 
     public static bool isSleeping = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private bool isWakingUp = false;
+
+    public static GameManager Instance;
+
+    private void Awake()
     {
-        fadeIn.SetActive(false);
-        fadeOut.SetActive(false);
-
-        playerLogic = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonController>();
-
-        dayCycle = GameObject.Find("Directional Light").GetComponent<DayCycle>();
-        Volume volume = GameObject.Find("Volume Profile").GetComponent<Volume>();
-        if (volume.profile.TryGet<Vignette>(out vignetteEffect))
+        // This ensures only ONE GameManager exists and it survives scene changes
+        if (Instance == null)
         {
-            vignetteEffect.intensity.value = vignetteDefaultIntensity; // Start with default vignette intensity
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Debug.LogError("Vignette effect not found in Volume Profile.");
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    void Start()
+    {
+        
+        LoadData();
+
+        RefreshReferences(); // Find and assign references to UI elements, DayCycle, Vignette, etc.
+
+        if (isPlayTesting)
+        {
+            Debug.LogWarning("Play testing mode is ON. All saved data will be cleared.");
+            PlayerPrefs.DeleteAll(); // Clear all saved data (for testing purposes, remove this line in production)
+            PlayerPrefs.Save();
+            Debug.Log("Saved data cleared. Starting fresh for play testing.");
+            Debug.Log("go to GameManager line 66 to prevent data deletion"); // Verify that the day number is reset to 0
+        }
+
+        if(SceneManager.GetActiveScene().name == mainSceneName)
+        {
+
+            StartCoroutine(WakeUpCoroutine()); // Start the wake-up transition at the beginning of the game
         }
     }
 
@@ -59,6 +87,11 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
+        if(isSleeping || isWakingUp)
+        {
+            return; // Skip tired mode logic during sleeping or waking up transitions
+        }
+
         if (dayCycle.GetDayProgress() >= bedTimeThreshold)
         {
             SetTiredMode();
@@ -71,7 +104,48 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    private void RefreshReferences()
+    {
+        // A. Find UI (Robust method)
+        GameObject canvas = GameObject.Find("UI_Canvas");
+        if (canvas != null)
+        {
+            // Note: Caps Sensitive! Matches your Hierarchy
+            Transform inTrans = canvas.transform.Find("FadeIN");
+            Transform outTrans = canvas.transform.Find("FadeOUT");
 
+            if (inTrans != null)
+            {
+                fadeIn = inTrans.gameObject;
+                fadeIn.SetActive(false); // Reset to hidden
+            }
+            if (outTrans != null)
+            {
+                fadeOut = outTrans.gameObject;
+                fadeOut.SetActive(false); // Reset to hidden
+            }
+        }
+
+        // B. Find Player
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null)
+            playerLogic = player.GetComponent<ThirdPersonController>();
+
+        // C. Find DayCycle
+        GameObject lightObj = GameObject.Find("Directional Light");
+        if (lightObj != null) dayCycle = lightObj.GetComponent<DayCycle>();
+
+        // D. Find Vignette
+        GameObject volObj = GameObject.Find("Volume Profile");
+        if (volObj != null)
+        {
+            Volume volume = volObj.GetComponent<Volume>();
+            if (volume.profile.TryGet<Vignette>(out vignetteEffect))
+            {
+                vignetteEffect.intensity.value = vignetteDefaultIntensity;
+            }
+        }
+    }
     private void SetTiredMode()
     {
         float wave = (Mathf.Sin(Time.time * pulseSpeed) + 1f) / 2f; // Normalize to range [0, 1]
@@ -85,7 +159,7 @@ public class GameManager : MonoBehaviour
     }
     public void GoingToSleep()
     {
-               
+        NightmareManager.Instance.SetLevelData(10 + dayNumber * 5, dayNumber + 1, 120, SceneManager.GetActiveScene().name);
         StartCoroutine(SleepCoroutine());
     }
 
@@ -96,7 +170,7 @@ public class GameManager : MonoBehaviour
         float startIntensity = vignetteEffect.intensity.value;
         isSleeping = true;
 
-        fadeOut.SetActive(false);
+        if(fadeOut !=null)fadeOut.SetActive(false);
 
         while (timer<duration)
         {
@@ -107,23 +181,41 @@ public class GameManager : MonoBehaviour
             yield return null; // Wait for the next frame
         }
         vignetteEffect.intensity.value = 1f; // Ensure vignette is fully intensified after the transition
-        fadeIn.SetActive(true);
+        if(fadeIn!=null)fadeIn.SetActive(true);
 
+        SaveData();
         // Implement sleep logic here, such as fading the screen, waiting for a few seconds, etc.
         yield return new WaitForSeconds(2f); // Simulate sleep duration
         
-        fadeIn.SetActive(false);
-        fadeOut.SetActive(true);
+        SceneManager.LoadSceneAsync("Nour_work/Scenes/Scene_Dream"); // Load the next scene after sleeping)
+        
+    }
 
-        playerLogic.MoveSpeed = defaultPlayerSpeed;
-        playerLogic.SprintSpeed = defaultSprintSpeed;
+    IEnumerator WakeUpCoroutine()
+    {
+        isWakingUp = true;
+        isSleeping = false;
+
+        float timer = 0f;
+        float duration = 2f; // Duration of the sleep transition
+        float startIntensity = vignetteEffect.intensity.value;
+
+        if(fadeIn !=null)fadeIn.SetActive(false);
+        if(fadeOut !=null)fadeOut.SetActive(true);
+        
+        if(playerLogic != null)
+        {
+            playerLogic.MoveSpeed = defaultPlayerSpeed;
+            playerLogic.SprintSpeed = defaultSprintSpeed;
+
+        }
 
         dayNumber++;
         Debug.Log("Day " + dayNumber);
 
         dayCycle.StartNewDay(); // Start a new day after sleeping
         timer = 0f;
-        while(timer < duration)
+        while (timer < duration)
         {
             timer += Time.deltaTime;
             float t = timer / duration;
@@ -132,6 +224,40 @@ public class GameManager : MonoBehaviour
         }
         vignetteEffect.intensity.value = vignetteDefaultIntensity; // Reset vignette intensity after waking up
         isSleeping = false;
+        if(fadeOut != null)fadeOut.SetActive(false);
+        isWakingUp = false;
     }
 
+    private void SaveData()
+    {
+        PlayerPrefs.SetInt("DayNumber", dayNumber);
+        PlayerPrefs.Save();
+        
+    }
+    private void LoadData()
+    {
+        dayNumber = PlayerPrefs.GetInt("DayNumber", 0); // Load the day number, default to 0 if not found
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("New Scene Loaded. Re-connecting references...");
+        RefreshReferences();
+
+        // Check if we returned home
+        if (scene.name == mainSceneName)
+        {
+            StartCoroutine(WakeUpCoroutine());
+        }
+    }
 }
+

@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using Yarn.Unity;
 public class NpcInteractable : InteractableLogic
 {
@@ -16,6 +17,10 @@ public class NpcInteractable : InteractableLogic
 
     private Coroutine lookAtPlayerCoroutine; // Reference to the coroutine for looking at the player
     private Coroutine lookAtNPCCoroutine;
+
+    private NpcRoaming npcRoaming; // Reference to the NpcRoaming script for controlling NPC movement
+    private NavMeshAgent agent; // Reference to the NavMeshAgent component for controlling NPC movement
+
     private void Awake()
     {
         // Ensure that the NPC has a DialogueRunner component attached
@@ -33,13 +38,18 @@ public class NpcInteractable : InteractableLogic
         else
             Debug.LogError("GameManager not found in the scene. Please ensure there is a GameObject named 'GameManager' with a GameManager component attached.");
 
+        if(agent == null)
+            agent = GetComponent<NavMeshAgent>();
+        else
+            Debug.LogError("NavMeshAgent component not found on " + gameObject.name + ". Please attach a NavMeshAgent component.");
 
     }
     public override void Start()
     {
         // Create a new Transform to store the original rotation
-        defaultRotation = transform.rotation; // Store the original rotation of the NPC
         base.Start();
+       
+        npcRoaming = GetComponent<NpcRoaming>(); // Get the NpcRoaming component attached to the NPC
         
     }
 
@@ -51,22 +61,53 @@ public class NpcInteractable : InteractableLogic
 
     public override void Interact()
     {
-        if(gameManager == null || dialogueRunner == null)
+        if (gameManager == null || dialogueRunner == null)
         {
             Debug.LogError("GameManager or DialogueRunner is not assigned. Please ensure they are properly set up in the scene.");
             return;
         }
+        defaultRotation = transform.rotation; // Store the original rotation of the NPC
+        npcRoaming.PauseNpcRoaming();
 
+        string progressVarKey = "$"+npcName+"_progress";
+        string lastTalkedDay_Key = "$"+npcName+"_lastTalkedDay";
+
+        float lastTalkedDay = -1f;
+        float currentStage = 0.0f;
+        dialogueRunner.VariableStorage.TryGetValue(lastTalkedDay_Key, out lastTalkedDay);
+        dialogueRunner.VariableStorage.TryGetValue(progressVarKey, out currentStage);
         int currentDay = gameManager.dayNumber;
-        string codeName = npcName + "_stage" + currentDay.ToString();
-        if (dialogueRunner.Dialogue.NodeExists(codeName))
-        {
-            dialogueRunner.StartDialogue(codeName);
 
+
+        string targetNode = "";
+
+        if(lastTalkedDay< currentDay)
+        {
+            targetNode = npcName + "_stage" + ((int)currentStage).ToString();
+            dialogueRunner.VariableStorage.SetValue(lastTalkedDay_Key, currentDay);
         }
         else
         {
-            Debug.LogWarning("No dialogue found for " + codeName);
+            targetNode = npcName + "_exhausted";
+        }
+
+            
+        if (dialogueRunner.Dialogue.NodeExists(targetNode))
+        {
+            dialogueRunner.StartDialogue(targetNode);
+            npcRoaming.PauseNpcRoaming(); // Pause the NPC's roaming behavior when the player interacts
+        }
+        else
+        {
+            string defaultNode = npcName + "_stage0";
+            if (dialogueRunner.Dialogue.NodeExists(defaultNode))
+            {
+                dialogueRunner.StartDialogue(defaultNode);
+            }
+            else
+            {
+                Debug.LogWarning($"Neither '{targetNode}' nor '{defaultNode}' found!");
+            }
         }
 
         if(lookAtNPCCoroutine != null) StopCoroutine(lookAtNPCCoroutine);
@@ -140,6 +181,8 @@ public class NpcInteractable : InteractableLogic
     public void StopLookingAtPlayer()
     {
         StartCoroutine(RotateBackToDefault());
+        npcRoaming.ResumeNpcRoaming(); // Resume the NPC's roaming behavior when the dialogue is complete
+
     }
 
 }
