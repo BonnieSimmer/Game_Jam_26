@@ -1218,6 +1218,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1185124205}
   m_CullTransparentMesh: 1
+--- !u!1 &1185569621
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1185569623}
+  - component: {fileID: 1185569622}
+  m_Layer: 0
+  m_Name: NightmareManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1185569622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185569621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a2327412d0ace1568f4c9416f26d7ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NightmareManager
+  mazeSize: 21
+  enemyCount: 3
+  timeLimitInSeconds: 120
+  returnToSceneName: Nour_work/Scenes/Scene_Level_01
+  playerGotTrait: 0
+--- !u!4 &1185569623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185569621}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 960, y: 1055, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1308334657
 GameObject:
   m_ObjectHideFlags: 0
@@ -1926,6 +1975,18 @@ PrefabInstance:
       propertyPath: _door
       value: 
       objectReference: {fileID: 356745259}
+    - target: {fileID: 1151628870767022310, guid: fad75015de744f834a75ddd188ff1d00, type: 3}
+      propertyPath: mazeSize
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151628870767022310, guid: fad75015de744f834a75ddd188ff1d00, type: 3}
+      propertyPath: timeLimit
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151628870767022310, guid: fad75015de744f834a75ddd188ff1d00, type: 3}
+      propertyPath: enemyCount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3869108023539725869, guid: fad75015de744f834a75ddd188ff1d00, type: 3}
       propertyPath: m_Name
       value: Button
@@ -2072,3 +2133,4 @@ SceneRoots:
   - {fileID: 1245347224721801333}
   - {fileID: 1090536194}
   - {fileID: 816469945}
+  - {fileID: 1185569623}

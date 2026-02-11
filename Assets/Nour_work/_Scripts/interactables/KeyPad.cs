@@ -1,29 +1,53 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class KeyPad : Interactable
 {
-    [SerializeField] private GameObject _door;
-    private Animator _doorAnimator;
-    private bool _doorOpen;
+    [Header("Nightmare Settings")]
+    public string mazeSceneName = "Nour_work/Scenes/Scene_Dream";
+    
+    [Header("Difficulty Config")]
+    public int mazeSize = 21;        
+    public int enemyCount = 4;
+    public float timeLimit = 120f;  
 
-    void Start()
+    public void GoToSleep()
     {
-        if (_door != null)
+        if (NightmareManager.Instance)
         {
-            _doorAnimator = _door.GetComponent<Animator>();
+            NightmareManager.Instance.SetLevelData(mazeSize,enemyCount, timeLimit, SceneManager.GetActiveScene().name);
         }
-        else
-        {
-            Debug.LogWarning($"Door reference missing on {gameObject.name}!");
-        }
+        
+        SceneManager.LoadScene(mazeSceneName);
     }
 
     protected override void Interact()
     {
-        if (!_doorAnimator) return;
-
-        _doorOpen = !_doorOpen;
-        _doorAnimator.SetBool("Open", _doorOpen);
-        promptMessage = _doorOpen ? "Press to Close Door" : "Press to Open Door";
+        GoToSleep();
     }
+    
+    // [SerializeField] private GameObject _door;
+    // private Animator _doorAnimator;
+    // private bool _doorOpen;
+    //
+    // void Start()
+    // {
+    //     if (_door != null)
+    //     {
+    //         _doorAnimator = _door.GetComponent<Animator>();
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning($"Door reference missing on {gameObject.name}!");
+    //     }
+    // }
+    //
+    // protected override void Interact()
+    // {
+    //     if (!_doorAnimator) return;
+    //
+    //     _doorOpen = !_doorOpen;
+    //     _doorAnimator.SetBool("Open", _doorOpen);
+    //     promptMessage = _doorOpen ? "Press to Close Door" : "Press to Open Door";
+    // }
 }

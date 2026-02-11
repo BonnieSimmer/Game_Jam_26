@@ -6,20 +6,29 @@ public class SimpleFader : MonoBehaviour
 {
     public static SimpleFader Instance;
     public CanvasGroup faderGroup;
+    public Image faderImage;
     public float fadeSpeed = 2.0f;
 
     void Awake() 
     {
         Instance = this;
         if (!faderGroup) faderGroup = GetComponent<CanvasGroup>();
+        if (!faderImage) faderImage = GetComponent<Image>();
     }
 
-    public void FadeOutAndIn(System.Action onBlack)
+    public void FadeOutAndIn(System.Action onFadeComplete)
     {
-        StartCoroutine(FadeRoutine(onBlack));
+        FadeOutAndIn(Color.black, onFadeComplete);
     }
 
-    private IEnumerator FadeRoutine(System.Action onBlack)
+    public void FadeOutAndIn(Color targetColor, System.Action onFadeComplete)
+    {
+        if (faderImage) faderImage.color = targetColor;
+        
+        StartCoroutine(FadeRoutine(onFadeComplete));
+    }
+
+    private IEnumerator FadeRoutine(System.Action onFadeComplete)
     {
         while (faderGroup.alpha < 1)
         {
@@ -27,7 +36,7 @@ public class SimpleFader : MonoBehaviour
             yield return null;
         }
 
-        onBlack?.Invoke();
+        onFadeComplete?.Invoke();
         
         yield return new WaitForSeconds(0.5f);
 
