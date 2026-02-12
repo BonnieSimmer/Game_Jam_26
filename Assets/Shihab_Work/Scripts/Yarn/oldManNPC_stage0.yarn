@@ -6,30 +6,25 @@ position: 81,-352
 <<declare $oldMan_stage = 0>>
 <<declare $lightAdded = 0>>
 <<declare $currentDay = 0>>
-
+<<declare $oldManNPC_progress = 0>>
 
 <<declare $wrongSalute = false>>
 <<if $oldMan_stage==0>>
 Old Khaled: ....... .......
 
     -> "slam alykom (peace be upon you)"
-    <<jump stage0_bestResponse>>
-
+        <<jump stage0_bestResponse>>
     ->"...."
-    <<jump stage0_neutralResponse>>
-
+        <<jump stage0_neutralResponse>>
     ->"*wave and smile*"
-    <<jump stage0_goodResponse>>
-
+        <<jump stage0_goodResponse>>
     ->"What is with the stony face old man"
-    <<jump stage0_badResponse>>
-
+        <<jump stage0_badResponse>>
     ->"Your beard looks like broom head"
-    <<jump stage0_worstResponse>>
-
+        <<jump stage0_worstResponse>>
     <<if $wrongSalute == false>>
         ->"Hiii"
-        <<jump stage0_outOfContext>>
+            <<jump stage0_outOfContext>>
     <<endif>>
 <<elseif $oldMan_stage == 1 && $currentDay<1 >>
     Old Khaled: ...... ....

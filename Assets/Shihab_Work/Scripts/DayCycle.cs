@@ -7,7 +7,7 @@ public class DayCycle : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [Header("Day Cycle Settings")]
     [Tooltip("Duration of a full day in seconds")]
-    [SerializeField] private float dayTime;
+    [SerializeField] private float dayTime=120;
     private float sunRiseAngle = 10f;
     private float sunSetAngle = 170f;
     private bool isDayEnded = false;
@@ -22,6 +22,7 @@ public class DayCycle : MonoBehaviour
     {
          rotationSpeed = (sunSetAngle-sunRiseAngle)/dayTime;
         directionLight = GetComponent<Light>();
+        StartNewDay();
     }
 
     // Update is called once per frame
@@ -29,8 +30,10 @@ public class DayCycle : MonoBehaviour
     {
         if (isDayEnded) return;
         currRotation += Time.deltaTime * rotationSpeed;
-        transform.Rotate(Vector3.right * rotationSpeed);
+        
+
         directionLight.transform.localRotation = Quaternion.Euler(currRotation, -30, 0);
+        
         float dayProgress = (currRotation-sunRiseAngle)/(sunSetAngle-sunRiseAngle);
         directionLight.color = lightColor.Evaluate(dayProgress);
         directionLight.intensity = intensity.Evaluate(dayProgress);
@@ -51,7 +54,7 @@ public class DayCycle : MonoBehaviour
     {
         isDayEnded = false;
         currRotation = sunRiseAngle;
-        directionLight.transform.localRotation = Quaternion.Euler(currRotation, -30f, 0f);
+        directionLight.transform.localRotation = Quaternion.Euler(sunRiseAngle, -30f, 0f);
     }
 
     public bool GetDayStatus()

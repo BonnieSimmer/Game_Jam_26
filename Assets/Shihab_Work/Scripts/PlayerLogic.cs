@@ -6,7 +6,7 @@ using TMPro;
 public class PlayerLogic : MonoBehaviour
 {
     private Rigidbody rb;
-    public VolumeProfile volumeProfile;
+   
 
     public RectTransform pressE_UI;
     public RectTransform interactableIndicator;
@@ -37,6 +37,8 @@ public class PlayerLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
+        // Prevent interaction when clicking on UI elements
         DetermineClosestInteractable();
         ShowInteractableUI();
         if (Input.GetKeyDown(KeyCode.E) && closestObject != null && isInRange)
