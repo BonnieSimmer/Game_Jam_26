@@ -845,6 +845,7 @@ GameObject:
   - component: {fileID: 31428953}
   - component: {fileID: 31428957}
   - component: {fileID: 31428959}
+  - component: {fileID: 31428960}
   m_Layer: 6
   m_Name: item1
   m_TagString: Untagged
@@ -990,6 +991,26 @@ MonoBehaviour:
   interactionMessage: 
   itemName: 
   itemID: 0
+--- !u!114 &31428960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31428952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bca7e13569ff864f82af22aa5148aba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  interactionRange: 2
+  distanceFactor: 0.6
+  interactionUI_Offset: {x: 0, y: 0, z: 0}
+  interactionMessage: 
+  itemName: 
+  itemID: 0
+  isCorrectPill: 0
+  dialogueRunner: {fileID: 0}
 --- !u!43 &43428337
 Mesh:
   m_ObjectHideFlags: 0
@@ -97992,8 +98013,12 @@ PrefabInstance:
       objectReference: {fileID: 150333798}
     - target: {fileID: 2925167408971577096, guid: 4a37b67d0d575ec468f1b66cf5e29a27, type: 3}
       propertyPath: lookSpeed
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 2925167408971577096, guid: 4a37b67d0d575ec468f1b66cf5e29a27, type: 3}
+      propertyPath: dialogueRunner
+      value: 
+      objectReference: {fileID: 1440087826}
     - target: {fileID: 4267778775805566963, guid: 4a37b67d0d575ec468f1b66cf5e29a27, type: 3}
       propertyPath: pressE_UI
       value: 

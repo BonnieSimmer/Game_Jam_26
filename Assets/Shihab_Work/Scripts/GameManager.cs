@@ -1,11 +1,12 @@
+using System;
+using System.Collections;
+
+using StarterAssets;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.UI;
-using System;
-using System.Collections;
-using StarterAssets;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
     public static bool isSleeping = false;
     private bool isWakingUp = false;
 
+    private PlayerVisual playerVisual;
     public static GameManager Instance;
 
     private void Awake()
@@ -115,7 +117,10 @@ public class GameManager : MonoBehaviour
         // B. Find Player
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         if (player != null)
+        {
             playerLogic = player.GetComponent<ThirdPersonController>();
+            playerVisual = player.GetComponent<PlayerVisual>();
+        }
 
         // C. Find DayCycle
         GameObject lightObj = GameObject.Find("Directional Light");
@@ -141,7 +146,11 @@ public class GameManager : MonoBehaviour
         playerLogic.MoveSpeed = tiredPlayerSpeed;
         playerLogic.SprintSpeed = tiredSprintSpeed;
         // Implement tired mode logic here, such as reducing player speed, changing UI, etc.
-        
+        if (playerVisual != null)
+        {
+            playerVisual.SetTiredState(true);
+        }
+
     }
     public void GoingToSleep()
     {
@@ -201,6 +210,10 @@ public class GameManager : MonoBehaviour
             playerLogic.MoveSpeed = defaultPlayerSpeed;
             playerLogic.SprintSpeed = defaultSprintSpeed;
 
+        }
+        if (playerVisual != null)
+        {
+            playerVisual.SetTiredState(false);
         }
 
         dayNumber++;
@@ -273,6 +286,10 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(WakeUpCoroutine());
         }
+
+
     }
+
+   
 }
 

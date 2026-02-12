@@ -1,44 +1,55 @@
 using System.Collections;
 using UnityEngine;
-
+using Yarn.Unity;
 public class PlayerVisual : MonoBehaviour
 {
     private Animator animator;
-    private PlayerLogic playerLogic; // Reference to get the closest interactable
+    private PlayerLogic playerLogic;
 
     [Header("Gesture Settings")]
     private int gestureLayerIndex;
     private Coroutine currentGestureCoroutine;
 
     [Header("Procedural Look Settings")]
-    [SerializeField] private Transform headBone; // DRAG YOUR NECK/HEAD BONE HERE
-    [SerializeField] private float lookSpeed = 5f;       // How fast the head turns
-    [SerializeField] private float maxLookAngle = 70f;   // Owl prevention (70 degrees max)
-    [SerializeField] private Vector3 lookOffset = new Vector3(0, -0.5f, 0); // Adjust to look at object center
+    [SerializeField] private Transform headBone;
+    [SerializeField] private float lookSpeed = 5f;
+    [SerializeField] private float maxLookAngle = 70f;
+    [SerializeField] private Vector3 lookOffset = new Vector3(0, -0.5f, 0);
+
+    public DialogueRunner dialogueRunner; // Reference to the DialogueRunner component for handling dialogues
 
     // Internal State
-    private float currentLookWeight = 0f; // 0 = Animation only, 1 = Full Look at Target
+    private float currentLookWeight = 0f;
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        playerLogic = GetComponent<PlayerLogic>(); // Grab the logic script
-        
-        // --- Setup Gestures ---
+        playerLogic = GetComponent<PlayerLogic>();
+
         gestureLayerIndex = animator.GetLayerIndex("Gestures");
-        if (gestureLayerIndex == -1)
+        if (gestureLayerIndex != -1) animator.SetLayerWeight(gestureLayerIndex, 0);
+
+        if(dialogueRunner != null)
         {
-            Debug.LogError("Gestures layer not found! Please check Animator.");
-        }
-        else
-        {
-            animator.SetLayerWeight(gestureLayerIndex, 0);
+            // Register the command "gesture" to call your coroutine logic
+            dialogueRunner.AddCommandHandler<string>("gesture", (animName) => {
+                if (currentGestureCoroutine != null) StopCoroutine(currentGestureCoroutine);
+                // Map simple names to animation triggers
+                string triggerName = "";
+                if (animName == "agreeing") triggerName = "isAgreed";
+                if (animName == "angryPoint") triggerName = "isAngryPointing";
+                if (animName == "anxious") triggerName = "isAnxious";
+                if (animName == "offering") triggerName = "isOffering";
+
+                // You might need to tweak your Coroutine to take just the trigger name
+                // or pass both if your setup requires it.
+                currentGestureCoroutine = StartCoroutine(PlayGesture(triggerName, animName + "_anim"));
+            });
         }
     }
 
     void Update()
     {
-        // ... (Your Input Code for T and F) ...
         if (Input.GetKeyDown(KeyCode.T))
         {
             if (currentGestureCoroutine != null) StopCoroutine(currentGestureCoroutine);
@@ -51,42 +62,40 @@ public class PlayerVisual : MonoBehaviour
         }
     }
 
-    // --- PROCEDURAL LOOK LOGIC ---
-    // Runs AFTER the animation has finished for the frame
     private void LateUpdate()
     {
+        // 1. Safety Checks
         if (headBone == null || playerLogic == null) return;
 
-        if(playerLogic.closestObject == null)
+        // 2. Determine Target
+        Transform target = null;
+        if (playerLogic.closestObject != null)
         {
-            // No target, smoothly return to animation pose
-            currentLookWeight = Mathf.Lerp(currentLookWeight, 0f, Time.deltaTime * lookSpeed);
-            headBone.localRotation = Quaternion.Slerp(headBone.localRotation, Quaternion.identity, currentLookWeight);
-            return;
+            target = playerLogic.closestObject.transform;
         }
-        Transform target = playerLogic.closestObject.transform;
+
         float targetWeight = 0f;
 
-        // 1. Determine if we should look
+        // 3. Check Angle (Owl Prevention)
         if (target != null)
         {
             Vector3 directionToTarget = target.position - transform.position;
-
-            // Calculate Angle between Player Body Forward and Target
             float angle = Vector3.Angle(transform.forward, directionToTarget);
 
-            // "Owl Prevention": Only look if within 70 degrees
+            // If target exists AND is in front of us, we want full weight
             if (angle < maxLookAngle)
             {
                 targetWeight = 1f;
             }
         }
+        // If target is null OR angle is too big, targetWeight stays 0f
 
-        // 2. Smoothly blend the weight (prevents snapping)
+        // 4. Smoothly Blend Weight
         currentLookWeight = Mathf.Lerp(currentLookWeight, targetWeight, Time.deltaTime * lookSpeed);
 
-        // 3. Apply the Rotation Override
-        if (currentLookWeight > 0.01f)
+        // 5. Apply Rotation (ONLY if weight is significant)
+        // If weight is near 0, we do nothing, letting the Animator control the head.
+        if (currentLookWeight > 0.01f && target != null)
         {
             RotateHeadTowards(target, currentLookWeight);
         }
@@ -94,31 +103,23 @@ public class PlayerVisual : MonoBehaviour
 
     private void RotateHeadTowards(Transform target, float weight)
     {
-        // A. Capture the rotation the animation WANTS to be at this frame
+        // A. Get the rotation the animation WANTS right now
         Quaternion animationRotation = headBone.rotation;
 
-        // B. Calculate the rotation we WANT to be at
+        // B. Calculate where we WANT to look
         Vector3 direction = (target.position + lookOffset) - headBone.position;
-
-        // Flatten direction so we ONLY rotate on Y-Axis (Look Left/Right, not Up/Down)
-        direction.y = 0;
+        direction.y = 0; // Keep head level (yaw only)
 
         if (direction != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-            // C. Correct for bone orientation if needed
-            // Sometimes bones are rotated -90 degrees. If your head snaps sideways, 
-            // uncomment the line below and adjust the vector (e.g., Vector3.right or Vector3.up)
-            // targetRotation *= Quaternion.Euler(0, 90, 0); 
-
-            // D. Blend: Start at Animation Rotation -> Move towards Target Rotation
-            // We use Slerp with our smoothed weight
+            // C. Blend between Animation and Target
             headBone.rotation = Quaternion.Slerp(animationRotation, targetRotation, weight);
         }
     }
 
-    // ... (Your PlayGesture Coroutine remains unchanged) ...
+    // ... (PlayGesture Coroutine remains unchanged) ...
     private IEnumerator PlayGesture(string paramterName, string animName)
     {
         if (gestureLayerIndex != -1) animator.SetLayerWeight(gestureLayerIndex, 1);
@@ -149,5 +150,13 @@ public class PlayerVisual : MonoBehaviour
         animator.SetLayerWeight(gestureLayerIndex, 0);
         animator.SetBool(paramterName, false);
         currentGestureCoroutine = null;
+    }
+
+    public void SetTiredState(bool state)
+    {
+        if (animator != null)
+        {
+            animator.SetBool("isTired", state);
+        }
     }
 }

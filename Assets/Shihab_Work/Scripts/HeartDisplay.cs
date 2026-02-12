@@ -229,7 +229,7 @@ public class HeartDisplay : MonoBehaviour
 
         if (heartInstanceMaterial != null)
         {
-            float intensity = Mathf.Lerp(0.4f, maxIntensity, currentLight / 100f);
+            float intensity = Mathf.Lerp(0.1f, maxIntensity, currentLight / 100f);
 
             Color finalColor = baseColor * Mathf.LinearToGammaSpace(intensity);
             heartInstanceMaterial.SetColor("_EmissionColor", finalColor);
