@@ -23,7 +23,7 @@ public class MazeGenerator : MonoBehaviour
     
     [Header("AI & Spawning")]
     public GameObject enemyPrefab;
-    public int enemiesPerCorner = 1;
+    public int numberOfEnemies = 3;
 
     private int[,] _maze;
     private Vector2Int _center;
@@ -116,7 +116,7 @@ public class MazeGenerator : MonoBehaviour
         StaticBatchingUtility.Combine(this.gameObject);
     }
     
-public void ResetGamePositions()
+    public void ResetGamePositions()
     { 
         foreach (GameObject enemy in _activeEnemies)
         {
@@ -144,8 +144,7 @@ public void ResetGamePositions()
             }
         }
 
-        int enemiesToSpawn = enemiesPerCorner;
-        
+        int enemiesToSpawn = numberOfEnemies;
         if (NightmareManager.Instance)
         {
             enemiesToSpawn = NightmareManager.Instance.enemyCount;
@@ -153,19 +152,18 @@ public void ResetGamePositions()
 
         for (int i = 0; i < enemiesToSpawn; i++)
         {
-            Vector3 spawnBase = validEnemySpawnPoints[Random.Range(0, validEnemySpawnPoints.Count)];
+            Vector3 spawnBase = validEnemySpawnPoints[i % validEnemySpawnPoints.Count];
             
             Vector3 randomOffset = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
 
             GameObject enemy = Instantiate(enemyPrefab, spawnBase + randomOffset, Quaternion.identity);
             _activeEnemies.Add(enemy);
 
-            // Setup AI Target
-            if (enemy.TryGetComponent<BehaviorGraphAgent>(out var agent))
+            if (enemy.TryGetComponent<EnemyAI>(out var ai))
             {
                 if (playerInstance)
                 {
-                    agent.SetVariableValue("Target", playerInstance);
+                    ai.playerTarget = playerInstance.transform;
                 }
             }
         }
@@ -256,7 +254,11 @@ public void ResetGamePositions()
     {
         float spawnY = (minHeight + maxHeight) / 2f;
         Vector3 goalPos = new Vector3(_center.x * spacing, spawnY + 0.5f, _center.y * spacing);
-        if (goalPrefab) Instantiate(goalPrefab, goalPos, Quaternion.identity);
+        if (goalPrefab)
+        {
+            GameObject goal = Instantiate(goalPrefab, goalPos, Quaternion.identity);
+            playerInstance.GetComponent<PlayerAbilities>().goalPosition = goal.transform;
+        }
     }
 
     void BakeNavMesh()

@@ -1186,7 +1186,7 @@ GameObject:
   - component: {fileID: 3893294197879345259}
   - component: {fileID: 6982812146204527121}
   - component: {fileID: 7707022821288106663}
-  - component: {fileID: 250460407161781356}
+  - component: {fileID: 5976512282049356536}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Entity
@@ -1255,7 +1255,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &250460407161781356
+--- !u!114 &5976512282049356536
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1264,26 +1264,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 4416926081852918481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
+  m_Script: {fileID: 11500000, guid: f21e7fdb8445061aab1ef540ac2c0e06, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.Behavior::Unity.Behavior.BehaviorGraphAgent
-  m_Graph: {fileID: -2039155273507126149, guid: 90e26b67626f5dec09b5b9b93266d18c, type: 2}
-  m_BlackboardVariableOverridesList:
-  - rid: 4907288856275976480
-  m_OriginalGraph: {fileID: 0}
-  m_IsInitialised: 0
-  m_IsStarted: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: 4907288856275976480
-      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
-      data:
-        GUID:
-          m_Value0: 1
-          m_Value1: 0
-        Name: Self
-        m_Value: {fileID: 4416926081852918481}
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  playerTarget: {fileID: 0}
+  detectionRadius: 10
+  escapeRadius: 15
+  catchRadius: 1
+  wanderRadius: 8
+  wanderTimer: 4
+  wanderSpeed: 2
+  chaseSpeed: 5
 --- !u!1 &4523139366846529165
 GameObject:
   m_ObjectHideFlags: 0

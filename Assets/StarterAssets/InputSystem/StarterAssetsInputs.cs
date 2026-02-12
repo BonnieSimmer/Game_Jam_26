@@ -12,6 +12,10 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
+		
+		[Header("Ability Inputs")]
+		public bool path;           
+		public bool freezeTriggered;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -42,6 +46,23 @@ namespace StarterAssets
 		public void OnSprint(InputValue value)
 		{
 			SprintInput(value.isPressed);
+		}
+		public void OnPath(InputValue value)
+		{
+			path = value.isPressed;
+		}
+
+		public void OnFreeze(InputValue value)
+		{
+			if (value.isPressed)
+			{
+				freezeTriggered = true;
+			}
+		}
+    
+		public void ConsumeFreezeInput()
+		{
+			freezeTriggered = false;
 		}
 #endif
 

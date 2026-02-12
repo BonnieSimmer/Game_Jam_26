@@ -8,7 +8,7 @@ public class NightmareTimer : MonoBehaviour
     [SerializeField]
     private float timeLeft = 120;
     private bool _isRunning = false;
-    private string _returnToScene;
+    private string _returnToScene = "";
 
     void Start()
     {
