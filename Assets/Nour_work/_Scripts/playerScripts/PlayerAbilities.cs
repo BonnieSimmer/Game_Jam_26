@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using StarterAssets;
@@ -11,35 +12,51 @@ public class PlayerAbilities : MonoBehaviour
     private NavMeshPath _navPath;
     private LineRenderer _pathLine; 
 
-
-    // State Variables
     private float _defaultMoveSpeed;
     private float _defaultSprintSpeed;
     private bool _isPathActive;
     
+    private float _freezeCooldownTimer = 0f;
+    private float _pathCooldownTimer = 0f;
+    private float _currentPathDuration = 0f; 
+    
+    [Header("UI")]
+    public Image freezeCooldownFill; 
+    public Image pathCooldownFill;
+
     [Header("Ability 1: Path of Light")]
     public Transform goalPosition;
     public float lightSpeedPenalty = 2.0f;
     public float maxPathBrightness = 2.0f;
     public float minPathBrightness = 0.2f;
-    public float maxDist = 50.0f;
-    public float lightIntensity = 1.0f;
+    public float maxDist = 50f;
+    
+    [Header("Path Cooldowns")]
+    public float pathMaxDuration = 5.0f;
+    public float pathCooldown;   
+    
+    [Header("Visuals")]
+    public float glowIntensity = 2.0f; 
 
     [Header("Ability 2: Enemy Freeze")]
-    public int freezesRemaining = 3;
-    public float freezeDuration = 3.0f;
+    public float freezeDuration = 5.0f;
     public AudioClip freezeSound;
     
-    
+    [Header("Freeze Cooldowns")]
+    public float freezeCooldown; 
+
     void Start()
     {
         _controller = GetComponent<ThirdPersonController>();
         _input = GetComponent<StarterAssetsInputs>(); 
         _navPath = new NavMeshPath();
         _pathLine = GetComponentInChildren<LineRenderer>();        
-        _pathLine.positionCount = 0;
-        _pathLine.enabled = false; 
         
+        if (_pathLine)
+        {
+            _pathLine.positionCount = 0;
+            _pathLine.enabled = false; 
+        }
 
         if (_controller)
         {
@@ -49,20 +66,39 @@ public class PlayerAbilities : MonoBehaviour
 
         if (NightmareManager.Instance)
         {
-            freezesRemaining = Mathf.FloorToInt(NightmareManager.Instance.timeLimitInSeconds/40);
+            freezeCooldown = NightmareManager.Instance.timeLimitInSeconds / 4;
+            pathCooldown = NightmareManager.Instance.timeLimitInSeconds / 20;
         }
-
+        
         GameObject goalObj = GameObject.FindGameObjectWithTag("Finish");
         if (goalObj) goalPosition = goalObj.transform;
+        
         _isPathActive = false;
+        if (freezeCooldownFill) freezeCooldownFill.fillAmount = 0;
+        if (pathCooldownFill) pathCooldownFill.fillAmount = 0;
     }
 
     void Update()
     {
         if (!_input) return;
 
+        HandleCooldowns();
         HandleLightPath();
         HandleFreeze();
+        UpdateUI();
+    }
+
+    void HandleCooldowns()
+    {
+        if (_freezeCooldownTimer > 0)
+        {
+            _freezeCooldownTimer -= Time.deltaTime;
+        }
+
+        if (_pathCooldownTimer > 0)
+        {
+            _pathCooldownTimer -= Time.deltaTime;
+        }
     }
 
     void HandleLightPath()
@@ -73,25 +109,40 @@ public class PlayerAbilities : MonoBehaviour
             if (goalObj) goalPosition = goalObj.transform;
         }
 
-        if (_input.path) 
+        if (_input.path && _pathCooldownTimer <= 0) 
         {
             if (!_isPathActive) ActivatePath();
-            UpdatePathVisuals();
+
+            _currentPathDuration += Time.deltaTime;
+
+            if (_currentPathDuration >= pathMaxDuration)
+            {
+                DeactivatePath();
+            }
+            else
+            {
+                UpdatePathVisuals();
+            }
         }
         else
         {
-            if (_isPathActive) DeactivatePath();
+            if (_isPathActive) 
+            {
+                DeactivatePath();
+            }
         }
     }
+
     void HandleFreeze()
     {
         if (_input.freezeTriggered)
         {
             _input.ConsumeFreezeInput();
 
-            if (freezesRemaining > 0)
+            if (_freezeCooldownTimer <= 0)
             {
                 StartCoroutine(FreezeRoutine());
+                _freezeCooldownTimer = freezeCooldown;
             }
         }
     }
@@ -99,7 +150,7 @@ public class PlayerAbilities : MonoBehaviour
     void ActivatePath()
     {
         _isPathActive = true;
-        if (_pathLine)_pathLine.enabled = true;
+        if (_pathLine) _pathLine.enabled = true;
 
         if (_controller)
         {
@@ -110,8 +161,14 @@ public class PlayerAbilities : MonoBehaviour
 
     void DeactivatePath()
     {
+        if (_isPathActive)
+        {
+            _pathCooldownTimer = pathCooldown;
+            _currentPathDuration = 0;         
+        }
+
         _isPathActive = false;
-        if (_pathLine)_pathLine.enabled = false;
+        if (_pathLine) _pathLine.enabled = false;
 
         if (_controller)
         {
@@ -120,7 +177,7 @@ public class PlayerAbilities : MonoBehaviour
         }
     }
 
- void UpdatePathVisuals()
+    void UpdatePathVisuals()
     {
         if (goalPosition == null || _pathLine == null) return;
 
@@ -138,12 +195,9 @@ public class PlayerAbilities : MonoBehaviour
                 _pathLine.SetPositions(liftedCorners);
 
                 float distToGoal = Vector3.Distance(transform.position, goalPosition.position);
-                
                 float fadeFactor = Mathf.Lerp(maxPathBrightness, minPathBrightness, distToGoal / maxDist);
                 
-             
-                Color brightColor = Color.white * fadeFactor * lightIntensity;
-                
+                Color brightColor = Color.white * fadeFactor * glowIntensity;
                 brightColor.a = 1.0f; 
 
                 _pathLine.startColor = brightColor;
@@ -159,13 +213,12 @@ public class PlayerAbilities : MonoBehaviour
 
     IEnumerator FreezeRoutine()
     {
-        freezesRemaining--;
-        
-        // if (freezeSound) AudioSource.PlayClipAtPoint(freezeSound, transform.position);
+        if (freezeSound) AudioSource.PlayClipAtPoint(freezeSound, transform.position);
 
         var enemies = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
         List<float> originalSpeeds = new List<float>();
 
+        // STOP THEM
         foreach (var agent in enemies)
         {
             originalSpeeds.Add(agent.speed);
@@ -190,6 +243,32 @@ public class PlayerAbilities : MonoBehaviour
                 if (anim) anim.speed = 1;
             }
             i++;
+        }
+    }
+    
+    void UpdateUI()
+    {
+        if (freezeCooldownFill)
+        {
+            freezeCooldownFill.fillAmount = _freezeCooldownTimer / freezeCooldown;
+        }
+
+        if (pathCooldownFill)
+        {
+            if (_pathCooldownTimer > 0)
+            {
+                pathCooldownFill.fillAmount = _pathCooldownTimer / pathCooldown;
+                pathCooldownFill.color = Color.darkRed;
+            }
+            else if (_isPathActive)
+            {
+                pathCooldownFill.fillAmount = _currentPathDuration / pathMaxDuration;
+                pathCooldownFill.color = Color.darkGoldenRod;
+            }
+            else
+            {
+                pathCooldownFill.fillAmount = 0;
+            }
         }
     }
 }

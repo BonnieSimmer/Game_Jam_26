@@ -116,7 +116,7 @@ public class MazeGenerator : MonoBehaviour
         StaticBatchingUtility.Combine(this.gameObject);
     }
     
-public void ResetGamePositions()
+    public void ResetGamePositions()
     { 
         foreach (GameObject enemy in _activeEnemies)
         {
@@ -145,7 +145,6 @@ public void ResetGamePositions()
         }
 
         int enemiesToSpawn = numberOfEnemies;
-        
         if (NightmareManager.Instance)
         {
             enemiesToSpawn = NightmareManager.Instance.enemyCount;
@@ -153,18 +152,18 @@ public void ResetGamePositions()
 
         for (int i = 0; i < enemiesToSpawn; i++)
         {
-            Vector3 spawnBase = validEnemySpawnPoints[Random.Range(0, validEnemySpawnPoints.Count)];
+            Vector3 spawnBase = validEnemySpawnPoints[i % validEnemySpawnPoints.Count];
             
             Vector3 randomOffset = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
 
             GameObject enemy = Instantiate(enemyPrefab, spawnBase + randomOffset, Quaternion.identity);
             _activeEnemies.Add(enemy);
 
-            if (enemy.TryGetComponent<BehaviorGraphAgent>(out var agent))
+            if (enemy.TryGetComponent<EnemyAI>(out var ai))
             {
                 if (playerInstance)
                 {
-                    agent.SetVariableValue("Target", playerInstance);
+                    ai.playerTarget = playerInstance.transform;
                 }
             }
         }
