@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private float pulseSpeed = 0.5f; // Speed of the pulsing effect
     private float minVignetteIntensity = 0.5f; // Minimum intensity of the vignette effect
     private float maxVignetteIntensity = 0.78f; // Maximum intensity of the vignette effect
-    private float vignetteDefaultIntensity = 0.16f; // Default intensity of the vignette effect when not in tired mode
+    public float vignetteDefaultIntensity = 0.16f; // Default intensity of the vignette effect when not in tired mode
 
     [Header("Sleeping Transition")]
     [SerializeField] private GameObject fadeIn;
@@ -172,8 +172,15 @@ public class GameManager : MonoBehaviour
         SaveData();
         // Implement sleep logic here, such as fading the screen, waiting for a few seconds, etc.
         yield return new WaitForSeconds(2f); // Simulate sleep duration
-        
-        SceneManager.LoadSceneAsync("Nour_work/Scenes/Scene_Dream"); // Load the next scene after sleeping)
+
+        if (dayNumber >= 3)
+        {
+            SceneManager.LoadSceneAsync("Nour_work/Scenes/Scene_Dream"); // Load the next scene after sleeping)
+        }
+        else
+        {
+            SceneManager.LoadSceneAsync("EndScene");
+        }
         
     }
 
