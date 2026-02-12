@@ -1,102 +1,130 @@
-﻿title: oldManNPC_stage0
+﻿title: Shiekh_Khaled_stage0
 position: 81,-352
 ---
-
-<<declare $relationship = 0>>
-<<declare $oldMan_stage = 0>>
+// --- DECLARATIONS (Only run once by Yarn) ---
+<<declare $Shiekh_Khaled_relationship = 0>>
+<<declare $Shiekh_Khaled_progress = 0>>
 <<declare $lightAdded = 0>>
 <<declare $currentDay = 0>>
-<<declare $oldManNPC_progress = 0>>
-
 <<declare $wrongSalute = false>>
-<<if $oldMan_stage==0>>
-Old Khaled: ....... .......
+
+// --- DIALOGUE START ---
+<<if $Shiekh_Khaled_progress == 0>>
+    Old Khaled: ....... .......
 
     -> "slam alykom (peace be upon you)"
         <<jump stage0_bestResponse>>
-    ->"...."
+    -> "...."
         <<jump stage0_neutralResponse>>
-    ->"*wave and smile*"
+    -> "*wave and smile*"
         <<jump stage0_goodResponse>>
-    ->"What is with the stony face old man"
+    -> "What is with the stony face old man"
         <<jump stage0_badResponse>>
-    ->"Your beard looks like broom head"
+    -> "Your beard looks like broom head"
         <<jump stage0_worstResponse>>
+    
+    // Conditional Choice
     <<if $wrongSalute == false>>
-        ->"Hiii"
+        -> "Hiii"
             <<jump stage0_outOfContext>>
     <<endif>>
-<<elseif $oldMan_stage == 1 && $currentDay<1 >>
+
+<<elseif $Shiekh_Khaled_progress == 1>>
+    // This plays if you talk to him again on the same day (or if logic fails)
     Old Khaled: ...... ....
-
-
 <<endif>>
-
-Old Khaled: ....*cough*..*cough*..age is catching up to me, I guess. Nothing lasts forever.
-Old Khaled: Even the strongest of us eventually have to face the end. I just hope I can make the most of the time I have left.
-
 ===
 
+//***************************** RESPONSES *************************
 
-//***************************** STAGE 0 Responses *************************
 title: stage0_bestResponse
-position: 499,153
+position: 634,103
 ---
 Old Khaled: .... ....wa alykom el-slam ...*faint smile*
-    <<set $relationship += 10>>
+    <<set $Shiekh_Khaled_relationship += 10>>
     <<set $lightAdded = 10>>
-    <<set $oldMan_stage =1>>
+    <<set $Shiekh_Khaled_progress = 1>>
+    <<jump stage0_conclusion>>
 ===
 
 title: stage0_goodResponse
-position: 267,151
+position: 340,112
 ---
 Old Khaled: ... *faint smile and small wave*
-    <<set $relationship += 5>>
+    <<set $Shiekh_Khaled_relationship += 5>>
     <<set $lightAdded = 1>>
-    <<set $oldMan_stage =1>>
+    <<set $Shiekh_Khaled_progress = 1>>
+    <<jump stage0_conclusion>>
 ===
 
 title: stage0_neutralResponse
-position: 50,148
+position: 82,127
 ---
 Old Khaled: ... ..young man it is not very polite to keep staring at someone
-    <<set $relationship -= 5>>
+    <<set $Shiekh_Khaled_relationship -= 5>>
     <<set $lightAdded = -1>>
-    <<set $oldMan_stage =1>>
+    <<set $Shiekh_Khaled_progress = 1>>
+    <<jump stage0_conclusion>>
 ===
 
 title: stage0_badResponse
-position: -192,148
+position: -210,89
 ---
 Old Khaled: ...*frowns*..you should pick your words when speaking to your elders
-    <<set $relationship += -10>>
+    <<set $Shiekh_Khaled_relationship -= 10>>
     <<set $lightAdded = -10>>
-    <<set $oldMan_stage =1>>
+    <<set $Shiekh_Khaled_progress = 1>>
+    <<jump stage0_conclusion>>
 ===
 
 title: stage0_worstResponse
-position: -428,153
+position: -532,105
 ---
 Old Khaled: ...*frowns*..*frowns more*
-    <<set $relationship -= 20>>
+    <<set $Shiekh_Khaled_relationship -= 20>>
     <<set $lightAdded = -15>>
-    <<set $oldMan_stage =1>>
+    <<set $Shiekh_Khaled_progress = 1>>
+    <<jump stage0_conclusion>>
 ===
 
 title: stage0_outOfContext
-position:
 position: -81,-719
 ---
 Old Khaled: ...*looks at you strangely*
 Old Khaled: that is not how we speak here, go
-        <<set $relationship = 0>>
-        <<set $lightAdded = 0>>
-        <<set $oldMan_stage = 0>>
-        <<set $wrongSalute = true>>
-        <<jump oldManNPC>>
+    <<set $Shiekh_Khaled_relationship = 0>>
+    <<set $lightAdded = 0>>
+    <<set $wrongSalute = true>>
+    // Reset progress so they can try again immediately? Or keep as 0.
+    <<jump Shiekh_Khaled_stage0>>
+===
 
+//***************************** CONCLUSION *************************
+// This node ensures the player actually sees the ending text
+title: Shiekh_Khaled_exhausted
+position: -21,625
+---
+Old Khaled: ...
+Old Khaled: ...It is my nap time.
+Old Khaled: ......I need to get some rest.
+===
+
+
+title: Shiekh_Khaled_default
+position: 300,625
+---
+Old Khaled: ...
 
 ===
-//***************************** END STAGE 0 *************************
 
+title: stage0_conclusion
+position: 300,400
+
+---
+// This node exists just to cleanly end the conversation.
+<<if $Shiekh_Khaled_progress == 1>>
+    <<jump Shiekh_Khaled_exhausted>>
+<<else>>
+    <<jump Shiekh_Khaled_default>>
+<<endif>>
+===

@@ -1,181 +1,314 @@
-﻿title: oldManNPC_stage1
+﻿//***************************** STAGE 1 START *************************
+title: Shiekh_Khaled_stage1
 position: 81,-352
 ---
-
-<<if $oldMan_stage == 1 && $currentDay>=1 >>
-    <<if $relationship >= 10>>
+// Check if it's the right stage and at least day 1
+<<if $Shiekh_Khaled_progress >= 1>>
+    
+    // Branch based on Relationship Score
+    <<if $Shiekh_Khaled_relationship >= 10>>
         <<jump stage1_WarmWelcome>>
-    <<elseif $relationship >= 5>>
+    <<elseif $Shiekh_Khaled_relationship >= 5>>
         <<jump stage1_GoodWelcome>>
-    <<elseif $relationship >= -5>>
+    <<elseif $Shiekh_Khaled_relationship >= -5>>
         <<jump stage1_NeutralWelcome>>
     <<else>>
         <<jump stage1_ColdWelcome>>
     <<endif>>
+
+<<else>>
+    // Fallback if accessed on Day 0 or wrong stage
+    Old Khaled: ...I need some rest.
 <<endif>>
-        
 ===
+
 //***************************** STAGE 1 Welcomes *************************
 
 title: stage1_WarmWelcome
 position: 421,16
 ---
 Old Khaled: ...slam alykom..*faint smile*
-    
-    ->"wa alykom el-slam"
+    -> "wa alykom el-slam"
         <<jump stage1_BestResponse>>
-
+    -> "...."
+        Old Khaled: ...*smile fades*...
+        <<jump stage1_NeutralResponse_Chat>>
+    -> "I couldn't sleep because of the noise."
+        Old Khaled: ...*sigh*..the noise eh?...
+        Old Khaled: ...every man's worst enemy..*
+        Old Khaled: ....careful with the noise, it can misguide you if you let listen to it.
+        <<jump stage1_nestedGoodResponse>>
+    -> "what are you doing?"
+        Old Khaled: ..I am just enjoying the nice weather, and the sound of the birds.
+        Old Khaled: ...*sigh*...it is a nice day to be outside.
+        <<jump stage1_nestedBestResponse>>
 ===
 
 title: stage1_GoodWelcome
-position: -36,-2
+position: 39,35
 ---
 Old Khaled: ...*waves with a simple smile*...
-
-===
-title: stage1_NeutralWelcome
-position: -331,-21
----
-Old Khaled: ...... 
-    
-    -> "...slam alykom"
-        // He is neutral, so he is less chatty than the Best Response
-        Old Khaled: ...wa alykom el slam.
+    -> "wave back and smile"
+        <<jump stage1_BestResponse>>
+    -> "...."
+        Old Khaled: ...*smile fades*...
         <<jump stage1_NeutralResponse_Chat>>
-
-    -> "..."
-        Old Khaled: ...you really make me uncomfortable..
-        Old Khaled: if you need something from me just say it
-        
+    -> "your footsteps are getting louder, old man"
         <<jump stage1_BadResponse_Chat>>
 ===
 
-//******************************************** End of Stage 1 welcomes *******************
+title: stage1_NeutralWelcome
+position: -328,60
+---
+Old Khaled: ...... 
+    -> "...slam alykom"
+        Old Khaled: ...wa alykom el slam.
+        <<jump stage1_NeutralResponse_Chat>>
+    -> "..."
+        Old Khaled: ...you really make me uncomfortable..
+        Old Khaled: if you need something from me just say it.
+        <<jump stage1_BadResponse_Chat>>
+===
 
-//***************************** STAGE 1 Responses *************************
+title: stage1_ColdWelcome
+position: -548,42
+---
+Old Khaled: ...what do you want?
+    -> "Just saying hello."
+        Old Khaled: Hmph. Hello then.
+        <<jump stage1_conclusion>>
+===
+
+//***************************** STAGE 1 Chat Paths *************************
+
+title: stage1_NeutralResponse_Chat
+position: 40,358
+---
+Old Khaled: ....
+Old Khaled: ...*cough*..*cough*
+Old Khaled: ...need something from me?
+    -> "I just wanted to say hi, but I guess I made you uncomfortable"
+        <<jump stage1_conclusion>>
+        
+    -> "I thought you looked like you needed some company, but I guess I was wrong"
+        Old Khaled: ...*gazes at you for a moment*...*sigh*..company?.
+        Old Khaled: ....*thinks for a moment*..*takes a deep breath*
+        Old Khaled: ....you have reminded me of good old days when I used to have that (company).
+        Old Khaled: ...*cough*..*cough*...I guess it is not a bad idea to have some company sometimes.
+        Old Khaled: ...Thank you young one, for reminding me of those days.
+        <<jump GoodResponseParameters>>
+
+    -> "I am just passing by, I didn't mean to bother you"
+        Old Khaled: ...*sigh*...it is ok, I guess.
+        Old Khaled: ...just try to be more direct next time.
+        <<jump NeutralResponseParameters>>
+
+    -> "What did the cat say to the old man?"
+        Old Khaled: ...*looks at you strangely*...
+        Old Khaled: ...*sigh*...I don't have time for jokes, young one.
+        <<jump BadResponseParameters>>
+===
+
+title: stage1_BadResponse_Chat
+position: -320,361
+---
+Old Khaled: ...*shocked*...*frowns*...
+Old Khaled: ...*frowns more*
+Old Khaled: ...one day you will know what it means to be old.
+    -> "I am sorry, I just had a bad dream"
+        Old Khaled: ...*sigh*...it is ok, we all have bad days.
+        Old Khaled: ....next time try to be more careful with your words, you never know who you might hurt.
+        Old Khaled: ...*frowns less*...*sigh*...*cough*...
+        <<jump stage1_conclusion>> // No change in stats
+
+    -> "Why do old people always say the same thing?"
+        Old Khaled: ...*frowns more*...*shakes head*...
+        Old Khaled: ....*stares sharply at you*....
+        <<jump BadResponseParameters>>
+
+    -> "..."
+        Old Khaled: ...well? you got nothing to say for yourself?...
+        <<jump NeutralResponseParameters>>
+
+    -> "I am sorry, I just couldn't help but notice how old you look"
+        Old Khaled: ...*frowns more*...*shakes head*...
+        Old Khaled: ...*stares sharply at you*....
+        <<jump WorstResponseParameters>>
+===
+
+//***************************** STAGE 1 Main Response *************************
+
 title: stage1_BestResponse
 position: 424,526
 ---
 Old Khaled: ..*smiles more*..
-    Old Khaled: ..How is your day young one?
-    <<set $relationship += 10>> //relationship should be 20
-    <<set $lightAdded = 10>>
-        
-        ->"It is blessed, Alhamdulilah"
+Old Khaled: ..How is your day young one?
+<<set $Shiekh_Khaled_relationship += 10>> 
+<<set $lightAdded = 10>>
+    
+    -> "It is blessed, Alhamdulilah"
         <<jump stage1_nestedBestResponse>>
-        
-        ->"It was Rough, lots of things to do and no time to finish anything"
-        <<jump stage1_nestedGoodResponse>> //uncovers lots of the story here
+    
+    -> "It was Rough, lots of things to do and no time to finish anything"
+        <<jump stage1_nestedGoodResponse>> 
 
-        ->"That is none of your business old man"
+    -> "That is none of your business old man"
         Old Khaled: ..how disappointing...
         Old Khaled: ...you should not listen to the voices in your head.
         Old Khaled: ..they will only destroy you, and their path only misleads.
         Old Khaled: ..like how the moths mistake their doom for their salvation.
         Old Khaled: only when it is too late, that they realise what they have done.
-        <<set $relationship -= 20>>
+        
+        // This resets the "Good vibes" from the start of this node
+        <<set $Shiekh_Khaled_relationship -= 20>>
         <<set $lightAdded = -5>>
-            ->"I am sorry, it won't happen again"
+        
+        -> "I am sorry, it won't happen again"
             Old Khaled: ..the higher your light the easier it gets..
             Old Khaled: ..the lower...the weaker you will get
-            Old Khaled: ..and the easier you will be decived.
-            <<set $relationship +=5>>
-            <<set $lightAdded = 5>>
-            <<set $oldMan_stage = 3>>
+            Old Khaled: ..and the easier you will be deceived.
+            <<set $Shiekh_Khaled_progress = 3>>
+            <<jump GoodResponseParameters>>
 
-            ->"I am not a moth old man, I know what i am doing"
+        -> "I am not a moth old man, I know what i am doing"
             Old Khaled: ..how unfortunate..
             Old Khaled: ..you are walking right into their trap.
-            <<set $relationship -= 20>>
-            <<set $lightAdded = -20>>
-            <<set $oldMan_stage = 3>>
+            <<set $Shiekh_Khaled_progress = 3>>
+            <<jump WorstResponseParameters>>
 
-            ->"If i don't act tough, people will decive me with good words"
-            Old Khaled: ..you are deciving yourself..
-            Old Khaled: ...you don't need to be tough to avoid being decived
+        -> "If i don't act tough, people will deceive me with good words"
+            Old Khaled: ..you are deceiving yourself..
+            Old Khaled: ...you don't need to be tough to avoid being deceived
             Old Khaled: ....you only need to be smart..and look behind the words
             Old Khaled: ..where do they lead? and what are the motives behind them?
             Old Khaled: are they truly your words? or someone else's?
-            <<set $relationship -= 5>>
-            <<set $oldMan_stage = 3>>
-
-
+            <<set $Shiekh_Khaled_progress = 3>>
+            <<jump NeutralResponseParameters>>
 ===
 
 title: stage1_nestedBestResponse
 position: 761,716
 ---
 Old Khaled: Alhamdulilah, care to join an old man for some tea?
-        <<set $relationship += 10>> //relationship should be 30
-        <<set $lightAdded = 15>>
+<<set $Shiekh_Khaled_relationship += 10>> 
+<<set $lightAdded = 15>>
 
-        ->"I am sorry, but I got things to do at the moment, but thanks for the invite"
-            Old Khaled: It is ok young one, finish your todos and come by
-            Old Khaled: Don't be late, I sleep early..*smiles*
-            <<set $lightAdded = 5>>
-            <<set $oldMan_stage = 2>>
-        
-        ->"Thank you very much for the invite, but i don't want to bother you any further"
-            Old Khaled: young man, your manners keep surprising me
-            Old Khaled: what a bright lad you are.
-            Old Khaled: don't let others influence your good manners
-            Old Khaled: it is truly a light to be cherished.
-            <<set $lightAdded = 20>>
-            <<set $relationship += 20>> //relationship should be 50
-            <<set $oldMan_stage = 2>>
-        ->"Thank you, but tea isn't really my favorite"
-            Old Khaled: ..you know tea was once the drink that i used to refuse
-            Old Khaled: ..until i learned
-            Old Khaled: ..that it is not the drink's fault, but the people you drink it with
-            <<set $relationship -=5>>
-            <<set $lightAdded = 0>>
-            <<set $oldMan_stage = 2>>
-        ->"Tea? ..who drinks tea these days"
-            //Old Khaled: ....sometimes talking with youngsters like you remind me of my old age
-            Old Khaled: ...the worst thing you could say was no
-            Old Khaled: ...now if you excuse me
-            Old Khaled: ..it is about time for my morning nap
-            <<set $lightAdded = -5>>
-            <<set $relationship -= 10>>
-            <<set $oldMan_stage = 2>>
+    -> "I am sorry, but I got things to do at the moment, but thanks for the invite"
+        Old Khaled: It is ok young one, finish your todos and come by.
+        Old Khaled: Don't be late, I sleep early..*smiles*
+        <<set $Shiekh_Khaled_progress = 2>>
+        <<jump GoodResponseParameters>>
+    
+    -> "Thank you very much for the invite, but i don't want to bother you any further"
+        Old Khaled: young man, your manners keep surprising me.
+        Old Khaled: what a bright lad you are.
+        Old Khaled: don't let others influence your good manners.
+        Old Khaled: it is truly a light to be cherished.
+        // Special case: Double Best Response
+        <<set $Shiekh_Khaled_progress = 2>>
+        <<set $Shiekh_Khaled_relationship += 20>> 
+        <<set $lightAdded = 20>>
+        <<jump stage1_conclusion>>
 
+    -> "Thank you, but tea isn't really my favorite"
+        Old Khaled: ..you know tea was once the drink that i used to refuse.
+        Old Khaled: ..until i learned.
+        Old Khaled: ..that it is not the drink's fault, but the people you drink it with.
+        <<set $Shiekh_Khaled_progress = 2>>
+        <<jump NeutralResponseParameters>>
+
+    -> "Tea? ..who drinks tea these days"
+        Old Khaled: ...the worst thing you could say was no.
+        Old Khaled: ...now if you excuse me.
+        Old Khaled: ..it is about time for my morning nap.
+        <<set $Shiekh_Khaled_progress = 2>>
+        <<jump BadResponseParameters>>
 ===
 
 title: stage1_nestedGoodResponse
-position: 300,781
+position: 166,650
 ---
-Old Khaled: life can be quite distracting, 
-        Old Khaled: but only those with true light will see beyond the noise
-        Old Khaled: Don't let that bother you young one, one day all of this will pass
-        Old Khaled: and you will remember it and then laugh..*smiles faintly*
-        <<set $relationship += 10>> //relationship should be 30
-            
-            ->"beyond the noise? what does that mean"
-            Old Khaled: you will know when you see.
-            Old Khaled: *smiles*
-            <<set $relationship += 5>> //relationship should be 35
-            <<set $oldMan_stage = 2>>
+Old Khaled: life can be quite distracting.
+Old Khaled: but only those with true light will see beyond the noise.
+Old Khaled: Don't let that bother you young one, one day all of this will pass.
+Old Khaled: and you will remember it and then laugh..*smiles faintly*
+<<set $Shiekh_Khaled_relationship += 10>> 
+    
+    -> "beyond the noise? what does that mean"
+        Old Khaled: you will know when you see.
+        Old Khaled: *smiles*
+        <<set $Shiekh_Khaled_progress = 2>>
+        <<jump GoodResponseParameters>>
 
-            ->"noise is something you hear not see, you know that right?"
-            Old Khaled: ..how disappointing..
-            Old Khaled: ..sometimes words mislead who hears it...
-            Old Khaled: but guides who listens to it...
-            <<set $relationship -= 10>>
-            <<set $oldMan_stage = 2>>
+    -> "noise is something you hear not see, you know that right?"
+        Old Khaled: ..how disappointing..
+        Old Khaled: ..sometimes words mislead who hears it...
+        Old Khaled: but guides who listens to it...
+        <<set $Shiekh_Khaled_progress = 2>>
+        <<jump BadResponseParameters>>
 
-            ->"I think you missed your meds morning slot"
-            Old Khaled: ..hmm?.. but i do remember taking them...
-            Old Khaled: ..wait.. hey!..you need to pick your words more carefuelly with your elders
-            Old Khaled: words can hurt more than a sword
-            Old Khaled: and the older you grow that slower you will heal, until your wounds never stop bleeding
-            <<set $relationship -= 15>>
-            <<set $oldMan_stage = 2>>
+    -> "I think you missed your meds morning slot"
+        Old Khaled: ..hmm?.. but i do remember taking them...
+        Old Khaled: ..wait.. hey!..you need to pick your words more carefully with your elders.
+        Old Khaled: words can hurt more than a sword.
+        Old Khaled: and the older you grow that slower you will heal, until your wounds never stop bleeding.
+        <<set $Shiekh_Khaled_progress = 2>>
+        <<jump WorstResponseParameters>>
 
-            ->"What lies behind the noise?"
-            Old Khaled: ..if i give you that answer now, you will lose it later
-            Old Khaled: ....if i make it tell tomorrow maybe then you will know
-            Old Khaled: *faint laugh*
-            <<set $relationship += 10>>
-            <<set $oldMan_stage = 2>>
+    -> "What lies behind the noise?"
+        Old Khaled: ..if i give you that answer now, you will lose it later.
+        Old Khaled: ....if i make it tell tomorrow maybe then you will know.
+        Old Khaled: *faint laugh*
+        <<set $Shiekh_Khaled_progress = 2>>
+        <<jump BestResponseParameters>>
+===
 
+//***************************** HELPER NODES (PARAMETERS) *************************
+
+title: BestResponseParameters
+position: 361,970
+---
+<<set $Shiekh_Khaled_relationship += 10>>
+<<set $lightAdded = 10>>
+<<jump stage1_conclusion>>
+===
+
+title: GoodResponseParameters
+position: -676,1009
+---
+<<set $Shiekh_Khaled_relationship += 5>>
+<<set $lightAdded = 5>>
+<<jump stage1_conclusion>>
+===
+
+title: NeutralResponseParameters
+position: -398,987
+---
+<<set $Shiekh_Khaled_relationship -= 5>>
+<<set $lightAdded = 0>>
+<<jump stage1_conclusion>>
+===
+
+title: BadResponseParameters
+position: -160,983
+---
+<<set $Shiekh_Khaled_relationship -= 10>>
+<<set $lightAdded = -5>>
+<<jump stage1_conclusion>>
+===
+
+title: WorstResponseParameters
+position: 71,956
+---
+<<set $Shiekh_Khaled_relationship -= 20>>
+<<set $lightAdded = -20>>
+<<jump stage1_conclusion>>
+===
+
+//***************************** CONCLUSION *************************
+
+title: stage1_conclusion
+position: -172,1298
+---
+Old Khaled: ...
 ===

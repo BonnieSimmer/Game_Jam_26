@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [Header("Time settings")]
-    public int dayNumber = 0;
+    public int dayNumber = 1;
     public float bedTimeThreshold = 0.85f; // Threshold for activating tired mode (e.g., 90% of the day)
 
     //[Header("Tiredness indicator")]
@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject fadeIn;
     [SerializeField] private GameObject fadeOut;
     [SerializeField] private CanvasGroup fadeOutCanvasGroup;
+
     [Header("Testing")]
     public bool isPlayTesting = true;
 
@@ -52,6 +53,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            // IMPORTANT: Disable the component so Start() and Update() do not run on the duplicate
+            this.enabled = false;
             Destroy(gameObject);
             return;
         }
@@ -59,25 +62,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
-        LoadData();
 
-        RefreshReferences(); // Find and assign references to UI elements, DayCycle, Vignette, etc.
-
-        if (isPlayTesting)
-        {
-            Debug.LogWarning("Play testing mode is ON. All saved data will be cleared.");
-            PlayerPrefs.DeleteAll(); // Clear all saved data (for testing purposes, remove this line in production)
-            PlayerPrefs.Save();
-            Debug.Log("Saved data cleared. Starting fresh for play testing.");
-            Debug.Log("go to GameManager line 66 to prevent data deletion"); // Verify that the day number is reset to 0
-        }
-
-        if(SceneManager.GetActiveScene().name == mainSceneName)
-        {
-
-            StartCoroutine(WakeUpCoroutine()); // Start the wake-up transition at the beginning of the game
-        }
+        OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
     }
 
     // Update is called once per frame
@@ -250,10 +236,32 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("New Scene Loaded. Re-connecting references...");
+        if (isWakingUp) return;
+
+        Debug.Log($"Scene Loaded: {scene.name}. Initializing...");
+
+        // 2. Refresh References
         RefreshReferences();
 
-        // Check if we returned home
+        // 3. PlayTesting Reset
+        if (isPlayTesting)
+        {
+            // Only wipe data if we are literally on Day 0 or 1 (Start of game)
+            // Otherwise, returning from the maze would wipe our progress!
+            if (dayNumber <= 1 && scene.name == mainSceneName)
+            {
+                Debug.Log("PlayTesting: Wiping Data on Start");
+                PlayerPrefs.DeleteAll();
+                PlayerPrefs.Save();
+                dayNumber = 0; // Ensure we start at 0
+            }
+        }
+        else
+        {
+            LoadData();
+        }
+
+        // 4. Trigger Wake Up (Only in Main Scene)
         if (scene.name == mainSceneName)
         {
             StartCoroutine(WakeUpCoroutine());

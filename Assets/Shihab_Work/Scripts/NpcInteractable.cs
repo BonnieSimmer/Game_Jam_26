@@ -21,6 +21,8 @@ public class NpcInteractable : InteractableLogic
     private NpcRoaming npcRoaming; // Reference to the NpcRoaming script for controlling NPC movement
     private NavMeshAgent agent; // Reference to the NavMeshAgent component for controlling NPC movement
 
+    [Header("Relationship Settings")]
+    public int relationship=0;
     private void Awake()
     {
         // Ensure that the NPC has a DialogueRunner component attached
@@ -50,7 +52,8 @@ public class NpcInteractable : InteractableLogic
         base.Start();
        
         npcRoaming = GetComponent<NpcRoaming>(); // Get the NpcRoaming component attached to the NPC
-        
+        relationship = PlayerPrefs.GetInt(npcName+"_relationship", 0); // Load relationship level from PlayerPrefs, defaulting to 0 if not found
+
     }
 
     // Update is called once per frame
@@ -71,20 +74,30 @@ public class NpcInteractable : InteractableLogic
 
         string progressVarKey = "$"+npcName+"_progress";
         string lastTalkedDay_Key = "$"+npcName+"_lastTalkedDay";
+        string relationshipKey = "$"+npcName+"_relationship";
 
-        float lastTalkedDay = -1f;
-        float currentStage = 0.0f;
-        dialogueRunner.VariableStorage.TryGetValue(lastTalkedDay_Key, out lastTalkedDay);
-        dialogueRunner.VariableStorage.TryGetValue(progressVarKey, out currentStage);
+ 
+        dialogueRunner.VariableStorage.SetValue(relationshipKey, relationship);
+        
+        int savedProgress = PlayerPrefs.GetInt(npcName+"_progress", 0); 
+        dialogueRunner.VariableStorage.SetValue(progressVarKey, savedProgress);
+        
+        int savedLastTalkedDay = PlayerPrefs.GetInt(npcName+"_lastTalkedDay", -1); 
+        dialogueRunner.VariableStorage.SetValue(lastTalkedDay_Key, savedLastTalkedDay);
+        
+        
         int currentDay = gameManager.dayNumber;
 
-
+        Debug.Log($"DIAGNOSIS: Last Talked Day: {savedLastTalkedDay} | Current Day: {currentDay}");
+        // ---------
         string targetNode = "";
 
-        if(lastTalkedDay< currentDay)
+        if(savedLastTalkedDay< currentDay)
         {
-            targetNode = npcName + "_stage" + ((int)currentStage).ToString();
+            targetNode = npcName + "_stage" + savedProgress.ToString();
             dialogueRunner.VariableStorage.SetValue(lastTalkedDay_Key, currentDay);
+            PlayerPrefs.SetInt(npcName+"_lastTalkedDay", currentDay);
+            PlayerPrefs.Save();
         }
         else
         {
@@ -95,11 +108,11 @@ public class NpcInteractable : InteractableLogic
         if (dialogueRunner.Dialogue.NodeExists(targetNode))
         {
             dialogueRunner.StartDialogue(targetNode);
-            npcRoaming.PauseNpcRoaming(); // Pause the NPC's roaming behavior when the player interacts
+            
         }
         else
         {
-            string defaultNode = npcName + "_stage0";
+            string defaultNode = npcName + "_default";  // change _defualt to _stage0 
             if (dialogueRunner.Dialogue.NodeExists(defaultNode))
             {
                 dialogueRunner.StartDialogue(defaultNode);
@@ -107,6 +120,7 @@ public class NpcInteractable : InteractableLogic
             else
             {
                 Debug.LogWarning($"Neither '{targetNode}' nor '{defaultNode}' found!");
+                npcRoaming.ResumeNpcRoaming(); // Resume roaming if no dialogue nodes are found
             }
         }
 
@@ -120,12 +134,52 @@ public class NpcInteractable : InteractableLogic
     public void OnEnable()
     {
         if(dialogueRunner != null)
-            dialogueRunner.onDialogueComplete.AddListener(StopLookingAtPlayer);
+            dialogueRunner.onDialogueComplete.AddListener(OnDialogueEnded);
     }
     public void OnDisable()
     {
         if(dialogueRunner != null)
-            dialogueRunner.onDialogueComplete.RemoveListener(StopLookingAtPlayer);
+            dialogueRunner.onDialogueComplete.RemoveListener(OnDialogueEnded);
+    }
+
+    private void OnDialogueEnded()
+    {
+        StopLookingAtPlayer();
+
+        string progressVarKey = "$"+npcName+"_progress";
+        if(dialogueRunner.VariableStorage.TryGetValue(progressVarKey, out float progressValue))
+        {
+            int progressInt = (int)progressValue;
+            PlayerPrefs.SetInt(npcName+"_progress", progressInt);
+            PlayerPrefs.Save();
+            Debug.Log($"Updated progress for {npcName}: {progressInt}");
+        }
+        string relationshipKey = "$"+npcName+"_relationship";
+        if(dialogueRunner.VariableStorage.TryGetValue(relationshipKey, out float relationshipValue))
+        {
+            relationship = (int)relationshipValue;
+            Debug.Log($"Updated relationship with {npcName}: {relationship}");
+            
+            PlayerPrefs.SetInt(npcName+"_relationship", relationship);
+            PlayerPrefs.Save();
+        }
+        string lightKey = "$lightAdded";
+        if(dialogueRunner.VariableStorage.TryGetValue(lightKey, out float lightAddedValue))
+        {
+            if(lightAddedValue != 0)
+            {
+                playerLogic.lightHeartLevel += (int)lightAddedValue;
+                Debug.Log($"Adding {lightAddedValue} light to player from dialogue with {npcName}");
+                Debug.Log($"Player's new light heart level: {playerLogic.lightHeartLevel}");
+                
+                PlayerPrefs.SetInt("lightHeartLevel", playerLogic.lightHeartLevel);
+                PlayerPrefs.Save();
+                
+                lightAddedValue = 0;
+                dialogueRunner.VariableStorage.SetValue(lightKey, lightAddedValue);
+            }
+        }
+        PlayerPrefs.Save();
     }
     IEnumerator SmoothLookAt(Transform currTransform, Transform targetTransform)
     {
@@ -177,12 +231,13 @@ public class NpcInteractable : InteractableLogic
             yield return null; // Wait for the next frame
         }
         transform.rotation = defaultRotation; // Ensure the final rotation is exactly the target rotation
+        if(npcRoaming != null)
+            npcRoaming.ResumeNpcRoaming(); // Resume the NPC's roaming behavior when the dialogue is complete
     }
     public void StopLookingAtPlayer()
     {
         StartCoroutine(RotateBackToDefault());
-        npcRoaming.ResumeNpcRoaming(); // Resume the NPC's roaming behavior when the dialogue is complete
-
+        
     }
 
 }

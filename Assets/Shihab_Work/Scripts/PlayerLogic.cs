@@ -25,6 +25,9 @@ public class PlayerLogic : MonoBehaviour
     [SerializeField] private float interactableRange = 1.5f;
     [SerializeField] private LayerMask interactableLayer = 6;
     private Vector3 interactableUI_Offset; // Offset for the interaction UI element
+
+    [Header("Player light level Stats")]
+    public int lightHeartLevel = 20;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,6 +35,8 @@ public class PlayerLogic : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         interactableIndicator.gameObject.SetActive(false);
         pressE_UI.gameObject.SetActive(false);
+        
+        lightHeartLevel = PlayerPrefs.GetInt("lightHeartLevel", 20); // Load light heart level from PlayerPrefs, defaulting to 20 if not found
     }
 
     // Update is called once per frame
