@@ -175,11 +175,11 @@ public class GameManager : MonoBehaviour
 
         if (dayNumber >= 3)
         {
-            SceneManager.LoadSceneAsync("Nour_work/Scenes/Scene_Dream"); // Load the next scene after sleeping)
+            SceneManager.LoadSceneAsync("EndScene");
         }
         else
         {
-            SceneManager.LoadSceneAsync("EndScene");
+            SceneManager.LoadSceneAsync("Nour_work/Scenes/Scene_Dream"); // Load the next scene after sleeping)
         }
         
     }
