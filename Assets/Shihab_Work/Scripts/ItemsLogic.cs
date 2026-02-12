@@ -13,7 +13,7 @@ public class ItemsLogic : InteractableLogic
     private GameObject pickUpItemPos_rightHand; // Position where the item will be held when picked up (if applicable)
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void Start()
     {
         base.Start();
 
