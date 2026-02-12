@@ -9,7 +9,7 @@ public class KeyPad : Interactable
     [Header("Difficulty Config")]
     public int mazeSize = 21;        
     public int enemyCount = 4;
-    public float timeLimit = 120f;  
+    public float timeLimit = 120f; 
 
     public void GoToSleep()
     {
