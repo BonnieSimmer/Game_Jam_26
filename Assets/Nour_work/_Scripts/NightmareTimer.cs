@@ -87,8 +87,6 @@ public class NightmareTimer : MonoBehaviour
         else
         {
             if (_returnToScene.Equals("")) return;
-            PlayerPrefs.SetInt("DayNumber", currentDay + 1);
-            
             GameDataHandler.SaveProgress(_returnToScene);
             SceneManager.LoadScene(_returnToScene);
         }

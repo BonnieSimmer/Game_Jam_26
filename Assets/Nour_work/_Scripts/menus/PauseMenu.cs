@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
     private StarterAssetsInputs _input;
     
     public static bool IsPaused = false;
+    public GameObject returnedObject;
 
     void Start()
     {
@@ -44,6 +45,8 @@ public class PauseMenu : MonoBehaviour
         if (menuPanel) menuPanel.SetActive(false);
         Time.timeScale = 1f;
         AudioListener.pause = false;
+        
+        if (returnedObject) returnedObject.SetActive(true);
         
         SetCursorState(false); 
         
