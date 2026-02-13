@@ -11,6 +11,8 @@ position: 81,-352
 // --- DIALOGUE START ---
 <<if $Shiekh_Khaled_progress == 0>>
     Old Khaled: ....... .......
+    // He starts passive/ignoring you
+    <<npc_gesture Shiekh_Khaled dismiss>>
 
     -> "slam alykom (peace be upon you)"
         <<gesture nod>>
@@ -22,10 +24,10 @@ position: 81,-352
         <<gesture wave>>
         <<jump stage0_goodResponse>>
     -> "What is with the stony face old man"
-        <<gesture cocky>>
+        <<gesture sarcastic>>
         <<jump stage0_badResponse>>
     -> "Your beard looks like broom head"
-        <<gesture sarcastic>>
+        <<gesture cocky>>
         <<jump stage0_worstResponse>>
     
     // Conditional Choice
@@ -38,6 +40,7 @@ position: 81,-352
 <<elseif $Shiekh_Khaled_progress == 1>>
     // This plays if you talk to him again on the same day (or if logic fails)
     Old Khaled: ...... ....
+    <<npc_gesture Shiekh_Khaled dismiss>>
 <<endif>>
 ===
 
@@ -47,6 +50,7 @@ title: stage0_bestResponse
 position: 634,103
 ---
 Old Khaled: .... ....wa alykom el-slam ...*faint smile*
+    <<npc_gesture Shiekh_Khaled nod>>
     <<set $Shiekh_Khaled_relationship += 10>>
     <<set $lightAdded = 10>>
     <<set $Shiekh_Khaled_progress = 1>>
@@ -57,6 +61,7 @@ title: stage0_goodResponse
 position: 340,112
 ---
 Old Khaled: ... *faint smile and small wave*
+    <<npc_gesture Shiekh_Khaled wave>>
     <<set $Shiekh_Khaled_relationship += 5>>
     <<set $lightAdded = 1>>
     <<set $Shiekh_Khaled_progress = 1>>
@@ -67,6 +72,7 @@ title: stage0_neutralResponse
 position: 82,127
 ---
 Old Khaled: ... ..young man it is not very polite to keep staring at someone
+    <<npc_gesture Shiekh_Khaled deny>>
     <<set $Shiekh_Khaled_relationship -= 5>>
     <<set $lightAdded = -1>>
     <<set $Shiekh_Khaled_progress = 1>>
@@ -77,6 +83,7 @@ title: stage0_badResponse
 position: -210,89
 ---
 Old Khaled: ...*frowns*..you should pick your words when speaking to your elders
+    <<npc_gesture Shiekh_Khaled dismiss>>
     <<set $Shiekh_Khaled_relationship -= 10>>
     <<set $lightAdded = -10>>
     <<set $Shiekh_Khaled_progress = 1>>
@@ -87,6 +94,7 @@ title: stage0_worstResponse
 position: -532,105
 ---
 Old Khaled: ...*frowns*..*frowns more*
+    <<npc_gesture Shiekh_Khaled angry>>
     <<set $Shiekh_Khaled_relationship -= 20>>
     <<set $lightAdded = -15>>
     <<set $Shiekh_Khaled_progress = 1>>
@@ -97,7 +105,9 @@ title: stage0_outOfContext
 position: -81,-719
 ---
 Old Khaled: ...*looks at you strangely*
+    <<npc_gesture Shiekh_Khaled deny>>
 Old Khaled: that is not how we speak here, go
+    <<npc_gesture Shiekh_Khaled dismiss>>
     <<set $Shiekh_Khaled_relationship = 0>>
     <<set $lightAdded = 0>>
     <<set $wrongSalute = true>>
@@ -113,6 +123,7 @@ position: -21,625
 Old Khaled: ...
 Old Khaled: ...It is my nap time.
 Old Khaled: ......I need to get some rest.
+    <<npc_gesture Shiekh_Khaled dismiss>>
 ===
 
 
@@ -120,7 +131,6 @@ title: Shiekh_Khaled_default
 position: 300,625
 ---
 Old Khaled: ...
-
 ===
 
 title: stage0_conclusion

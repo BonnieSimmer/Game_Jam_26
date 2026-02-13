@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
     }
     public void GoingToSleep()
     {
-        NightmareManager.Instance.SetLevelData(10 + dayNumber * 5, dayNumber + 1, 120, SceneManager.GetActiveScene().name);
+        
         StartCoroutine(SleepCoroutine());
     }
 

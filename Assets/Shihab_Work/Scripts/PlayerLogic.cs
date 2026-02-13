@@ -46,6 +46,13 @@ public class PlayerLogic : MonoBehaviour
     {
         if(UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;
         // Prevent interaction when clicking on UI elements
+        if (dialogueRunner != null && dialogueRunner.IsDialogueRunning)
+        {
+            // Optional: Hide the "Press E" UI while talking so it looks cleaner
+            if (pressE_UI.gameObject.activeSelf) pressE_UI.gameObject.SetActive(false);
+            return;
+        }
+
         DetermineClosestInteractable();
         ShowInteractableUI();
         if (Input.GetKeyDown(KeyCode.E) && closestObject != null && isInRange)
@@ -53,7 +60,11 @@ public class PlayerLogic : MonoBehaviour
             // Implement interaction logic here, such as opening a door or picking up an item
             Debug.Log("Interacted with: " + closestObject.name);
             closestObject.GetComponent<InteractableLogic>().Interact();
-            interactableIndicatorText.text = closestObject.GetComponent<InteractableLogic>().interactionMessage; // Update the indicator text based on the interactable's message
+            var logic = closestObject.GetComponent<InteractableLogic>();
+            if (logic != null)
+            {
+                interactableIndicatorText.text = logic.interactionMessage;
+            }
         }
         if (dialogueRunner != null && dialogueRunner.VariableStorage != null)
         {

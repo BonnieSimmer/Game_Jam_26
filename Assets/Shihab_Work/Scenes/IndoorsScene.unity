@@ -63463,6 +63463,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ca34d2f5ca2d40148a25112f98a2bbb8, type: 3}
   m_PrefabInstance: {fileID: 1330397614}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1330397616 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8803575057314099193, guid: ca34d2f5ca2d40148a25112f98a2bbb8, type: 3}
+  m_PrefabInstance: {fileID: 1330397614}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1346344927
 GameObject:
   m_ObjectHideFlags: 0
@@ -91546,7 +91551,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1998915245}
   - component: {fileID: 1998915246}
-  - component: {fileID: 1998915247}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -91589,23 +91593,6 @@ MonoBehaviour:
   fadeOutCanvasGroup: {fileID: 0}
   isPlayTesting: 1
   vignetteEffect: {fileID: 0}
---- !u!114 &1998915247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1998915244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a2327412d0ace1568f4c9416f26d7ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NightmareManager
-  mazeSize: 21
-  enemyCount: 3
-  timeLimitInSeconds: 120
-  returnToSceneName: Nour_work/Scenes/Scene_Level_01
-  playerGotTrait: 0
 --- !u!1 &2014022982
 GameObject:
   m_ObjectHideFlags: 0
@@ -98075,6 +98062,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2925167408971577096, guid: 4a37b67d0d575ec468f1b66cf5e29a27, type: 3}
+      propertyPath: mainNPC
+      value: 
+      objectReference: {fileID: 7018120648279305081}
+    - target: {fileID: 2925167408971577096, guid: 4a37b67d0d575ec468f1b66cf5e29a27, type: 3}
       propertyPath: headBone
       value: 
       objectReference: {fileID: 150333798}
@@ -99115,6 +99106,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f590b9e89b20604bb8f3db253037092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  headBone: {fileID: 1330397616}
+  lookSpeed: 4
+  maxLookAngle: 75
+  lookOffset: {x: 0, y: -0.5, z: 0}
+  lookDistance: 7
+  rotationOffset: {x: -10, y: 0, z: 0}
 --- !u!4 &7057516004932664435
 Transform:
   m_ObjectHideFlags: 0

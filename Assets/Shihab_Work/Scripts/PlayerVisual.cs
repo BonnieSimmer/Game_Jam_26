@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Yarn.Unity;
+
 public class PlayerVisual : MonoBehaviour
 {
     private Animator animator;
@@ -16,7 +17,13 @@ public class PlayerVisual : MonoBehaviour
     [SerializeField] private float maxLookAngle = 70f;
     [SerializeField] private Vector3 lookOffset = new Vector3(0, -0.5f, 0);
 
-    public DialogueRunner dialogueRunner; // Reference to the DialogueRunner component for handling dialogues
+    [Header("References")]
+    public DialogueRunner dialogueRunner;
+
+    // --- NEW: DIRECT REFERENCE ---
+    [Tooltip("Drag Shiekh_Khaled here to fix the 'Not Found' error")]
+    public NPCVisual mainNPC;
+    // -----------------------------
 
     // Internal State
     private float currentLookWeight = 0f;
@@ -31,96 +38,69 @@ public class PlayerVisual : MonoBehaviour
 
         if (dialogueRunner != null)
         {
-            // Register the command "gesture"
+            // 1. REGISTER PLAYER GESTURES
             dialogueRunner.AddCommandHandler<string>("gesture", (gestureName) => {
                 if (currentGestureCoroutine != null) StopCoroutine(currentGestureCoroutine);
 
                 string triggerName = "";
                 string animationStateName = "";
 
-                // --- MAPPING LOGIC ---
-                // We map simple Yarn commands to the EXACT Triggers and Animation names you provided.
-
                 switch (gestureName)
                 {
-                    // Positive / Neutral
-                    case "agree":
-                        triggerName = "isAgreed";
-                        animationStateName = "agreeing_anim";
-                        break;
-                    case "nod":
-                        triggerName = "isNoding";
-                        animationStateName = "headNod_anim";
-                        break;
-                    case "wave":
-                        triggerName = "isWaving";
-                        animationStateName = "waving_anim";
-                        break;
-
-                    // Negative / Defensive
-                    case "deny":
-                        triggerName = "isDenying";
-                        animationStateName = "denying_anim";
-                        break;
-                    case "dismiss":
-                        triggerName = "isDismissing";
-                        animationStateName = "dismis_anim";
-                        break;
-                    case "lookAway": // Good for guilt/shame
-                        triggerName = "isLookingAway";
-                        animationStateName = "lookAway_anim";
-                        break;
-                    case "shrug": // Good for "I don't know"
-                        triggerName = "isShrugging";
-                        animationStateName = "shrugging_anim";
-                        break;
-
-                    // Attitude / Rude (The "Bad Choice" animations)
-                    case "cocky":
-                        triggerName = "isCocky";
-                        animationStateName = "cocky_anim";
-                        break;
-                    case "sarcastic":
-                        triggerName = "isSarcastic";
-                        animationStateName = "sarcastic_anim";
-                        break;
-                    case "pout":
-                        triggerName = "isPouting";
-                        animationStateName = "pouting_anim";
-                        break;
-
-                    // Anger
-                    case "angry":
-                        triggerName = "isAngryPointing";
-                        animationStateName = "angryPoint_anim";
-                        break;
-                    case "mad":
-                        triggerName = "isMad";
-                        animationStateName = "angryFists_anim";
-                        break;
+                    case "agree": triggerName = "isAgreed"; animationStateName = "agreeing_anim"; break;
+                    case "nod": triggerName = "isNoding"; animationStateName = "headNod_anim"; break;
+                    case "wave": triggerName = "isWaving"; animationStateName = "waving_anim"; break;
+                    case "deny": triggerName = "isDenying"; animationStateName = "denying_anim"; break;
+                    case "dismiss": triggerName = "isDismissing"; animationStateName = "dismis_anim"; break;
+                    case "lookAway": triggerName = "isLookingAway"; animationStateName = "lookAway_anim"; break;
+                    case "shrug": triggerName = "isShrugging"; animationStateName = "shrugging_anim"; break;
+                    case "cocky": triggerName = "isCocky"; animationStateName = "cocky_anim"; break;
+                    case "sarcastic": triggerName = "isSarcastic"; animationStateName = "sarcastic_anim"; break;
+                    case "pout": triggerName = "isPouting"; animationStateName = "pouting_anim"; break;
+                    case "angry": triggerName = "isAngryPointing"; animationStateName = "angryPoint_anim"; break;
+                    case "mad": triggerName = "isMad"; animationStateName = "angryFists_anim"; break;
                 }
 
-                // If we found a match, play it
                 if (triggerName != "" && animationStateName != "")
                 {
                     currentGestureCoroutine = StartCoroutine(PlayGesture(triggerName, animationStateName));
                 }
+            });
+
+            // 2. REGISTER NPC GESTURES (The Fix)
+            dialogueRunner.AddCommandHandler<string, string>("npc_gesture", (npcName, animName) => {
+
+                NPCVisual targetVisual = null;
+
+                // A. Check the Manual Reference first (Fail-proof)
+                if (mainNPC != null && (npcName == "Shiekh_Khaled" || mainNPC.name == npcName))
+                {
+                    targetVisual = mainNPC;
+                }
+                // B. If not manually assigned, try finding it (Fallback)
                 else
                 {
-                    Debug.LogWarning($"Gesture '{gestureName}' not found in PlayerVisual mapping.");
+                    GameObject npcObj = GameObject.Find(npcName);
+                    if (npcObj != null) targetVisual = npcObj.GetComponent<NPCVisual>();
+                }
+
+                // C. Execute
+                if (targetVisual != null)
+                {
+                    targetVisual.PlayNamedGesture(animName);
+                }
+                else
+                {
+                    Debug.LogWarning($"Still could not find NPC '{npcName}'. Did you drag him into the PlayerVisual 'Main NPC' slot?");
                 }
             });
         }
     }
 
-
-
     private void LateUpdate()
     {
-        // 1. Safety Checks
         if (headBone == null || playerLogic == null) return;
 
-        // 2. Determine Target
         Transform target = null;
         if (playerLogic.closestObject != null)
         {
@@ -129,25 +109,16 @@ public class PlayerVisual : MonoBehaviour
 
         float targetWeight = 0f;
 
-        // 3. Check Angle (Owl Prevention)
         if (target != null)
         {
             Vector3 directionToTarget = target.position - transform.position;
             float angle = Vector3.Angle(transform.forward, directionToTarget);
 
-            // If target exists AND is in front of us, we want full weight
-            if (angle < maxLookAngle)
-            {
-                targetWeight = 1f;
-            }
+            if (angle < maxLookAngle) targetWeight = 1f;
         }
-        // If target is null OR angle is too big, targetWeight stays 0f
 
-        // 4. Smoothly Blend Weight
         currentLookWeight = Mathf.Lerp(currentLookWeight, targetWeight, Time.deltaTime * lookSpeed);
 
-        // 5. Apply Rotation (ONLY if weight is significant)
-        // If weight is near 0, we do nothing, letting the Animator control the head.
         if (currentLookWeight > 0.01f && target != null)
         {
             RotateHeadTowards(target, currentLookWeight);
@@ -156,31 +127,25 @@ public class PlayerVisual : MonoBehaviour
 
     private void RotateHeadTowards(Transform target, float weight)
     {
-        // A. Get the rotation the animation WANTS right now
         Quaternion animationRotation = headBone.rotation;
-
-        // B. Calculate where we WANT to look
         Vector3 direction = (target.position + lookOffset) - headBone.position;
-        direction.y = 0; // Keep head level (yaw only)
+        direction.y = 0;
 
         if (direction != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-            // C. Blend between Animation and Target
             headBone.rotation = Quaternion.Slerp(animationRotation, targetRotation, weight);
         }
     }
 
-    // ... (PlayGesture Coroutine remains unchanged) ...
-    private IEnumerator PlayGesture(string paramterName, string animName)
+    private IEnumerator PlayGesture(string triggerName, string animStateName)
     {
         if (gestureLayerIndex != -1) animator.SetLayerWeight(gestureLayerIndex, 1);
-        animator.SetBool(paramterName, true);
-        animator.CrossFadeInFixedTime(animName, 0.1f, gestureLayerIndex, 0f);
+        animator.SetBool(triggerName, true);
+        animator.CrossFadeInFixedTime(animStateName, 0.1f, gestureLayerIndex, 0f);
         yield return null;
 
-        float duration;
+        float duration = 2.0f;
         if (animator.IsInTransition(gestureLayerIndex))
             duration = animator.GetNextAnimatorStateInfo(gestureLayerIndex).length;
         else
@@ -201,15 +166,12 @@ public class PlayerVisual : MonoBehaviour
         }
 
         animator.SetLayerWeight(gestureLayerIndex, 0);
-        animator.SetBool(paramterName, false);
+        animator.SetBool(triggerName, false);
         currentGestureCoroutine = null;
     }
 
     public void SetTiredState(bool state)
     {
-        if (animator != null)
-        {
-            animator.SetBool("isTired", state);
-        }
+        if (animator != null) animator.SetBool("isTired", state);
     }
 }
