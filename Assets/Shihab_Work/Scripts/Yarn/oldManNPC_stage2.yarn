@@ -1,5 +1,4 @@
-﻿// ********************************* STAGE 2: THE SICKNESS *********************************
-
+﻿// ********************************* STAGE 2: THE SICKNESS (AL-MARAD) *********************************
 title: Shiekh_Khaled_stage2
 tags: 
 ---
@@ -9,7 +8,7 @@ tags:
 <<declare $has_red_pill = false>>
 <<declare $quest_fetch_pill = false>>
 
-// Initial Condition: Check if we already did this
+// Initial Condition: Check if he is already dead or recovered
 <<if $shiekh_dead == true>>
     <<jump Stage3_Bad_Ghost>>
 <<endif>>
@@ -18,71 +17,110 @@ tags:
     <<jump Shiekh_Khaled_stage3_Good>>
 <<endif>>
 
-// START STAGE 2
-Old Khaled: ...*heavy breathing*... *cough*...
-Old Khaled: Young one... the candle... it flickers in the wind...
+// ---------------------------------------------------------
+// START STAGE 2: THE BUILD UP
+// ---------------------------------------------------------
+
+// He is clutching his chest (Using 'angry' as a pain spasm gesture)
+<<npc_gesture Shiekh_Khaled angry>>
+Old Khaled: ...*heavy, rattling breath*... Astaghfirullah...
+Old Khaled: ...The walls of the chest are squeezing... like a grave closing in...
+
     -> "Sheikh Khaled! Are you okay?"
-        <<gesture anxious>>
-        Old Khaled: My heart... it feels heavy... like a stone.
-    -> "Do you need help?"
-        <<gesture offer>>
-        Old Khaled: ...Yes... I need my medicine... quickly...
+        <<gesture nod>> 
+        <<npc_gesture Shiekh_Khaled dismiss>>
+        Old Khaled: ...The heart is a bird, my son... and today... the cage is too tight.
+        Old Khaled: ...Every soul must taste death... but perhaps... not this hour...
+    -> "Do you need help? You look pale!"
+        <<gesture wave>> 
+        <<npc_gesture Shiekh_Khaled deny>>
+        Old Khaled: ...It is the Constriction (*Qabd*)...
+        Old Khaled: ...The breath refuses to enter... the shadows are gathering at the corners of my eyes...
 
-Old Khaled: Listen to me closely... my vision blurs...
-Old Khaled: Go to the bathroom cabinet...
-Old Khaled: There is a **Green Bottle**... looks like the leaves of a fresh olive tree.
-Old Khaled: **Do NOT** touch the Red one... it is for... a different ailment... it is poison for my heart now.
-Old Khaled: Please... hurry... bring the **Green** one...
+// DRAMATIC PAUSE
+<<npc_gesture Shiekh_Khaled angry>>
+Old Khaled: ...*violent cough*...
+Old Khaled: ...Listen to me... before the fog descends...
 
-// Set a quest state here in your game manager if needed
+    -> "Just tell me what to do!"
+        <<gesture nod>>
+    -> "I will call for a doctor!"
+        <<gesture shrug>>
+        <<npc_gesture Shiekh_Khaled dismiss>>
+        Old Khaled: ...No time... the doctor is far... but the cure is near...
+
+// THE INSTRUCTION
+<<npc_gesture Shiekh_Khaled wave>>
+Old Khaled: ...Inside... the cabinet...
+Old Khaled: ...There is a **Green Bottle**... it is the colour of the olive leaf... the colour of life...
+Old Khaled: ...Bring it to me...
+
+<<npc_gesture Shiekh_Khaled deny>>
+Old Khaled: ...But beware the **Red One**...
+Old Khaled: ...It is fire... it is the heat of the fever... poison for a weak heart like mine.
+Old Khaled: ...Do not mistake the fire for the garden... bring the **Green**... quickly...
+
+// Set quest state
 <<set $quest_fetch_pill = true>>
 ===
 
 // ********************************* STAGE 2: RETURN WITH PILL *********************************
-// Call this node when the player returns and interacts with the Sheikh again
 
 title: Shiekh_Khaled_PillReturn
 ---
-Old Khaled: ...*gasping*... did you... find it?
+<<npc_gesture Shiekh_Khaled angry>>
+Old Khaled: ...*gasping for air*... The shadow waits... did you bring the light?
 
-// CHECK INVENTORY VARIABLES
-<<if $has_green_pill == true>>
-    -> "Here is the Green bottle, as you asked."
-        <<gesture offer>>
-        Old Khaled: ...*shaking hands*... Alhamdulilah...
-        Old Khaled: ...*swallows pill*...
-        <<wait 2>>
-        Old Khaled: ...*breathing stabilizes*...
-        Old Khaled: ...You listened... you paid attention to the details...
-        Old Khaled: Just like a believer must pay attention to the signs...
-        
-        // REWARDS
-        <<set $lightHeartLevel = $lightHeartLevel + 20>>
-        <<set $shiekh_dead = false>>
-        <<set $stage2_completed = true>>
-        <<jump Shiekh_Khaled_stage3_Good>>
+    // CHECK INVENTORY VARIABLES
+    <<if $has_green_pill == true>>
+        -> "I found the Green bottle, like the olive leaf."
+            <<gesture wave>> 
+            <<npc_gesture Shiekh_Khaled wave>> 
+            Old Khaled: ...*shaking hands*... Alhamdulilah...
+            Old Khaled: ...*swallows medicine*...
+            
+            <<wait 2.0>>
+            
+            <<npc_gesture Shiekh_Khaled nod>>
+            Old Khaled: ...*long exhale*...
+            Old Khaled: ...The constriction has passed... and the expansion (*Bast*) returns...
+            
+            Old Khaled: ...You listened well, young one.
+            <<npc_gesture Shiekh_Khaled cocky>>
+            Old Khaled: ...In this life, many bottles look like medicine but are poison.
+            Old Khaled: ...Only the one who listens to the description of the Guide finds the cure.
+            
+            <<set $lightHeartLevel = $lightHeartLevel + 20>>
+            <<set $shiekh_dead = false>>
+            <<set $stage2_completed = true>>
+            <<jump Shiekh_Khaled_stage3_Good>>
 
-<<elseif $has_red_pill == true>>
-    -> "I found this Red bottle."
-        <<gesture offer>>
-        Old Khaled: ...Red?... No... *cough*...
-        Old Khaled: ...I told you... the green...
-        Old Khaled: ...Why... why didn't you listen?...
-        Old Khaled: ...The darkness... it comes...
-        
-        // DEATH CONSEQUENCE
-        Old Khaled: ...*eyes close slowly*...
-        ...
-        (Sheikh Khaled has passed away.)
-        
-        // PUNISHMENT
-        <<set $lightHeartLevel = $lightHeartLevel - 50>>
-        <<set $shiekh_dead = true>>
-        <<set $stage2_completed = true>>
-        <<jump Stage3_Bad_Intro>>
+    <<elseif $has_red_pill == true>>
+        -> "I found this Red bottle."
+            <<gesture wave>> 
+            <<npc_gesture Shiekh_Khaled deny>>
+            Old Khaled: ...Red?... No... *cough*...
+            Old Khaled: ...Did I not say... the fire?...
+            Old Khaled: ...You looked with your eyes... but not with your heart...
+            
+            <<npc_gesture Shiekh_Khaled dismiss>>
+            Old Khaled: ...The Trust (*Amanah*)... was too heavy for you...
+            Old Khaled: ...La ilaha illa Allah...
+            
+            Old Khaled: ...*eyes close slowly*...
+            ...
+            (Sheikh Khaled has passed away.)
+            
+            <<set $lightHeartLevel = $lightHeartLevel - 50>>
+            <<set $shiekh_dead = true>>
+            <<set $stage2_completed = true>>
+            <<jump Stage3_Bad_Intro>>
 
-<<else>>
-    -> "I couldn't find anything."
-        Old Khaled: ...Please... look again... green... cabinet...
-<<endif>>
+    <<else>>
+        -> "I couldn't find anything."
+            <<gesture shrug>>
+            <<npc_gesture Shiekh_Khaled angry>>
+            Old Khaled: ...Look again... my son...
+            Old Khaled: ...Do not let the dust of the world blind you... Green... Cabinet...
+    <<endif>>
 ===

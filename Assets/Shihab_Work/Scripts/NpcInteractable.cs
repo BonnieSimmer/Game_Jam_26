@@ -21,6 +21,8 @@ public class NpcInteractable : InteractableLogic
     private NpcRoaming npcRoaming; // Reference to the NpcRoaming script for controlling NPC movement
     private NavMeshAgent agent; // Reference to the NavMeshAgent component for controlling NPC movement
 
+    [SerializeField] private AudioSource npcAudioSource; // Reference to the AudioSource component for playing NPC sounds
+    [SerializeField] private AudioClip[] npcAudioClips;
     [Header("Relationship Settings")]
     public int relationship=0;
     private void Awake()
@@ -50,7 +52,7 @@ public class NpcInteractable : InteractableLogic
     {
         // Create a new Transform to store the original rotation
         base.Start();
-       
+       npcAudioSource = GetComponent<AudioSource>(); // Get the AudioSource component attached to the NPC
         npcRoaming = GetComponent<NpcRoaming>(); // Get the NpcRoaming component attached to the NPC
         relationship = PlayerPrefs.GetInt(npcName+"_relationship", 0); // Load relationship level from PlayerPrefs, defaulting to 0 if not found
 
@@ -75,10 +77,14 @@ public class NpcInteractable : InteractableLogic
         string progressVarKey = "$"+npcName+"_progress";
         string lastTalkedDay_Key = "$"+npcName+"_lastTalkedDay";
         string relationshipKey = "$"+npcName+"_relationship";
-
- 
+        if (npcAudioSource != null && npcAudioClips != null && npcAudioClips.Length > 0)
+        {
+            int randomIndex = Random.Range(0, npcAudioClips.Length);
+            npcAudioSource.PlayOneShot(npcAudioClips[randomIndex]);
+            Debug.Log($"{npcName} played a closing dialogue sound.");
+        }
         dialogueRunner.VariableStorage.SetValue(relationshipKey, relationship);
-        
+       
         int savedProgress = PlayerPrefs.GetInt(npcName+"_progress", 0); 
         dialogueRunner.VariableStorage.SetValue(progressVarKey, savedProgress);
         
@@ -134,12 +140,25 @@ public class NpcInteractable : InteractableLogic
     public void OnEnable()
     {
         if(dialogueRunner != null)
+        {
             dialogueRunner.onDialogueComplete.AddListener(OnDialogueEnded);
+            dialogueRunner.onNodeComplete.AddListener(PlayNpcNodeSound);
+        }
     }
     public void OnDisable()
     {
         if(dialogueRunner != null)
+        {
             dialogueRunner.onDialogueComplete.RemoveListener(OnDialogueEnded);
+            dialogueRunner.onNodeComplete.RemoveListener(PlayNpcNodeSound);
+        }
+    }
+    private void PlayNpcNodeSound(string nodeName)
+    {
+        if (npcAudioSource != null && npcAudioClips.Length > 0)
+        {
+            npcAudioSource.PlayOneShot(npcAudioClips[Random.Range(0, npcAudioClips.Length)]);
+        }
     }
 
     private void OnDialogueEnded()
@@ -178,6 +197,12 @@ public class NpcInteractable : InteractableLogic
                 lightAddedValue = 0;
                 dialogueRunner.VariableStorage.SetValue(lightKey, lightAddedValue);
             }
+        }
+        if (npcAudioSource != null && npcAudioClips != null && npcAudioClips.Length > 0)
+        {
+            int randomIndex = Random.Range(0, npcAudioClips.Length);
+            npcAudioSource.PlayOneShot(npcAudioClips[randomIndex]);
+            Debug.Log($"{npcName} played a closing dialogue sound.");
         }
         PlayerPrefs.Save();
     }

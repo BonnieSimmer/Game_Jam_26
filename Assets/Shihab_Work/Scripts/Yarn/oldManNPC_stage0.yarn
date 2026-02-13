@@ -1,146 +1,126 @@
 ﻿title: Shiekh_Khaled_stage0
 position: 81,-352
 ---
-// --- DECLARATIONS (Only run once by Yarn) ---
+// --- DECLARATIONS ---
+// Note: If you declared these in Stage 1 already, you don't need to declare them here again.
+// Yarn only needs declarations once per project.
 <<declare $Shiekh_Khaled_relationship = 0>>
 <<declare $Shiekh_Khaled_progress = 0>>
 <<declare $lightAdded = 0>>
-<<declare $currentDay = 0>>
-<<declare $wrongSalute = false>>
 
 // --- DIALOGUE START ---
 <<if $Shiekh_Khaled_progress == 0>>
-    Old Khaled: ....... .......
-    // He starts passive/ignoring you
-    <<npc_gesture Shiekh_Khaled dismiss>>
-
-    -> "slam alykom (peace be upon you)"
-        <<gesture nod>>
-        <<jump stage0_bestResponse>>
-    -> "...."
-        <<gesture lookAway>>
-        <<jump stage0_neutralResponse>>
-    -> "*wave and smile*"
-        <<gesture wave>>
-        <<jump stage0_goodResponse>>
-    -> "What is with the stony face old man"
-        <<gesture sarcastic>>
-        <<jump stage0_badResponse>>
-    -> "Your beard looks like broom head"
-        <<gesture cocky>>
-        <<jump stage0_worstResponse>>
     
-    // Conditional Choice
-    <<if $wrongSalute == false>>
-        -> "Hiii"
-            <<gesture wave>>
-            <<jump stage0_outOfContext>>
-    <<endif>>
+    // NARRATIVE: He is busy murmuring prayers, ignoring you.
+    Old Khaled: ... *murmuring soft words* ...
+    <<npc_gesture Shiekh_Khaled dismiss>>
+    Old Khaled: ...The hearts turn like the turning of the day...
+
+    // 1. MAKE SURE THESE ARROWS ARE ALIGNED VERTICALLY
+    -> "As-salamu alaykum, Sheikh." 
+        <<gesture nod>>
+        <<jump stage0_Greeting_Good>>
+    -> "Excuse me, sir?" 
+        <<gesture wave>>
+        <<jump stage0_Greeting_Neutral>>
+    -> "Hey, wake up old man!" 
+        <<gesture angry>>
+        <<jump stage0_Greeting_Bad>>
 
 <<elseif $Shiekh_Khaled_progress == 1>>
-    // This plays if you talk to him again on the same day (or if logic fails)
-    Old Khaled: ...... ....
+    // EXHAUSTED STATE
+    Old Khaled: ...The fortress needs guarding...
+    Old Khaled: ...I must rest my eyes now.
     <<npc_gesture Shiekh_Khaled dismiss>>
 <<endif>>
 ===
 
-//***************************** RESPONSES *************************
-
-title: stage0_bestResponse
-position: 634,103
+// ---------------------------------------------------------
+// PATH 1: THE GOOD GREETING (Respectful)
+// ---------------------------------------------------------
+title: stage0_Greeting_Good
+position: 400,0
 ---
-Old Khaled: .... ....wa alykom el-slam ...*faint smile*
+    // He looks up, pleased.
     <<npc_gesture Shiekh_Khaled nod>>
+    Old Khaled: Wa alaykumu s-salam, young man.
+    Old Khaled: It is rare to hear a gentle tongue in these times.
     <<set $Shiekh_Khaled_relationship += 10>>
     <<set $lightAdded = 10>>
-    <<set $Shiekh_Khaled_progress = 1>>
-    <<jump stage0_conclusion>>
+    <<jump stage0_Core_Advice>>
 ===
 
-title: stage0_goodResponse
-position: 340,112
+// ---------------------------------------------------------
+// PATH 2: THE NEUTRAL GREETING
+// ---------------------------------------------------------
+title: stage0_Greeting_Neutral
+position: 80,150
 ---
-Old Khaled: ... *faint smile and small wave*
-    <<npc_gesture Shiekh_Khaled wave>>
-    <<set $Shiekh_Khaled_relationship += 5>>
-    <<set $lightAdded = 1>>
-    <<set $Shiekh_Khaled_progress = 1>>
-    <<jump stage0_conclusion>>
-===
-
-title: stage0_neutralResponse
-position: 82,127
----
-Old Khaled: ... ..young man it is not very polite to keep staring at someone
-    <<npc_gesture Shiekh_Khaled deny>>
-    <<set $Shiekh_Khaled_relationship -= 5>>
-    <<set $lightAdded = -1>>
-    <<set $Shiekh_Khaled_progress = 1>>
-    <<jump stage0_conclusion>>
-===
-
-title: stage0_badResponse
-position: -210,89
----
-Old Khaled: ...*frowns*..you should pick your words when speaking to your elders
+    // He looks up, slowly.
     <<npc_gesture Shiekh_Khaled dismiss>>
+    Old Khaled: ...Use the greeting of peace, my son. The world has enough noise already.
+    <<set $Shiekh_Khaled_relationship += 0>>
+    <<set $lightAdded = 0>>
+    <<jump stage0_Core_Advice>>
+===
+
+// ---------------------------------------------------------
+// PATH 3: THE BAD GREETING
+// ---------------------------------------------------------
+title: stage0_Greeting_Bad
+position: -250,150
+---
+    // He frowns/denies.
+    <<npc_gesture Shiekh_Khaled deny>>
+    Old Khaled: ...Loud. You are very loud.
+    Old Khaled: A loud voice shakes the dust, but it does not open the heart.
     <<set $Shiekh_Khaled_relationship -= 10>>
     <<set $lightAdded = -10>>
-    <<set $Shiekh_Khaled_progress = 1>>
-    <<jump stage0_conclusion>>
+    <<jump stage0_Core_Advice>>
 ===
 
-title: stage0_worstResponse
-position: -532,105
+// ---------------------------------------------------------
+// THE CORE ADVICE (Lore & Tutorial)
+// ---------------------------------------------------------
+title: stage0_Core_Advice
+position: 80,400
 ---
-Old Khaled: ...*frowns*..*frowns more*
-    <<npc_gesture Shiekh_Khaled angry>>
-    <<set $Shiekh_Khaled_relationship -= 20>>
-    <<set $lightAdded = -15>>
-    <<set $Shiekh_Khaled_progress = 1>>
-    <<jump stage0_conclusion>>
-===
+Old Khaled: Tell me... you carry a heavy burden?
+Old Khaled: I see the shadow in your chest.
 
-title: stage0_outOfContext
-position: -81,-719
----
-Old Khaled: ...*looks at you strangely*
-    <<npc_gesture Shiekh_Khaled deny>>
-Old Khaled: that is not how we speak here, go
+// 2. CHECK INDENTATION HERE TOO
+-> "Who are you?"
+    <<gesture shrug>>
+    <<npc_gesture Shiekh_Khaled wave>>
+    // (Wave here acts as an inviting hand gesture)
+    Old Khaled: I am Khaled. I water the thirsty hearts here, just as the farmer waters the corn.
+    Old Khaled: But I cannot water a heart that is closed.
+-> "What do you mean by shadow?"
+    <<gesture lookAway>>
     <<npc_gesture Shiekh_Khaled dismiss>>
-    <<set $Shiekh_Khaled_relationship = 0>>
-    <<set $lightAdded = 0>>
-    <<set $wrongSalute = true>>
-    // Reset progress so they can try again immediately? Or keep as 0.
-    <<jump Shiekh_Khaled_stage0>>
-===
+    Old Khaled: Every man has a place where the thief knocks. The shadow is the door you left unlocked.
+-> "My chest feels heavy..."
+    <<gesture nod>>
+    <<npc_gesture Shiekh_Khaled nod>>
+    Old Khaled: That is the weight of the Dunya (the world). Or perhaps... a leak in your fortress.
 
-//***************************** CONCLUSION *************************
-// This node ensures the player actually sees the ending text
-title: Shiekh_Khaled_exhausted
-position: -21,625
----
-Old Khaled: ...
-Old Khaled: ...It is my nap time.
-Old Khaled: ......I need to get some rest.
-    <<npc_gesture Shiekh_Khaled dismiss>>
-===
+// THE MORAL LESSON (This plays after ANY choice above is finished)
+Old Khaled: Listen to me well. Ibn al-Qayyim taught us: "The heart is a fortress."
 
+<<npc_gesture Shiekh_Khaled cocky>>
+// (Using 'cocky' for the NPC here works as a 'Preaching/Confidence' gesture)
+Old Khaled: If you leave the gate open, the Enemy enters and claims the throne.
 
-title: Shiekh_Khaled_default
-position: 300,625
----
-Old Khaled: ...
+Old Khaled: Guard your light, young man. Do not let it fade.
+
+<<set $Shiekh_Khaled_progress = 1>>
+<<jump stage0_conclusion>>
 ===
 
 title: stage0_conclusion
-position: 300,400
-
+position: 80,650
 ---
-// This node exists just to cleanly end the conversation.
-<<if $Shiekh_Khaled_progress == 1>>
-    <<jump Shiekh_Khaled_exhausted>>
-<<else>>
-    <<jump Shiekh_Khaled_default>>
-<<endif>>
+// Ending the conversation
+Old Khaled: ...Now, I must return to my beads.
+<<npc_gesture Shiekh_Khaled dismiss>>
 ===

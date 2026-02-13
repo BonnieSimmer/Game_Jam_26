@@ -1,5 +1,4 @@
-﻿//***************************** STAGE 1 START *************************
-title: Shiekh_Khaled_stage1
+﻿title: Shiekh_Khaled_stage1
 position: 81,-352
 ---
 // Check if it's the right stage and at least day 1
@@ -19,6 +18,7 @@ position: 81,-352
 <<else>>
     // Fallback if accessed on Day 0 or wrong stage
     Old Khaled: ...I need some rest.
+    <<npc_gesture Shiekh_Khaled dismiss>>
 <<endif>>
 ===
 
@@ -28,18 +28,26 @@ title: stage1_WarmWelcome
 position: 421,16
 ---
 Old Khaled: ...slam alykom..*faint smile*
-    -> "wa alykom el-slam"
+<<npc_gesture Shiekh_Khaled wave>>
+    -> "Wa alykom el-slam"
+        <<gesture nod>>
         <<jump stage1_BestResponse>>
     -> "...."
+        <<gesture lookAway>>
         Old Khaled: ...*smile fades*...
+        <<npc_gesture Shiekh_Khaled dismiss>>
         <<jump stage1_NeutralResponse_Chat>>
     -> "I couldn't sleep because of the noise."
+        <<gesture shrug>>
         Old Khaled: ...*sigh*..the noise eh?...
-        Old Khaled: ...every man's worst enemy..*
-        Old Khaled: ....careful with the noise, it can misguide you if you let listen to it.
+        Old Khaled: ...every man's worst enemy...
+        <<npc_gesture Shiekh_Khaled cocky>> 
+        Old Khaled: ....careful with the noise, it can misguide you if you listen to it.
         <<jump stage1_nestedGoodResponse>>
-    -> "what are you doing?"
+    -> "What are you doing?"
+        <<gesture wave>>
         Old Khaled: ..I am just enjoying the nice weather, and the sound of the birds.
+        <<npc_gesture Shiekh_Khaled nod>>
         Old Khaled: ...*sigh*...it is a nice day to be outside.
         <<jump stage1_nestedBestResponse>>
 ===
@@ -48,12 +56,17 @@ title: stage1_GoodWelcome
 position: 39,35
 ---
 Old Khaled: ...*waves with a simple smile*...
-    -> "wave back and smile"
+<<npc_gesture Shiekh_Khaled wave>>
+    -> "Wave back and smile"
+        <<gesture wave>>
         <<jump stage1_BestResponse>>
     -> "...."
+        <<gesture lookAway>>
         Old Khaled: ...*smile fades*...
+        <<npc_gesture Shiekh_Khaled dismiss>>
         <<jump stage1_NeutralResponse_Chat>>
-    -> "your footsteps are getting louder, old man"
+    -> "Your footsteps are getting louder, old man"
+        <<gesture sarcastic>>
         <<jump stage1_BadResponse_Chat>>
 ===
 
@@ -61,11 +74,16 @@ title: stage1_NeutralWelcome
 position: -328,60
 ---
 Old Khaled: ...... 
+<<npc_gesture Shiekh_Khaled dismiss>>
     -> "...slam alykom"
+        <<gesture nod>>
         Old Khaled: ...wa alykom el slam.
+        <<npc_gesture Shiekh_Khaled nod>>
         <<jump stage1_NeutralResponse_Chat>>
     -> "..."
+        <<gesture lookAway>>
         Old Khaled: ...you really make me uncomfortable..
+        <<npc_gesture Shiekh_Khaled deny>>
         Old Khaled: if you need something from me just say it.
         <<jump stage1_BadResponse_Chat>>
 ===
@@ -74,8 +92,12 @@ title: stage1_ColdWelcome
 position: -548,42
 ---
 Old Khaled: ...what do you want?
+<<npc_gesture Shiekh_Khaled angry>>
+
     -> "Just saying hello."
+        <<gesture wave>>
         Old Khaled: Hmph. Hello then.
+        <<npc_gesture Shiekh_Khaled dismiss>>
         <<jump stage1_conclusion>>
 ===
 
@@ -88,23 +110,27 @@ Old Khaled: ....
 Old Khaled: ...*cough*..*cough*
 Old Khaled: ...need something from me?
     -> "I just wanted to say hi, but I guess I made you uncomfortable"
+        <<gesture shrug>>
         <<jump stage1_conclusion>>
-        
     -> "I thought you looked like you needed some company, but I guess I was wrong"
+        <<gesture nod>>
         Old Khaled: ...*gazes at you for a moment*...*sigh*..company?.
         Old Khaled: ....*thinks for a moment*..*takes a deep breath*
-        Old Khaled: ....you have reminded me of good old days when I used to have that (company).
+        <<npc_gesture Shiekh_Khaled nod>>
+        Old Khaled: ....you have reminded me of good old days when I used to have that.
         Old Khaled: ...*cough*..*cough*...I guess it is not a bad idea to have some company sometimes.
         Old Khaled: ...Thank you young one, for reminding me of those days.
         <<jump GoodResponseParameters>>
-
     -> "I am just passing by, I didn't mean to bother you"
+        <<gesture wave>>
         Old Khaled: ...*sigh*...it is ok, I guess.
+        <<npc_gesture Shiekh_Khaled dismiss>>
         Old Khaled: ...just try to be more direct next time.
         <<jump NeutralResponseParameters>>
-
     -> "What did the cat say to the old man?"
+        <<gesture cocky>>
         Old Khaled: ...*looks at you strangely*...
+        <<npc_gesture Shiekh_Khaled deny>>
         Old Khaled: ...*sigh*...I don't have time for jokes, young one.
         <<jump BadResponseParameters>>
 ===
@@ -113,25 +139,31 @@ title: stage1_BadResponse_Chat
 position: -320,361
 ---
 Old Khaled: ...*shocked*...*frowns*...
+<<npc_gesture Shiekh_Khaled deny>>
 Old Khaled: ...*frowns more*
 Old Khaled: ...one day you will know what it means to be old.
     -> "I am sorry, I just had a bad dream"
+        <<gesture lookAway>>
         Old Khaled: ...*sigh*...it is ok, we all have bad days.
+        <<npc_gesture Shiekh_Khaled nod>>
         Old Khaled: ....next time try to be more careful with your words, you never know who you might hurt.
         Old Khaled: ...*frowns less*...*sigh*...*cough*...
-        <<jump stage1_conclusion>> // No change in stats
-
+        <<jump stage1_conclusion>>
     -> "Why do old people always say the same thing?"
+        <<gesture angry>>
         Old Khaled: ...*frowns more*...*shakes head*...
+        <<npc_gesture Shiekh_Khaled angry>>
         Old Khaled: ....*stares sharply at you*....
         <<jump BadResponseParameters>>
-
     -> "..."
+        <<gesture lookAway>>
         Old Khaled: ...well? you got nothing to say for yourself?...
+        <<npc_gesture Shiekh_Khaled cocky>>
         <<jump NeutralResponseParameters>>
-
     -> "I am sorry, I just couldn't help but notice how old you look"
+        <<gesture sarcastic>>
         Old Khaled: ...*frowns more*...*shakes head*...
+        <<npc_gesture Shiekh_Khaled angry>>
         Old Khaled: ...*stares sharply at you*....
         <<jump WorstResponseParameters>>
 ===
@@ -142,43 +174,46 @@ title: stage1_BestResponse
 position: 424,526
 ---
 Old Khaled: ..*smiles more*..
+<<npc_gesture Shiekh_Khaled nod>>
 Old Khaled: ..How is your day young one?
 <<set $Shiekh_Khaled_relationship += 10>> 
 <<set $lightAdded = 10>>
-    
     -> "It is blessed, Alhamdulilah"
+        <<gesture nod>>
         <<jump stage1_nestedBestResponse>>
-    
     -> "It was Rough, lots of things to do and no time to finish anything"
+        <<gesture shrug>>
         <<jump stage1_nestedGoodResponse>> 
-
     -> "That is none of your business old man"
+        <<gesture dismiss>>
         Old Khaled: ..how disappointing...
+        <<npc_gesture Shiekh_Khaled deny>>
         Old Khaled: ...you should not listen to the voices in your head.
         Old Khaled: ..they will only destroy you, and their path only misleads.
+        <<npc_gesture Shiekh_Khaled cocky>>
         Old Khaled: ..like how the moths mistake their doom for their salvation.
         Old Khaled: only when it is too late, that they realise what they have done.
-        
-        // This resets the "Good vibes" from the start of this node
         <<set $Shiekh_Khaled_relationship -= 20>>
         <<set $lightAdded = -5>>
-        
         -> "I am sorry, it won't happen again"
+            <<gesture lookAway>>
             Old Khaled: ..the higher your light the easier it gets..
+            <<npc_gesture Shiekh_Khaled nod>>
             Old Khaled: ..the lower...the weaker you will get
             Old Khaled: ..and the easier you will be deceived.
             <<set $Shiekh_Khaled_progress = 3>>
             <<jump GoodResponseParameters>>
-
         -> "I am not a moth old man, I know what i am doing"
+            <<gesture angry>>
             Old Khaled: ..how unfortunate..
+            <<npc_gesture Shiekh_Khaled dismiss>>
             Old Khaled: ..you are walking right into their trap.
-            <<gesture angryPoint>>
             <<set $Shiekh_Khaled_progress = 3>>
             <<jump WorstResponseParameters>>
-
         -> "If i don't act tough, people will deceive me with good words"
+            <<gesture shrug>>
             Old Khaled: ..you are deceiving yourself..
+            <<npc_gesture Shiekh_Khaled deny>>
             Old Khaled: ...you don't need to be tough to avoid being deceived
             Old Khaled: ....you only need to be smart..and look behind the words
             Old Khaled: ..where do they lead? and what are the motives behind them?
@@ -191,35 +226,39 @@ title: stage1_nestedBestResponse
 position: 761,716
 ---
 Old Khaled: Alhamdulilah, care to join an old man for some tea?
+<<npc_gesture Shiekh_Khaled wave>>
 <<set $Shiekh_Khaled_relationship += 10>> 
 <<set $lightAdded = 15>>
-
     -> "I am sorry, but I got things to do at the moment, but thanks for the invite"
+        <<gesture nod>>
         Old Khaled: It is ok young one, finish your todos and come by.
+        <<npc_gesture Shiekh_Khaled nod>>
         Old Khaled: Don't be late, I sleep early..*smiles*
         <<set $Shiekh_Khaled_progress = 2>>
         <<jump GoodResponseParameters>>
-    
     -> "Thank you very much for the invite, but i don't want to bother you any further"
+        <<gesture wave>>
         Old Khaled: young man, your manners keep surprising me.
+        <<npc_gesture Shiekh_Khaled nod>>
         Old Khaled: what a bright lad you are.
         Old Khaled: don't let others influence your good manners.
         Old Khaled: it is truly a light to be cherished.
-        // Special case: Double Best Response
         <<set $Shiekh_Khaled_progress = 2>>
         <<set $Shiekh_Khaled_relationship += 20>> 
         <<set $lightAdded = 20>>
         <<jump stage1_conclusion>>
-
     -> "Thank you, but tea isn't really my favorite"
+        <<gesture shrug>>
         Old Khaled: ..you know tea was once the drink that i used to refuse.
+        <<npc_gesture Shiekh_Khaled cocky>>
         Old Khaled: ..until i learned.
         Old Khaled: ..that it is not the drink's fault, but the people you drink it with.
         <<set $Shiekh_Khaled_progress = 2>>
         <<jump NeutralResponseParameters>>
-
     -> "Tea? ..who drinks tea these days"
+        <<gesture sarcastic>>
         Old Khaled: ...the worst thing you could say was no.
+        <<npc_gesture Shiekh_Khaled dismiss>>
         Old Khaled: ...now if you excuse me.
         Old Khaled: ..it is about time for my morning nap.
         <<set $Shiekh_Khaled_progress = 2>>
@@ -231,33 +270,38 @@ position: 166,650
 ---
 Old Khaled: life can be quite distracting.
 Old Khaled: but only those with true light will see beyond the noise.
+<<npc_gesture Shiekh_Khaled nod>>
 Old Khaled: Don't let that bother you young one, one day all of this will pass.
 Old Khaled: and you will remember it and then laugh..*smiles faintly*
 <<set $Shiekh_Khaled_relationship += 10>> 
-    
-    -> "beyond the noise? what does that mean"
+    -> "Beyond the noise? what does that mean"
+        <<gesture shrug>>
         Old Khaled: you will know when you see.
+        <<npc_gesture Shiekh_Khaled wave>>
         Old Khaled: *smiles*
         <<set $Shiekh_Khaled_progress = 2>>
         <<jump GoodResponseParameters>>
-
-    -> "noise is something you hear not see, you know that right?"
+    -> "Noise is something you hear not see, you know that right?"
+        <<gesture sarcastic>>
         Old Khaled: ..how disappointing..
+        <<npc_gesture Shiekh_Khaled deny>>
         Old Khaled: ..sometimes words mislead who hears it...
         Old Khaled: but guides who listens to it...
         <<set $Shiekh_Khaled_progress = 2>>
         <<jump BadResponseParameters>>
-
     -> "I think you missed your meds morning slot"
+        <<gesture cocky>>
         Old Khaled: ..hmm?.. but i do remember taking them...
+        <<npc_gesture Shiekh_Khaled angry>>
         Old Khaled: ..wait.. hey!..you need to pick your words more carefully with your elders.
         Old Khaled: words can hurt more than a sword.
         Old Khaled: and the older you grow that slower you will heal, until your wounds never stop bleeding.
         <<set $Shiekh_Khaled_progress = 2>>
         <<jump WorstResponseParameters>>
-
     -> "What lies behind the noise?"
+        <<gesture nod>>
         Old Khaled: ..if i give you that answer now, you will lose it later.
+        <<npc_gesture Shiekh_Khaled wave>>
         Old Khaled: ....if i make it tell tomorrow maybe then you will know.
         Old Khaled: *faint laugh*
         <<set $Shiekh_Khaled_progress = 2>>
@@ -312,4 +356,5 @@ title: stage1_conclusion
 position: -172,1298
 ---
 Old Khaled: ...
+<<npc_gesture Shiekh_Khaled dismiss>>
 ===

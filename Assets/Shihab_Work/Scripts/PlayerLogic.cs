@@ -19,7 +19,10 @@ public class PlayerLogic : MonoBehaviour
     public GameObject closestObject;
     private bool isInRange = false;
     public float distanceFactor = 0.6f;
-    
+
+    public AudioSource playerSrc;
+    public AudioClip[] audioClips;
+
     public Dictionary<string, bool> inventory;
     public DialogueRunner dialogueRunner;
 
@@ -37,8 +40,29 @@ public class PlayerLogic : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         interactableIndicator.gameObject.SetActive(false);
         pressE_UI.gameObject.SetActive(false);
-        
+        playerSrc = GetComponent<AudioSource>();
         lightHeartLevel = PlayerPrefs.GetInt("lightHeartLevel", 20); // Load light heart level from PlayerPrefs, defaulting to 20 if not found
+        if (dialogueRunner != null)
+        {
+            dialogueRunner.onNodeComplete.AddListener(PlayChoiceSound);
+        }
+    }
+
+    private void PlayChoiceSound(string nodeName)
+    {
+        if (playerSrc != null)
+        {
+            // You can play a specific clip
+            if (audioClips.Length >0)
+            {
+                playerSrc.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)]);
+            }
+            // Or use one from your existing audioClips array
+            else if (audioClips.Length > 0)
+            {
+                playerSrc.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)]);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -71,6 +95,8 @@ public class PlayerLogic : MonoBehaviour
             // Sync Yarn variable -> C# variable
             if (dialogueRunner.VariableStorage.TryGetValue("$lightHeartLevel", out float yarnLevel))
             {
+                int audioIndex = Random.Range(0, audioClips.Length);
+                playerSrc.PlayOneShot(audioClips[audioIndex],1);
                 // Update the C# variable so HeartDisplay can read the correct value
                 this.lightHeartLevel = (int)yarnLevel;
             }

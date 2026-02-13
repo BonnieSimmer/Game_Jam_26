@@ -2,44 +2,56 @@
 
 title: Shiekh_Khaled_stage3_Good
 ---
+// Context: He is recovered and sitting up, offering the final guidance.
+<<npc_gesture Shiekh_Khaled nod>>
 Old Khaled: You saved an old man today... but the real struggle is yet to come.
-Old Khaled: I see a light in you, but it is flickering.
-    -> "What do you mean?"
-        <<gesture confused>>
+Old Khaled: I see a light in you, but it is flickering like a lamp in the wind.
 
+    -> "What do you mean?"
+        <<gesture shrug>> 
+
+<<npc_gesture Shiekh_Khaled wave>>
 Old Khaled: The maze you see in your dreams... do not think it is a place of stone and dirt.
 Old Khaled: It is the vessel of your own heart.
 Old Khaled: The walls are built of your deeds... and the darkness is built of your neglect.
 
     -> "And the monsters? The shadows?"
-        <<gesture scared>>
+        <<gesture lookAway>>
 
+<<npc_gesture Shiekh_Khaled deny>>
 Old Khaled: *Shayateen*... the whisperers.
 Old Khaled: They do not fight with swords, young one. They fight with confusion.
 Old Khaled: They want you to believe the lie is the truth... and that the bad choice is the good one.
 Old Khaled: They capitalize on your *Ghaflah*... your heedlessness.
 
+<<npc_gesture Shiekh_Khaled cocky>>
+// (Cocky used here as the authoritative "Teaching" gesture)
 Old Khaled: Listen carefully... at the center of the maze... there is no treasure of gold.
-Old Khaled: There is a **Gem of Character**. A trait.
+Old Khaled: There is a **Gem of Character**. A jewel of the soul.
 Old Khaled: Truthfulness (*Sidq*)... Courage... Kindness.
+
+<<npc_gesture Shiekh_Khaled nod>>
 Old Khaled: To reach it, you must not just fight the shadows... you must ignore their whispers.
-Old Khaled: Keep your light bright... for they cannot touch a heart that is fully awake.
+Old Khaled: Keep your light bright... for the thief cannot rob a house that is fully awake.
 ===
 
 // ********************************* STAGE 3: THE DARKNESS (BAD ENDING PATH) *********************************
 
 title: Stage3_Bad_Intro
 ---
-// This plays immediately after he dies
+// This plays immediately after the Sheikh dies in Stage 2.
+// Usually triggered by a script or an auto-running Yarn node.
 (The room feels colder. The shadows in the corners seem to stretch towards you.)
 (You feel a heavy weight on your chest. Your Light Level has dropped significantly.)
 ===
 
 title: Stage3_Bad_Ghost
 ---
-// If the player tries to talk to the dead body or the empty bed later
+// If the player interacts with the bed after the Sheikh has passed.
 (The bed is empty, but the air is thick with regret.)
 (You hear a faint whisper... not from the Sheikh, but from something else...)
+
 *Whisper: "You failed him... just like you will fail yourself..."*
+
 (The maze will be darker tonight.)
 ===
