@@ -13,19 +13,25 @@ position: 81,-352
     Old Khaled: ....... .......
 
     -> "slam alykom (peace be upon you)"
+        <<gesture nod>>
         <<jump stage0_bestResponse>>
     -> "...."
+        <<gesture lookAway>>
         <<jump stage0_neutralResponse>>
     -> "*wave and smile*"
+        <<gesture wave>>
         <<jump stage0_goodResponse>>
     -> "What is with the stony face old man"
+        <<gesture cocky>>
         <<jump stage0_badResponse>>
     -> "Your beard looks like broom head"
+        <<gesture sarcastic>>
         <<jump stage0_worstResponse>>
     
     // Conditional Choice
     <<if $wrongSalute == false>>
         -> "Hiii"
+            <<gesture wave>>
             <<jump stage0_outOfContext>>
     <<endif>>
 

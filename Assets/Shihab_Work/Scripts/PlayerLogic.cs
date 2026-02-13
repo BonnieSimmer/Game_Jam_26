@@ -1,7 +1,8 @@
-using UnityEngine;
-using UnityEngine.Rendering;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Rendering;
+using Yarn.Unity;
 
 public class PlayerLogic : MonoBehaviour
 {
@@ -20,7 +21,8 @@ public class PlayerLogic : MonoBehaviour
     public float distanceFactor = 0.6f;
     
     public Dictionary<string, bool> inventory;
-    
+    public DialogueRunner dialogueRunner;
+
     [SerializeField] private float interactableIndicatorRange = 3f;
     [SerializeField] private float interactableRange = 1.5f;
     [SerializeField] private LayerMask interactableLayer = 6;
@@ -53,7 +55,16 @@ public class PlayerLogic : MonoBehaviour
             closestObject.GetComponent<InteractableLogic>().Interact();
             interactableIndicatorText.text = closestObject.GetComponent<InteractableLogic>().interactionMessage; // Update the indicator text based on the interactable's message
         }
-        
+        if (dialogueRunner != null && dialogueRunner.VariableStorage != null)
+        {
+            // Sync Yarn variable -> C# variable
+            if (dialogueRunner.VariableStorage.TryGetValue("$lightHeartLevel", out float yarnLevel))
+            {
+                // Update the C# variable so HeartDisplay can read the correct value
+                this.lightHeartLevel = (int)yarnLevel;
+            }
+        }
+
     }
 
     private void DetermineClosestInteractable()
