@@ -29,38 +29,91 @@ public class PlayerVisual : MonoBehaviour
         gestureLayerIndex = animator.GetLayerIndex("Gestures");
         if (gestureLayerIndex != -1) animator.SetLayerWeight(gestureLayerIndex, 0);
 
-        if(dialogueRunner != null)
+        if (dialogueRunner != null)
         {
-            // Register the command "gesture" to call your coroutine logic
-            dialogueRunner.AddCommandHandler<string>("gesture", (animName) => {
+            // Register the command "gesture"
+            dialogueRunner.AddCommandHandler<string>("gesture", (gestureName) => {
                 if (currentGestureCoroutine != null) StopCoroutine(currentGestureCoroutine);
-                // Map simple names to animation triggers
-                string triggerName = "";
-                if (animName == "agreeing") triggerName = "isAgreed";
-                if (animName == "angryPoint") triggerName = "isAngryPointing";
-                if (animName == "anxious") triggerName = "isAnxious";
-                if (animName == "offering") triggerName = "isOffering";
 
-                // You might need to tweak your Coroutine to take just the trigger name
-                // or pass both if your setup requires it.
-                currentGestureCoroutine = StartCoroutine(PlayGesture(triggerName, animName + "_anim"));
+                string triggerName = "";
+                string animationStateName = "";
+
+                // --- MAPPING LOGIC ---
+                // We map simple Yarn commands to the EXACT Triggers and Animation names you provided.
+
+                switch (gestureName)
+                {
+                    // Positive / Neutral
+                    case "agree":
+                        triggerName = "isAgreed";
+                        animationStateName = "agreeing_anim";
+                        break;
+                    case "nod":
+                        triggerName = "isNoding";
+                        animationStateName = "headNod_anim";
+                        break;
+                    case "wave":
+                        triggerName = "isWaving";
+                        animationStateName = "waving_anim";
+                        break;
+
+                    // Negative / Defensive
+                    case "deny":
+                        triggerName = "isDenying";
+                        animationStateName = "denying_anim";
+                        break;
+                    case "dismiss":
+                        triggerName = "isDismissing";
+                        animationStateName = "dismis_anim";
+                        break;
+                    case "lookAway": // Good for guilt/shame
+                        triggerName = "isLookingAway";
+                        animationStateName = "lookAway_anim";
+                        break;
+                    case "shrug": // Good for "I don't know"
+                        triggerName = "isShrugging";
+                        animationStateName = "shrugging_anim";
+                        break;
+
+                    // Attitude / Rude (The "Bad Choice" animations)
+                    case "cocky":
+                        triggerName = "isCocky";
+                        animationStateName = "cocky_anim";
+                        break;
+                    case "sarcastic":
+                        triggerName = "isSarcastic";
+                        animationStateName = "sarcastic_anim";
+                        break;
+                    case "pout":
+                        triggerName = "isPouting";
+                        animationStateName = "pouting_anim";
+                        break;
+
+                    // Anger
+                    case "angry":
+                        triggerName = "isAngryPointing";
+                        animationStateName = "angryPoint_anim";
+                        break;
+                    case "mad":
+                        triggerName = "isMad";
+                        animationStateName = "angryFists_anim";
+                        break;
+                }
+
+                // If we found a match, play it
+                if (triggerName != "" && animationStateName != "")
+                {
+                    currentGestureCoroutine = StartCoroutine(PlayGesture(triggerName, animationStateName));
+                }
+                else
+                {
+                    Debug.LogWarning($"Gesture '{gestureName}' not found in PlayerVisual mapping.");
+                }
             });
         }
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            if (currentGestureCoroutine != null) StopCoroutine(currentGestureCoroutine);
-            currentGestureCoroutine = StartCoroutine(PlayGesture("isAgreed", "agreeing_anim"));
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (currentGestureCoroutine != null) StopCoroutine(currentGestureCoroutine);
-            currentGestureCoroutine = StartCoroutine(PlayGesture("isAngryPointing", "angryPoint_anim"));
-        }
-    }
+
 
     private void LateUpdate()
     {
