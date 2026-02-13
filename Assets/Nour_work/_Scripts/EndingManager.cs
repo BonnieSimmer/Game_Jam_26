@@ -93,14 +93,18 @@ public class EndingManager : MonoBehaviour
 
             foreach (char letter in line.ToCharArray())
             {
+                while (Time.timeScale == 0f) yield return null;
+
                 subtitleText.text += letter;
                 
                 float timer = 0f;
                 while (timer < typingSpeed)
                 {
+                    while (Time.timeScale == 0f) yield return null;
+
                     timer += Time.deltaTime;
 
-                    if (Input.GetKeyDown(continueKey) || Input.GetMouseButtonDown(0))
+                    if (Time.timeScale > 0f && (Input.GetKeyDown(continueKey) || Input.GetMouseButtonDown(0)))
                     {
                         subtitleText.text = line; 
                         lineSkipped = true;       
@@ -116,8 +120,18 @@ public class EndingManager : MonoBehaviour
             
             yield return null; 
 
-            while (!Input.GetKeyDown(continueKey) && !Input.GetMouseButtonDown(0))
+            while (true)
             {
+                if (Time.timeScale == 0f)
+                {
+                    yield return null;
+                    continue;
+                }
+
+                if (Input.GetKeyDown(continueKey) || Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Joystick1Button0))
+                {
+                    break; 
+                }
                 yield return null; 
             }
             
