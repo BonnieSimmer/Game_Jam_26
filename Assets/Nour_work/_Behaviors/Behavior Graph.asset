@@ -77,8 +77,13 @@ MonoBehaviour:
           rid: 4907288856275976425
         BlackboardGroupReferences: []
         Root:
+<<<<<<< Updated upstream
           rid: 6307363037174038528
         m_VersionTimestamp: 639065308606716361
+=======
+          rid: 6307363034036961280
+        m_VersionTimestamp: 639065188930708787
+>>>>>>> Stashed changes
     - rid: 4907288856275976425
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -107,7 +112,11 @@ MonoBehaviour:
           m_Value1: 8410515847943824418
         Name: Target
         m_Value: {fileID: 0}
+<<<<<<< Updated upstream
     - rid: 6307363037174038528
+=======
+    - rid: 6307363034036961280
+>>>>>>> Stashed changes
       type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -118,10 +127,17 @@ MonoBehaviour:
         m_Parent:
           rid: -2
         m_Child:
+<<<<<<< Updated upstream
           rid: 6307363037174038529
         Repeat: 1
         AllowMultipleRepeatsPerTick: 0
     - rid: 6307363037174038529
+=======
+          rid: 6307363034036961281
+        Repeat: 1
+        AllowMultipleRepeatsPerTick: 0
+    - rid: 6307363034036961281
+>>>>>>> Stashed changes
       type: {class: BranchingConditionComposite, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -130,21 +146,38 @@ MonoBehaviour:
         Graph:
           rid: 4907288856275976424
         m_Parent:
+<<<<<<< Updated upstream
           rid: 6307363037174038528
         m_Children:
         - rid: 6307363037174038530
         m_RegisteredObservers: []
         m_Conditions:
         - rid: 6307363037174038531
+=======
+          rid: 6307363034036961280
+        m_Children:
+        - rid: 6307363034036961282
+        m_RegisteredObservers: []
+        m_Conditions:
+        - rid: 6307363034036961283
+>>>>>>> Stashed changes
         m_RequiresAllConditions: 0
         True:
           rid: -2
         False:
+<<<<<<< Updated upstream
           rid: 6307363037174038530
         m_CurrentChild:
           rid: -2
         m_ObserverType: 0
     - rid: 6307363037174038530
+=======
+          rid: 6307363034036961282
+        m_CurrentChild:
+          rid: -2
+        m_ObserverType: 0
+    - rid: 6307363034036961282
+>>>>>>> Stashed changes
       type: {class: NavigateToTargetAction, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -153,12 +186,17 @@ MonoBehaviour:
         Graph:
           rid: 4907288856275976424
         m_Parent:
+<<<<<<< Updated upstream
           rid: 6307363037174038529
+=======
+          rid: 6307363034036961281
+>>>>>>> Stashed changes
         Agent:
           rid: 4907288856275976828
         Target:
           rid: 4907288856275976829
         Speed:
+<<<<<<< Updated upstream
           rid: 6307363037174038532
         DistanceThreshold:
           rid: 6307363037174038533
@@ -169,11 +207,24 @@ MonoBehaviour:
         m_TargetPositionMode:
           rid: 6307363037174038536
     - rid: 6307363037174038531
+=======
+          rid: 6307363034036961284
+        DistanceThreshold:
+          rid: 6307363034036961285
+        AnimatorSpeedParam:
+          rid: 6307363034036961286
+        SlowDownDistance:
+          rid: 6307363034036961287
+        m_TargetPositionMode:
+          rid: 6307363034036961288
+    - rid: 6307363034036961283
+>>>>>>> Stashed changes
       type: {class: CheckDistanceCondition, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         Graph:
           rid: 4907288856275976424
         Transform:
+<<<<<<< Updated upstream
           rid: 6307363037174038537
         Target:
           rid: 6307363037174038538
@@ -182,6 +233,16 @@ MonoBehaviour:
         Threshold:
           rid: 6307363037174038540
     - rid: 6307363037174038532
+=======
+          rid: 6307363034036961289
+        Target:
+          rid: 6307363034036961290
+        Operator:
+          rid: 6307363034036961291
+        Threshold:
+          rid: 6307363034036961292
+    - rid: 6307363034036961284
+>>>>>>> Stashed changes
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -189,7 +250,11 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: 4
+<<<<<<< Updated upstream
     - rid: 6307363037174038533
+=======
+    - rid: 6307363034036961285
+>>>>>>> Stashed changes
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -197,7 +262,11 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: 0.5
+<<<<<<< Updated upstream
     - rid: 6307363037174038534
+=======
+    - rid: 6307363034036961286
+>>>>>>> Stashed changes
       type: {class: 'BlackboardVariable`1[[System.String, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -205,7 +274,11 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: Speed
+<<<<<<< Updated upstream
     - rid: 6307363037174038535
+=======
+    - rid: 6307363034036961287
+>>>>>>> Stashed changes
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -213,7 +286,11 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: 1
+<<<<<<< Updated upstream
     - rid: 6307363037174038536
+=======
+    - rid: 6307363034036961288
+>>>>>>> Stashed changes
       type: {class: 'BlackboardVariable`1[[Unity.Behavior.NavigateToTargetAction/TargetPositionMode, Unity.Behavior]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -221,7 +298,11 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: 0
+<<<<<<< Updated upstream
     - rid: 6307363037174038537
+=======
+    - rid: 6307363034036961289
+>>>>>>> Stashed changes
       type: {class: 'GameObjectToComponentBlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -231,7 +312,11 @@ MonoBehaviour:
         m_Value: {fileID: 0}
         m_LinkedVariable:
           rid: 4907288856275976828
+<<<<<<< Updated upstream
     - rid: 6307363037174038538
+=======
+    - rid: 6307363034036961290
+>>>>>>> Stashed changes
       type: {class: 'GameObjectToComponentBlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -241,7 +326,11 @@ MonoBehaviour:
         m_Value: {fileID: 0}
         m_LinkedVariable:
           rid: 4907288856275976829
+<<<<<<< Updated upstream
     - rid: 6307363037174038539
+=======
+    - rid: 6307363034036961291
+>>>>>>> Stashed changes
       type: {class: 'BlackboardVariable`1[[Unity.Behavior.ConditionOperator, Unity.Behavior]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -249,7 +338,11 @@ MonoBehaviour:
           m_Value1: 0
         Name: 
         m_Value: 3
+<<<<<<< Updated upstream
     - rid: 6307363037174038540
+=======
+    - rid: 6307363034036961292
+>>>>>>> Stashed changes
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -278,7 +371,11 @@ MonoBehaviour:
   - rid: 4907288856275976781
   - rid: 4907288856275976782
   - rid: 4907288856275976783
+<<<<<<< Updated upstream
   m_VersionTimestamp: 639065308606716361
+=======
+  m_VersionTimestamp: 639065188930708787
+>>>>>>> Stashed changes
   m_SerializedVersion: 2
   m_DebugInfo: {fileID: 7899063307178966573}
   m_RuntimeGraph: {fileID: -2039155273507126149}
