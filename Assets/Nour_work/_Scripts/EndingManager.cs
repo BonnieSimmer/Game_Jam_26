@@ -24,7 +24,6 @@ public class EndingManager : MonoBehaviour
     [Header("Visual References")]
     public Light mainLight;
     public Transform waterObject;
-    public Transform childWaterObject;
     public Image fadePanel;
 
     [Header("Audio")]
@@ -38,7 +37,7 @@ public class EndingManager : MonoBehaviour
 
     private Color goodFogColor = Color.white;
     private Color badFogColor = new Color(0.6f, 0.0f, 0.0f); 
-    private float waterRiseSpeed = 0.5f;
+    private float waterRiseSpeed = 1f;
 
     IEnumerator Start()
     {
@@ -55,12 +54,24 @@ public class EndingManager : MonoBehaviour
         {
             if (oldMan) oldMan.SetActive(true);
             if (secondaryCamera) secondaryCamera.gameObject.SetActive(true);
+            if(happyMusic) happyMusic.Play();
             yield return StartCoroutine(RunDialogue(goodLines));
             yield return StartCoroutine(PlayGoodEndingVisuals());
         }
         else
         {
             if (entity) entity.SetActive(true); 
+            if (waterObject)
+            {
+                waterObject.gameObject.SetActive(true);
+                Renderer r = waterObject.GetComponent<Renderer>();
+                if (r)
+                {
+                    r.material.SetColor("Color_7D9A58EC", badFogColor);
+                    r.material.SetColor("Color_F01C36BF", badFogColor * 1.2f);
+                }
+            }
+            if (sadMusic) sadMusic.Play();
             yield return StartCoroutine(RunDialogue(badLines));
             yield return StartCoroutine(PlayBadEndingVisuals());
         }
@@ -126,8 +137,6 @@ public class EndingManager : MonoBehaviour
         RenderSettings.fogColor = goodFogColor;
         RenderSettings.fogDensity = 0.01f;
         
-        if(happyMusic) happyMusic.Play();
-
         float duration = 6.0f;
         float timer = 0f;
         float startIntensity = mainLight.intensity;
@@ -153,23 +162,7 @@ public class EndingManager : MonoBehaviour
         RenderSettings.fog = true;
         RenderSettings.fogColor = badFogColor; 
         RenderSettings.fogDensity = 0f;
-
-
-        if (waterObject) 
-        {
-            waterObject.gameObject.SetActive(true);
-            Renderer r = waterObject.GetComponent<Renderer>();
-            if(r) r.material.color = badFogColor;
-        }
         
-        if (childWaterObject)
-        {
-            Renderer childR = childWaterObject.GetComponent<Renderer>();
-            if (childR) childR.material.color = badFogColor;
-        }
-
-        if (sadMusic) sadMusic.Play();
-
         float duration = 6.0f; 
         float timer = 0f;
         float startFogDensity = RenderSettings.fogDensity;
@@ -180,23 +173,13 @@ public class EndingManager : MonoBehaviour
             timer += Time.deltaTime;
             float progress = timer / duration;
 
-            if (waterObject)
-            {
-                waterObject.Translate(waterRiseSpeed * Time.deltaTime * Vector3.up);
-            }
-            if (childWaterObject)
-            {
-                childWaterObject.Translate(waterRiseSpeed * Time.deltaTime * Vector3.up);
-            }
+            if (waterObject) waterObject.Translate(waterRiseSpeed * Time.deltaTime * Vector3.up);
 
-            // Thicken Fog
-            RenderSettings.fogDensity = Mathf.Lerp(startFogDensity, 0.3f, progress);
+            RenderSettings.fogDensity = Mathf.Lerp(startFogDensity, 0.2f, progress);
 
-            // Fade to Black (Delayed)
             if (fadePanel)
             {
                 Color c = Color.black;
-                // Only calculate alpha if we passed the start time
                 float fadeProgress = Mathf.Clamp01((timer - fadeStartTime) / (duration - fadeStartTime));
                 c.a = fadeProgress; 
                 fadePanel.color = c;
