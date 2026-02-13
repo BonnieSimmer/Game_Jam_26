@@ -25,6 +25,7 @@ public class PlayerLogic : MonoBehaviour
 
     public Dictionary<string, bool> inventory;
     public DialogueRunner dialogueRunner;
+    private int lastLightHeartLevel;
 
     [SerializeField] private float interactableIndicatorRange = 3f;
     [SerializeField] private float interactableRange = 1.5f;
@@ -90,15 +91,18 @@ public class PlayerLogic : MonoBehaviour
                 interactableIndicatorText.text = logic.interactionMessage;
             }
         }
-        if (dialogueRunner != null && dialogueRunner.VariableStorage != null)
+        if (dialogueRunner.VariableStorage.TryGetValue("$lightHeartLevel", out float yarnLevel))
         {
-            // Sync Yarn variable -> C# variable
-            if (dialogueRunner.VariableStorage.TryGetValue("$lightHeartLevel", out float yarnLevel))
+            int newLevel = (int)yarnLevel;
+
+            // ONLY play sound and update if the level actually CHANGED
+            if (newLevel != lastLightHeartLevel)
             {
-                int audioIndex = Random.Range(0, audioClips.Length);
-                playerSrc.PlayOneShot(audioClips[audioIndex],1);
-                // Update the C# variable so HeartDisplay can read the correct value
-                this.lightHeartLevel = (int)yarnLevel;
+                if (audioClips.Length > 0)
+                    playerSrc.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)]);
+
+                this.lightHeartLevel = newLevel;
+                lastLightHeartLevel = newLevel; // Update the tracker
             }
         }
 

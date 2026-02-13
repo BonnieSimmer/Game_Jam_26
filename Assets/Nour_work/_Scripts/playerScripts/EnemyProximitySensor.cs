@@ -14,6 +14,10 @@ public class EnemyProximitySensor : MonoBehaviour
     [Header("Pulse Effect (Optional)")]
     public bool usePulse = true;
     public float pulseSpeed = 2.0f;
+    
+    [Header("Whisper Effect (Optional)")]
+    public AudioSource whisperSound;
+    public float maxWhisperVolume = 0.8f;
 
     private Vignette _vignette;
 
@@ -23,13 +27,14 @@ public class EnemyProximitySensor : MonoBehaviour
         {
             _vignette = v;
         }
+        whisperSound = GetComponent<AudioSource>();
+        if (whisperSound) whisperSound.volume = 0f;;
     }
 
     void Update()
     {
         if (!_vignette) return;
 
-        // 1. Find Closest Enemy
         float closestDistance = Mathf.Infinity;
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Entity");
 
@@ -47,6 +52,7 @@ public class EnemyProximitySensor : MonoBehaviour
         }
 
         float finalIntensity = factor * maxIntensity;
+        float whisperVolume = factor * maxWhisperVolume; 
         
         if (usePulse && factor > 0.1f)
         {
@@ -55,11 +61,13 @@ public class EnemyProximitySensor : MonoBehaviour
         }
 
         _vignette.intensity.value = Mathf.Clamp(finalIntensity, 0f, 0.5f);
+        whisperSound.volume = Mathf.Clamp(whisperVolume, 0f, 0.2f);
     }
     
     public void ResetAndDisable()
     {
         if (_vignette) _vignette.intensity.value = 0f;
+        if (whisperSound) whisperSound.volume = 0f;
         this.enabled = false; 
     }
 

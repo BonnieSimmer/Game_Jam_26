@@ -154,12 +154,7 @@ public class NpcInteractable : InteractableLogic
         {
             if (npcAudioSource != null && npcAudioClips.Length > 0)
             {
-                // Stop any previous clip immediately to prevent the "cascade" overlap
-                npcAudioSource.Stop();
-
-                // Optional: Add a slight pitch variation to make it sound more natural
-                npcAudioSource.pitch = Random.Range(0.85f, 1.15f);
-
+                npcAudioSource.Stop(); // Stop the previous sound to prevent "cascading"
                 npcAudioSource.PlayOneShot(npcAudioClips[Random.Range(0, npcAudioClips.Length)]);
             }
         }

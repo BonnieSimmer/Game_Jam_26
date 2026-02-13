@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1b7d31f9e91d73c4bb55aa41b15a88bc
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 224331
+  packageName: Stylized House Interior
+  packageVersion: 1.0
+  assetPath: Assets/prefab/packs/StylArts/StylizedHouseInterior/Art/Animations/Cam04.anim
+  uploadId: 669223

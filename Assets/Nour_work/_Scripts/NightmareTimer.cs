@@ -43,12 +43,29 @@ public class NightmareTimer : MonoBehaviour
     public void LevelComplete(bool won)
     {
         _isRunning = false;
-        
-        if (NightmareManager.Instance) 
-            NightmareManager.Instance.playerGotTrait = won;
 
         if (won)
         {
+            int currentDay = PlayerPrefs.GetInt("DayNumber", 1);
+
+            if (currentDay == 1)
+            {
+                PlayerPrefs.SetInt("Trait1", 1);
+                Debug.Log("Trait 1 Unlocked!");
+            }
+            else if (currentDay == 2)
+            {
+                PlayerPrefs.SetInt("Trait2", 1);
+                Debug.Log("Trait 2 Unlocked!");
+            }
+            else if (currentDay == 3)
+            {
+                PlayerPrefs.SetInt("Trait3", 1);
+                Debug.Log("Trait 3 Unlocked!");
+            }
+
+            PlayerPrefs.Save();
+
             if (SimpleFader.Instance) SimpleFader.Instance.FadeOutAndIn(Color.white ,ReturnToMain);
         }
         else
@@ -61,7 +78,18 @@ public class NightmareTimer : MonoBehaviour
 
     void ReturnToMain()
     {
-        if (_returnToScene.Equals("")) return;
-        SceneManager.LoadScene(_returnToScene);
+        int currentDay = PlayerPrefs.GetInt("DayNumber", 1);
+
+        if (currentDay >= 3)
+        {
+            SceneManager.LoadScene("EndingScene"); 
+        }
+        else
+        {
+            if (_returnToScene.Equals("")) return;
+            GameDataHandler.SaveProgress(_returnToScene);
+            SceneManager.LoadScene(_returnToScene);
+        }
+        
     }
 }

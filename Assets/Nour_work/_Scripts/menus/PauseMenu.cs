@@ -1,33 +1,77 @@
+using StarterAssets;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject menuPanel;
-    private InputManager _input;
+    private StarterAssetsInputs _input;
     
-    public static bool IsPaused;
+    public static bool IsPaused = false;
+    public GameObject returnedObject;
 
     void Start()
     {
-        _input = Object.FindFirstObjectByType<InputManager>();
-        _input.OnPause += TogglePause;
-        Resume();
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player)
+        {
+            _input = player.GetComponent<StarterAssetsInputs>();
+        }
+        
+        if (menuPanel) menuPanel.SetActive(false);
+        Resume(); 
+    }
+
+    void Update()
+    {
+        if (!_input) return;
+
+        if (_input.pause)
+        {
+            _input.pause = false; 
+            TogglePause();
+        }
     }
 
     public void TogglePause()
     {
-        if (IsPaused) Resume(); else Pause();
+        if (IsPaused) Resume(); 
+        else Pause();
     }
 
     public void Resume()
     {
         IsPaused = false;
-        menuPanel.SetActive(false);
+        if (menuPanel) menuPanel.SetActive(false);
         Time.timeScale = 1f;
-        SetCursorState(false);
+        AudioListener.pause = false;
+        
+        if (returnedObject) returnedObject.SetActive(true);
+        
+        SetCursorState(false); 
+        
+        if (_input) 
+        {
+            _input.cursorInputForLook = true;
+            _input.look = Vector2.zero;
+        }
     }
 
+    private void Pause()
+    {
+        IsPaused = true;
+        if (menuPanel) menuPanel.SetActive(true);
+        Time.timeScale = 0f;
+        AudioListener.pause = true;
+        
+        SetCursorState(true);
+        
+        if (_input) 
+        {
+            _input.cursorInputForLook = false;
+            _input.look = Vector2.zero; 
+        }
+    }
     public void QuitGame()
     {
         Application.Quit();
@@ -35,25 +79,14 @@ public class PauseMenu : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
+        Time.timeScale = 1f; 
+        IsPaused = false;
         SceneManager.LoadScene("Nour_work/Scenes/Scene_MainMenu");
-    }
-
-    private void Pause()
-    {
-        IsPaused = true;
-        menuPanel.SetActive(true);
-        Time.timeScale = 0f;
-        SetCursorState(true);
     }
 
     private void SetCursorState(bool visible)
     {
         Cursor.visible = visible;
         Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
-    }
-
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        if (hasFocus && !IsPaused) SetCursorState(false);
     }
 }

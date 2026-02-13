@@ -154,7 +154,10 @@ public class GameManager : MonoBehaviour
     }
     public void GoingToSleep()
     {
+<<<<<<< HEAD
         
+=======
+>>>>>>> 87b134c66c41ab2e3e1270ff2c8b236ba9ca9f4e
         StartCoroutine(SleepCoroutine());
     }
 
