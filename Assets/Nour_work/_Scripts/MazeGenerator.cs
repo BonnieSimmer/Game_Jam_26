@@ -31,6 +31,16 @@ public class MazeGenerator : MonoBehaviour
 
     void Start()
     {
+        if (NightmareManager.Instance)
+        {
+            _size = NightmareManager.Instance.mazeSize;
+            numberOfEnemies = NightmareManager.Instance.enemyCount;
+        }
+        else
+        {
+            _size = 21; 
+            Debug.LogWarning("No NightmareManager found. Using default size 21.");
+        }
         if (_size % 2 == 0) _size++;
         
         if (playerInstance) _playerController = playerInstance.GetComponent<CharacterController>();
@@ -174,6 +184,13 @@ public class MazeGenerator : MonoBehaviour
         if (_playerController) _playerController.enabled = false;
         playerInstance.transform.position = pos;
         if (_playerController) _playerController.enabled = true;
+        
+        var tpc = playerInstance.GetComponent<StarterAssets.ThirdPersonController>();
+        if (tpc) 
+        {
+            tpc.enabled = true;
+            playerInstance.transform.rotation = Quaternion.identity; 
+        }
     }
 
     public void RespawnPlayer()
@@ -253,7 +270,7 @@ public class MazeGenerator : MonoBehaviour
     void SpawnGoal()
     {
         float spawnY = (minHeight + maxHeight) / 2f;
-        Vector3 goalPos = new Vector3(_center.x * spacing, spawnY + 0.5f, _center.y * spacing);
+        Vector3 goalPos = new Vector3(_center.x * spacing, spawnY + 1.5f, _center.y * spacing);
         if (goalPrefab)
         {
             GameObject goal = Instantiate(goalPrefab, goalPos, Quaternion.identity);

@@ -10,7 +10,9 @@ public class PlayerAbilities : MonoBehaviour
     private ThirdPersonController _controller;
     private StarterAssetsInputs _input;
     private NavMeshPath _navPath;
-    private LineRenderer _pathLine; 
+    private LineRenderer _pathLine;
+    private PlayerLogic _playerLogic;
+
 
     private float _defaultMoveSpeed;
     private float _defaultSprintSpeed;
@@ -19,6 +21,9 @@ public class PlayerAbilities : MonoBehaviour
     private float _freezeCooldownTimer = 0f;
     private float _pathCooldownTimer = 0f;
     private float _currentPathDuration = 0f; 
+    
+    [Header("Player light level Stats")]
+    public int lightHeartLevel = 20;
     
     [Header("UI")]
     public Image freezeCooldownFill; 
@@ -76,6 +81,9 @@ public class PlayerAbilities : MonoBehaviour
         _isPathActive = false;
         if (freezeCooldownFill) freezeCooldownFill.fillAmount = 0;
         if (pathCooldownFill) pathCooldownFill.fillAmount = 0;
+        
+        lightHeartLevel = PlayerPrefs.GetInt("lightHeartLevel", 20);
+        glowIntensity = lightHeartLevel / 100f;
     }
 
     void Update()
@@ -179,7 +187,7 @@ public class PlayerAbilities : MonoBehaviour
 
     void UpdatePathVisuals()
     {
-        if (goalPosition == null || _pathLine == null) return;
+        if (!goalPosition || !_pathLine) return;
 
         if (NavMesh.CalculatePath(transform.position, goalPosition.position, NavMesh.AllAreas, _navPath))
         {
@@ -203,7 +211,7 @@ public class PlayerAbilities : MonoBehaviour
                 _pathLine.startColor = brightColor;
                 _pathLine.endColor = brightColor;
                 
-                if (_pathLine.material != null) 
+                if (_pathLine.material) 
                 {
                     _pathLine.material.color = Color.white; 
                 }

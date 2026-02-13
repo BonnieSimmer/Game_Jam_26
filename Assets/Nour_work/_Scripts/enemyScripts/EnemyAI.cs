@@ -61,6 +61,15 @@ public class EnemyAI : MonoBehaviour
         _hasCaughtPlayer = true;
         _agent.isStopped = true;
         _agent.velocity = Vector3.zero;
+        
+        if (playerTarget)
+        {
+            var tpc = playerTarget.GetComponent<StarterAssets.ThirdPersonController>();
+            if (tpc) tpc.enabled = false; 
+
+            var playerAnim = playerTarget.GetComponent<Animator>();
+            if (playerAnim) playerAnim.SetFloat("Speed", 0f);
+        }
 
         Animator anim = GetComponentInChildren<Animator>();
         var camComponent = GetComponentInChildren<CinemachineCamera>(true);
@@ -75,7 +84,6 @@ public class EnemyAI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("JumpScareManager or Camera missing! Resetting immediately.");
             var mazeGen = FindFirstObjectByType<MazeGenerator>();
             if (mazeGen) mazeGen.RespawnPlayer();
         }

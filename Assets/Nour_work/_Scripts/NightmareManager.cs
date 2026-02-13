@@ -4,32 +4,35 @@ public class NightmareManager : MonoBehaviour
 {
     public static NightmareManager Instance;
 
-    public int mazeSize = 21;   // Must be odd (if you forget I have a fail safe no worry)  
+    [Header("Current Level Data")]
+    public int mazeSize = 21;       
     public int enemyCount = 3;      
     public float timeLimitInSeconds = 120f;   
-    public string returnToSceneName = "Nour_work/Scenes/Scene_Level_01";
-
-    public bool playerGotTrait = false;
+    public string returnToSceneName = "Shihab_Work/Scenes/IndoorsScene";
+    
+    [Header("Difficulty Scaling")]
+    public int baseMazeSize = 9;
+    public float baseTime = 60f;
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
+        CalculateDifficulty(); 
     }
     
-    // Pass from daytime to this function
-    public void SetLevelData(int size, int enemies, float time, string sceneName)
+    public void CalculateDifficulty()
     {
-        mazeSize = size;
-        enemyCount = enemies;
-        timeLimitInSeconds = time;
-        returnToSceneName = sceneName;
+        int dayNumber = PlayerPrefs.GetInt("DayNumber", 1);
+        dayNumber = Mathf.Max(1, dayNumber);
+        
+        mazeSize = baseMazeSize + (dayNumber * 3);
+        
+        if (mazeSize % 2 == 0) mazeSize++; 
+
+        enemyCount = dayNumber;
+
+        timeLimitInSeconds = baseTime * dayNumber;
+        
+        Debug.Log($"Nightmare Generated for Day {dayNumber}: Size {mazeSize}, Enemies {enemyCount}, Time {timeLimitInSeconds}s");
     }
 }
