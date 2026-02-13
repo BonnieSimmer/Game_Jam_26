@@ -77,12 +77,7 @@ public class NpcInteractable : InteractableLogic
         string progressVarKey = "$"+npcName+"_progress";
         string lastTalkedDay_Key = "$"+npcName+"_lastTalkedDay";
         string relationshipKey = "$"+npcName+"_relationship";
-        if (npcAudioSource != null && npcAudioClips != null && npcAudioClips.Length > 0)
-        {
-            int randomIndex = Random.Range(0, npcAudioClips.Length);
-            npcAudioSource.PlayOneShot(npcAudioClips[randomIndex]);
-            Debug.Log($"{npcName} played a closing dialogue sound.");
-        }
+       
         dialogueRunner.VariableStorage.SetValue(relationshipKey, relationship);
        
         int savedProgress = PlayerPrefs.GetInt(npcName+"_progress", 0); 
@@ -139,7 +134,7 @@ public class NpcInteractable : InteractableLogic
     }
     public void OnEnable()
     {
-        if(dialogueRunner != null)
+        if (dialogueRunner != null)
         {
             dialogueRunner.onDialogueComplete.AddListener(OnDialogueEnded);
             dialogueRunner.onNodeComplete.AddListener(PlayNpcNodeSound);
@@ -147,7 +142,7 @@ public class NpcInteractable : InteractableLogic
     }
     public void OnDisable()
     {
-        if(dialogueRunner != null)
+        if (dialogueRunner != null)
         {
             dialogueRunner.onDialogueComplete.RemoveListener(OnDialogueEnded);
             dialogueRunner.onNodeComplete.RemoveListener(PlayNpcNodeSound);
@@ -155,9 +150,18 @@ public class NpcInteractable : InteractableLogic
     }
     private void PlayNpcNodeSound(string nodeName)
     {
-        if (npcAudioSource != null && npcAudioClips.Length > 0)
+        if (nodeName.Contains(npcName))
         {
-            npcAudioSource.PlayOneShot(npcAudioClips[Random.Range(0, npcAudioClips.Length)]);
+            if (npcAudioSource != null && npcAudioClips.Length > 0)
+            {
+                // Stop any previous clip immediately to prevent the "cascade" overlap
+                npcAudioSource.Stop();
+
+                // Optional: Add a slight pitch variation to make it sound more natural
+                npcAudioSource.pitch = Random.Range(0.85f, 1.15f);
+
+                npcAudioSource.PlayOneShot(npcAudioClips[Random.Range(0, npcAudioClips.Length)]);
+            }
         }
     }
 
@@ -198,12 +202,7 @@ public class NpcInteractable : InteractableLogic
                 dialogueRunner.VariableStorage.SetValue(lightKey, lightAddedValue);
             }
         }
-        if (npcAudioSource != null && npcAudioClips != null && npcAudioClips.Length > 0)
-        {
-            int randomIndex = Random.Range(0, npcAudioClips.Length);
-            npcAudioSource.PlayOneShot(npcAudioClips[randomIndex]);
-            Debug.Log($"{npcName} played a closing dialogue sound.");
-        }
+        
         PlayerPrefs.Save();
     }
     IEnumerator SmoothLookAt(Transform currTransform, Transform targetTransform)
