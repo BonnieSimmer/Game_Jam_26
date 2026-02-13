@@ -15,7 +15,7 @@ public class PlayerLogic : MonoBehaviour
     public bool canHoldItem_inLeftHand = true;
     public bool canHoldItem_inRightHand = true;
     public Camera mainCamera;
-    private GameObject closestObject;
+    public GameObject closestObject;
     private bool isInRange = false;
     public float distanceFactor = 0.6f;
     
@@ -60,11 +60,14 @@ public class PlayerLogic : MonoBehaviour
     {
         Collider[] nearByObjects = Physics.OverlapSphere(transform.position, interactableIndicatorRange, interactableLayer);
         closestObject = null;
+
         float closestDistance = Mathf.Infinity;
         if (nearByObjects.Length > 0)
         {
             foreach (Collider col in nearByObjects)
             {
+                InteractableLogic logic = col.GetComponent<InteractableLogic>();
+                if (logic == null) continue; // Skip objects that don't have the script
 
                 float distanceToCol = Vector3.Distance(transform.position, col.transform.position);
                 if (distanceToCol < closestDistance)

@@ -173,6 +173,7 @@ Old Khaled: ..How is your day young one?
         -> "I am not a moth old man, I know what i am doing"
             Old Khaled: ..how unfortunate..
             Old Khaled: ..you are walking right into their trap.
+            <<gesture angryPoint>>
             <<set $Shiekh_Khaled_progress = 3>>
             <<jump WorstResponseParameters>>
 
