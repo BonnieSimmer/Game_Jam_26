@@ -17,8 +17,6 @@ public class PauseMenu : MonoBehaviour
             _input = player.GetComponent<StarterAssetsInputs>();
         }
         
-        if (_input == null) Debug.LogError("CRITICAL: PauseMenu could not find StarterAssetsInputs!");
-
         if (menuPanel) menuPanel.SetActive(false);
         Resume(); 
     }
@@ -29,7 +27,7 @@ public class PauseMenu : MonoBehaviour
 
         if (_input.pause)
         {
-            _input.ConsumePauseInput();
+            _input.pause = false; 
             TogglePause();
         }
     }
@@ -49,7 +47,11 @@ public class PauseMenu : MonoBehaviour
         
         SetCursorState(false); 
         
-        if (_input) _input.cursorInputForLook = true;
+        if (_input) 
+        {
+            _input.cursorInputForLook = true;
+            _input.look = Vector2.zero;
+        }
     }
 
     private void Pause()
@@ -61,9 +63,12 @@ public class PauseMenu : MonoBehaviour
         
         SetCursorState(true);
         
-        if (_input) _input.cursorInputForLook = false;
+        if (_input) 
+        {
+            _input.cursorInputForLook = false;
+            _input.look = Vector2.zero; 
+        }
     }
-
     public void QuitGame()
     {
         Application.Quit();

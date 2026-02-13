@@ -91546,7 +91546,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1998915245}
   - component: {fileID: 1998915246}
-  - component: {fileID: 1998915247}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -91589,23 +91588,6 @@ MonoBehaviour:
   fadeOutCanvasGroup: {fileID: 0}
   isPlayTesting: 1
   vignetteEffect: {fileID: 0}
---- !u!114 &1998915247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1998915244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a2327412d0ace1568f4c9416f26d7ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NightmareManager
-  mazeSize: 21
-  enemyCount: 3
-  timeLimitInSeconds: 120
-  returnToSceneName: Nour_work/Scenes/Scene_Level_01
-  playerGotTrait: 0
 --- !u!1 &2014022982
 GameObject:
   m_ObjectHideFlags: 0
@@ -92118,6 +92100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cded085d155cde949b60f67a11dbc3bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  version: 2
+  globalVolume: 0
   mode: 2
   size: {x: 1.2788513, y: 2.5998979, z: 1.8660704}
   overrideRendererFilters: 0
@@ -92148,8 +92132,6 @@ MonoBehaviour:
     e33: 1
   cachedHashCode: 288411912
   fillEmptySpaces: 0
-  version: 2
-  globalVolume: 0
 --- !u!1 &2045174645
 GameObject:
   m_ObjectHideFlags: 0

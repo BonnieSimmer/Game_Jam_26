@@ -90,6 +90,8 @@ public class PlayerAbilities : MonoBehaviour
     {
         if (!_input) return;
 
+        if (PauseMenu.IsPaused) return;
+        
         HandleCooldowns();
         HandleLightPath();
         HandleFreeze();
