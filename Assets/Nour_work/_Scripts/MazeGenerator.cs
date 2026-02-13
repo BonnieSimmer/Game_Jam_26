@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
 using Unity.Behavior;
+using UnityEngine.AI;
 
 public class MazeGenerator : MonoBehaviour
 {
@@ -31,6 +32,16 @@ public class MazeGenerator : MonoBehaviour
 
     void Start()
     {
+        if (NightmareManager.Instance)
+        {
+            _size = NightmareManager.Instance.mazeSize;
+            numberOfEnemies = NightmareManager.Instance.enemyCount;
+        }
+        else
+        {
+            _size = 21; 
+            Debug.LogWarning("No NightmareManager found. Using default size 21.");
+        }
         if (_size % 2 == 0) _size++;
         
         if (playerInstance) _playerController = playerInstance.GetComponent<CharacterController>();
@@ -131,7 +142,8 @@ public class MazeGenerator : MonoBehaviour
 
         for (int i = 0; i < _corners.Count; i++)
         {
-            Vector3 cornerPos = new Vector3(_corners[i].x * spacing, spawnY + 3.0f, _corners[i].y * spacing);
+            // CHANGE 1: Lowered spawn height from 3.0f to 0.5f so they are closer to the floor
+            Vector3 cornerPos = new Vector3(_corners[i].x * spacing, spawnY + 0.5f, _corners[i].y * spacing);
 
             if (i == playerCornerIndex)
             {
@@ -153,11 +165,16 @@ public class MazeGenerator : MonoBehaviour
         for (int i = 0; i < enemiesToSpawn; i++)
         {
             Vector3 spawnBase = validEnemySpawnPoints[i % validEnemySpawnPoints.Count];
-            
             Vector3 randomOffset = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
 
             GameObject enemy = Instantiate(enemyPrefab, spawnBase + randomOffset, Quaternion.identity);
             _activeEnemies.Add(enemy);
+            
+            var agent = enemy.GetComponent<NavMeshAgent>();
+            if (agent)
+            {
+                agent.enabled = true;
+            }
 
             if (enemy.TryGetComponent<EnemyAI>(out var ai))
             {
@@ -174,6 +191,13 @@ public class MazeGenerator : MonoBehaviour
         if (_playerController) _playerController.enabled = false;
         playerInstance.transform.position = pos;
         if (_playerController) _playerController.enabled = true;
+        
+        var tpc = playerInstance.GetComponent<StarterAssets.ThirdPersonController>();
+        if (tpc) 
+        {
+            tpc.enabled = true;
+            playerInstance.transform.rotation = Quaternion.identity; 
+        }
     }
 
     public void RespawnPlayer()
@@ -253,7 +277,7 @@ public class MazeGenerator : MonoBehaviour
     void SpawnGoal()
     {
         float spawnY = (minHeight + maxHeight) / 2f;
-        Vector3 goalPos = new Vector3(_center.x * spacing, spawnY + 0.5f, _center.y * spacing);
+        Vector3 goalPos = new Vector3(_center.x * spacing, spawnY + 1.5f, _center.y * spacing);
         if (goalPrefab)
         {
             GameObject goal = Instantiate(goalPrefab, goalPos, Quaternion.identity);

@@ -23,6 +23,9 @@ namespace StarterAssets
 		[Header("Mouse Cursor Settings")]
 		public bool cursorLocked = true;
 		public bool cursorInputForLook = true;
+		
+		[Header("Menu Inputs")]
+		public bool pause;
 
 #if ENABLE_INPUT_SYSTEM
 		public void OnMove(InputValue value)
@@ -64,6 +67,19 @@ namespace StarterAssets
 		{
 			freezeTriggered = false;
 		}
+		
+		public void OnPause(InputValue value)
+		{
+			if (value.isPressed)
+			{
+				pause = true;
+			}
+		}
+       
+		public void ConsumePauseInput()
+		{
+			pause = false;
+		}
 #endif
 
 
@@ -89,11 +105,20 @@ namespace StarterAssets
 
 		private void OnApplicationFocus(bool hasFocus)
 		{
+			if (PauseMenu.IsPaused) return;
+
 			SetCursorState(cursorLocked);
 		}
 
 		private void SetCursorState(bool newState)
 		{
+			if (PauseMenu.IsPaused)
+			{
+				Cursor.lockState = CursorLockMode.None;
+				Cursor.visible = true;
+				return;
+			}
+
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 		}
 	}
