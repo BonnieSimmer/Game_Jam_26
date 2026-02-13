@@ -6,3 +6,10 @@ NativeFormatImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 224331
+  packageName: Stylized House Interior
+  packageVersion: 1.0
+  assetPath: Assets/prefab/packs/StylArts/StylizedHouseInterior/Art/Meshes/Materials/MI_LeatherCouch.mat
+  uploadId: 669223
