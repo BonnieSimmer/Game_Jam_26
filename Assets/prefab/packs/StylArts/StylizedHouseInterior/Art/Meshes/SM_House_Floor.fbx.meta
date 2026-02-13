@@ -68,7 +68,7 @@ ModelImporter:
     keepQuads: 0
     weldVertices: 0
     preserveHierarchy: 0
-    indexFormat : 2
+    indexFormat: 2
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -102,4 +102,11 @@ ModelImporter:
   additionalBone: 0
   userData: 
   assetBundleName: 
-  assetBundleVariant:
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 224331
+  packageName: Stylized House Interior
+  packageVersion: 1.0
+  assetPath: Assets/prefab/packs/StylArts/StylizedHouseInterior/Art/Meshes/SM_House_Floor.fbx
+  uploadId: 669223
