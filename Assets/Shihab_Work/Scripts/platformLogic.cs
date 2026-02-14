@@ -9,6 +9,7 @@ public class platformLogic : InteractableLogic
 
     [Header("Components")]
     [SerializeField] private AudioSource elevatorMusic;
+    [SerializeField] private AudioClip elevatorSound;
 
     [Header("Floor Markers")]
     [SerializeField] private Transform groundFloorPos;
@@ -26,12 +27,26 @@ public class platformLogic : InteractableLogic
 
     public override void Start()
     {
-        base.Start(); // Keeps the interactable setup from your base class
+        base.Start();
 
-        // Capture the "Full" size of the doors at the start
         if (groundDoor) gDoorDefaultScale = groundDoor.localScale;
         if (firstFloorDoor) fDoorDefaultScale = firstFloorDoor.localScale;
-        elevatorMusic.Play();
+
+        if (elevatorMusic != null)
+        {
+            elevatorMusic.loop = true;           // Satisfies "loop it once it ends"
+            elevatorMusic.spatialBlend = 1f;     // Force 3D sound
+
+            // NEW: Distance settings to satisfy "don't want it to reach me on the roof"
+            elevatorMusic.rolloffMode = AudioRolloffMode.Linear;
+            elevatorMusic.minDistance = 1f;      // Loudest when standing IN the elevator
+            elevatorMusic.maxDistance = 8f;      // Completely silent if 8 meters away (adjust as needed)
+
+            if (!elevatorMusic.isPlaying)
+            {
+                elevatorMusic.PlayOneShot(elevatorSound, 0.3f);
+            }
+        }
     }
 
     // This replaces OnTriggerEnter
@@ -70,8 +85,9 @@ public class platformLogic : InteractableLogic
         Transform currentDoor = GetCurrentDoor();
         Transform destinationDoor = (targetFloor == groundFloorPos) ? groundDoor : firstFloorDoor;
 
-        // Start Music (assuming player is on platform since they interacted)
-        if (elevatorMusic != null) elevatorMusic.Play();
+        // REMOVED: elevatorMusic.Play(); 
+        // Reason: The music is already playing from Start(). Calling Play() here would 
+        // restart the song from 0:00 every time you move, which sounds glitchy.
 
         // 1. CLOSE DOOR (Scale back to Default)
         yield return StartCoroutine(AnimateDoor(currentDoor, false));
@@ -84,8 +100,6 @@ public class platformLogic : InteractableLogic
             yield return null;
         }
         transform.position = endPos;
-
-        //if (elevatorMusic != null) elevatorMusic.Stop();
 
         // 3. OPEN DOOR (Scale down to 0.05)
         yield return StartCoroutine(AnimateDoor(destinationDoor, true));

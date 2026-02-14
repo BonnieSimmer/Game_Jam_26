@@ -4,33 +4,43 @@ using UnityEngine;
 public class NpcOpenDoor : MonoBehaviour
 {
     private Animator doorAnimator;
-    private bool isDoorOpen = false;
-    private Coroutine openDoorByNPC;
+    private Coroutine currentDoorCoroutine;
+
+    [SerializeField] private string npcTag = "npc"; // Editable in Inspector to prevent typos
+
     private void Start()
     {
         doorAnimator = GetComponent<Animator>();
     }
+
     private void OnTriggerEnter(Collider collision)
     {
-        if(collision.gameObject.CompareTag("npc"))
+        // 1. Check the Tag
+        if (collision.CompareTag(npcTag))
         {
-            if(openDoorByNPC == null)
+            // 2. Logic: If we are already running the routine, stop it so we can restart the timer
+            if (currentDoorCoroutine != null)
             {
-                openDoorByNPC = StartCoroutine(openDoor());
+                StopCoroutine(currentDoorCoroutine);
             }
-            else
-            {
-                StopCoroutine(openDoorByNPC);
-            }
+
+            // 3. Start the routine and save the reference
+            currentDoorCoroutine = StartCoroutine(OpenDoorRoutine());
         }
     }
 
-    private IEnumerator openDoor()
+    private IEnumerator OpenDoorRoutine()
     {
-        isDoorOpen=true;
-        doorAnimator.SetBool("isOpen", isDoorOpen);
-        yield return new WaitForSeconds(3f); // Keep the door open for 3 seconds
-        isDoorOpen = false;
-        doorAnimator.SetBool("isOpen", isDoorOpen);
+        // Open
+        doorAnimator.SetBool("isOpen", true);
+
+        // Wait
+        yield return new WaitForSeconds(3f);
+
+        // Close
+        doorAnimator.SetBool("isOpen", false);
+
+        // Important: Reset the reference so we know we are finished
+        currentDoorCoroutine = null;
     }
 }

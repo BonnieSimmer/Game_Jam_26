@@ -98,20 +98,11 @@ public class GameManager : MonoBehaviour
         GameObject canvas = GameObject.Find("UI_Canvas");
         if (canvas != null)
         {
-            // Note: Caps Sensitive! Matches your Hierarchy
             Transform inTrans = canvas.transform.Find("FadeIN");
             Transform outTrans = canvas.transform.Find("FadeOUT");
 
-            if (inTrans != null)
-            {
-                fadeIn = inTrans.gameObject;
-                fadeIn.SetActive(false); // Reset to hidden
-            }
-            if (outTrans != null)
-            {
-                fadeOut = outTrans.gameObject;
-                fadeOut.SetActive(false); // Reset to hidden
-            }
+            if (inTrans != null) { fadeIn = inTrans.gameObject; fadeIn.SetActive(false); }
+            if (outTrans != null) { fadeOut = outTrans.gameObject; fadeOut.SetActive(false); }
         }
 
         // B. Find Player
@@ -126,14 +117,17 @@ public class GameManager : MonoBehaviour
         GameObject lightObj = GameObject.Find("Directional Light");
         if (lightObj != null) dayCycle = lightObj.GetComponent<DayCycle>();
 
-        // D. Find Vignette
-        GameObject volObj = GameObject.Find("Volume Profile");
-        if (volObj != null)
+        // D. Find Vignette (ROBUST VERSION)
+        // Search ALL volumes to find the one that actually has a Vignette
+        Volume[] allVolumes = FindObjectsByType<Volume>(FindObjectsSortMode.None);
+        foreach (Volume vol in allVolumes)
         {
-            Volume volume = volObj.GetComponent<Volume>();
-            if (volume.profile.TryGet<Vignette>(out vignetteEffect))
+            if (vol.profile.TryGet<Vignette>(out Vignette v))
             {
+                vignetteEffect = v;
                 vignetteEffect.intensity.value = vignetteDefaultIntensity;
+                Debug.Log($"GameManager: Found Vignette on '{vol.gameObject.name}'");
+                return; // Found it! Stop looking.
             }
         }
     }
@@ -154,10 +148,7 @@ public class GameManager : MonoBehaviour
     }
     public void GoingToSleep()
     {
-<<<<<<< HEAD
-        
-=======
->>>>>>> 87b134c66c41ab2e3e1270ff2c8b236ba9ca9f4e
+        if (isSleeping) return; // Prevent double-triggering
         StartCoroutine(SleepCoroutine());
     }
 
@@ -198,42 +189,56 @@ public class GameManager : MonoBehaviour
 
     IEnumerator WakeUpCoroutine()
     {
+        yield return null;
+
+        // Double check reference if it missed the first time
+        if (vignetteEffect == null) RefreshReferences();
+
+        // If STILL null, abort visual effect to prevent crash
+        if (vignetteEffect == null)
+        {
+            Debug.LogError("WakeUpCoroutine aborted: Vignette Effect not found.");
+            isWakingUp = false;
+            isSleeping = false;
+            yield break;
+        }
+
         isWakingUp = true;
         isSleeping = false;
 
         float timer = 0f;
-        float duration = 2f; // Duration of the sleep transition
+        float duration = 2f;
         float startIntensity = vignetteEffect.intensity.value;
+        if (vignetteEffect == null)
+        {
+            Debug.LogError("WakeUpCoroutine aborted...");
+            isWakingUp = false;
+            yield break; // STOP here to prevent crash
+        }
+        if (fadeIn != null) fadeIn.SetActive(false);
+        if (fadeOut != null) fadeOut.SetActive(true);
 
-        if(fadeIn !=null)fadeIn.SetActive(false);
-        if(fadeOut !=null)fadeOut.SetActive(true);
-        
-        if(playerLogic != null)
+        if (playerLogic != null)
         {
             playerLogic.MoveSpeed = defaultPlayerSpeed;
             playerLogic.SprintSpeed = defaultSprintSpeed;
-
         }
-        if (playerVisual != null)
-        {
-            playerVisual.SetTiredState(false);
-        }
+        if (playerVisual != null) playerVisual.SetTiredState(false);
 
         dayNumber++;
-        Debug.Log("Day " + dayNumber);
+        if (dayCycle != null) dayCycle.StartNewDay();
 
-        dayCycle.StartNewDay(); // Start a new day after sleeping
-        timer = 0f;
         while (timer < duration)
         {
             timer += Time.deltaTime;
             float t = timer / duration;
-            vignetteEffect.intensity.value = Mathf.Lerp(1f, vignetteDefaultIntensity, t); // Gradually reduce vignette intensity after waking up
-            yield return null; // Wait for the next frame
+            vignetteEffect.intensity.value = Mathf.Lerp(1f, vignetteDefaultIntensity, t);
+            yield return null;
         }
-        vignetteEffect.intensity.value = vignetteDefaultIntensity; // Reset vignette intensity after waking up
-        isSleeping = false;
-        if(fadeOut != null)fadeOut.SetActive(false);
+
+        vignetteEffect.intensity.value = vignetteDefaultIntensity;
+        if (fadeOut != null) fadeOut.SetActive(false);
+
         isWakingUp = false;
     }
 
@@ -259,37 +264,32 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (isWakingUp) return;
-
-        Debug.Log($"Scene Loaded: {scene.name}. Initializing...");
-
-        // 2. Refresh References
         RefreshReferences();
 
-        // 3. PlayTesting Reset
+        if (isWakingUp) return;
+
+        // 2. Fix the Day Number Logic
         if (isPlayTesting)
         {
-            // Only wipe data if we are literally on Day 0 or 1 (Start of game)
-            // Otherwise, returning from the maze would wipe our progress!
-            if (dayNumber <= 1 && scene.name == mainSceneName)
+            // Reset logic for testing
+            if (dayNumber <= 1 && (scene.name == mainSceneName || scene.name.Contains("Indoors")))
             {
-                Debug.Log("PlayTesting: Wiping Data on Start");
                 PlayerPrefs.DeleteAll();
-                PlayerPrefs.Save();
-                dayNumber = 0; // Ensure we start at 0
+                dayNumber = 1;
             }
         }
         else
         {
             LoadData();
+            if (dayNumber < 1) dayNumber = 1;
         }
 
-        // 4. Trigger Wake Up (Only in Main Scene)
-        if (scene.name == mainSceneName)
+        // 3. Trigger Wake Up only in the main indoor scene
+        if (scene.name == mainSceneName || scene.name.Contains("Indoors"))
         {
+            isSleeping = false;
             StartCoroutine(WakeUpCoroutine());
         }
-
 
     }
 
