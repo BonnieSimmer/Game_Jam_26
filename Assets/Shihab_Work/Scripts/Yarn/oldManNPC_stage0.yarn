@@ -30,6 +30,7 @@ position: 81,-352
 <<elseif $Shiekh_Khaled_progress == 1>>
     // EXHAUSTED STATE
     Old Khaled: ...The fortress needs guarding...
+    Old Khaled: ..TAB on it to see how well it is doing
     Old Khaled: ...I must rest my eyes now.
     <<npc_gesture Shiekh_Khaled dismiss>>
 <<endif>>
@@ -114,10 +115,10 @@ Old Khaled: If you leave the gate open, the Enemy enters and claims the throne.
 Old Khaled: Guard your light, young man. Do not let it fade.
 
 <<set $Shiekh_Khaled_progress = 1>>
-<<jump stage0_conclusion>>
+<<jump Shiekh_Khaled_exhausted>>
 ===
 
-title: stage0_conclusion
+title: Shiekh_Khaled_exhausted
 position: 80,650
 ---
 // Ending the conversation

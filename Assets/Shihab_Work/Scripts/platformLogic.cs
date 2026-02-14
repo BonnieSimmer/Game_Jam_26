@@ -44,7 +44,7 @@ public class platformLogic : InteractableLogic
 
             if (!elevatorMusic.isPlaying)
             {
-                elevatorMusic.PlayOneShot(elevatorSound, 0.3f);
+                elevatorMusic.PlayOneShot(elevatorSound, 0.1f);
             }
         }
     }
